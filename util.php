@@ -11,7 +11,7 @@
 		}
 		return $con;
 	}
-	function desconectar_bd($mysql){
+function desconectar_bd($mysql){
 		mysqli_close($mysql);
 	}
 
