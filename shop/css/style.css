@@ -30,6 +30,98 @@ body {
     content: ">"
 }
 
+.flex-w {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	-moz-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	-o-flex-wrap: wrap;
+	flex-wrap: wrap;
+}
+
+.flex-sb {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	justify-content: space-between;
+}
+
+.w-size13 {
+	width: 53%;
+}
+
+.p-b-13 {padding-bottom: 13px;}
+
+.w-size14 {
+	width: calc(47% - 55px);
+}
+
+.m-text16 {
+	font-family: Montserrat-Regular;
+	font-size: 24px;
+	color: #222222;
+	line-height: 1.5;
+}
+
+.p-t-30 {padding-top: 30px;}
+
+@media (max-width: 768px) {
+	.respon5 {
+		width: 100%;
+  }
+  
+  .wrap-slick3-dots {
+  width: 14.5%;
+}
+
+  .slick3 {
+  width: 80.64%;
+}
+
+.slick3-dots li {
+  display: block;
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.slick3-dots li img {
+  width: 100%;
+}
+
+.slick3-dot-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  border: 3px solid transparent;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.slick3-dot-overlay:hover {
+  border: 3px solid #888888;
+}
+
+.slick3-dots .slick-active .slick3-dot-overlay {
+  border: 3px solid #888888;
+}
+
+.slick-slide {
+  outline: none !important;
+}
+
+}
 .breadcrumb {
     display: -ms-flexbox;
     display: flex;
