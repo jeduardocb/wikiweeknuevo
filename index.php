@@ -68,6 +68,11 @@ include_once("util.php");
 	</div>
 </aside>
 
+<form action="" method="post">
+	<input type="hidden" name="idcategoria">
+	
+</form>
+
 <div id="fh5co-services" class="fh5co-bg-section">
 	<div class="container">
 		<div class="row">
