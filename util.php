@@ -59,19 +59,23 @@ function getCepas($idcategoria){
 		while ($row = $result->fetch_assoc()) {
 			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
 			echo '<div class="col-md-4 text-center animate-box">
-                <div class="product">
-                    <div class="product-grid" style="background-image:url(images/product-1.jpg);">
-                        <div class="inner">
-                            <p>
-                                <a href="single.html" class="icon"><i class="icon-eye"></i></a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="desc">
-                        <h3><a href="single.html">'.$row["nombre"].'</a></h3>
-                    </div>
-                </div>
-            </div>';
+					<div class="product">
+					<form id="formulario" action="single.php" method="get">
+						<input type="hidden" name="idweed" value="' . $row["wid"] . '">
+						
+							<div class="product-grid" style="background-image:url(images/product-1.jpg);">
+								<div class="inner">
+									<p>
+										<a href="single.php" class="icon"><i class="icon-eye"></i></a>
+									</p>
+								</div>
+							</div>
+							<div class="desc">
+								<h3><a id="nombre"  href="javascript:{}" onclick="document.getElementById("formulario").submit();">'.$row["nombre"]. '</a></h3>
+							</div>
+						</form>
+             		</div>
+            	</div>';
 		}
 	} else {
 		echo "0 results";
@@ -123,5 +127,13 @@ function getCepas($idcategoria){
     desconectar_bd($conexion_bd);
     return $resultado;
   }
+
+function getDescripcion($idweed){
+	$con = conectar_bd();
+
+
+
+	desconectar_bd($con);
+}
 
 ?> 

@@ -19,7 +19,7 @@ $idcategoria = htmlspecialchars($_POST['idcategoria']);
                                 <span class="price">$800</span>
                                 <h2>Alato Cabinet</h2>
                                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.</p>
-                                <p><a href="single.html" class="btn btn-primary btn-outline btn-lg">Purchase Now</a></p>
+                                <p><a href="single.php" class="btn btn-primary btn-outline btn-lg">Purchase Now</a></p>
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@ $idcategoria = htmlspecialchars($_POST['idcategoria']);
                                 <span class="price">$530</span>
                                 <h2>The Haluz Rocking Chair</h2>
                                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.</p>
-                                <p><a href="single.html" class="btn btn-primary btn-outline btn-lg">Purchase Now</a></p>
+                                <p><a href="single.php" class="btn btn-primary btn-outline btn-lg">Purchase Now</a></p>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@ $idcategoria = htmlspecialchars($_POST['idcategoria']);
                                 <span class="price">$750</span>
                                 <h2>Alato Cabinet</h2>
                                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.</p>
-                                <p><a href="single.html" class="btn btn-primary btn-outline btn-lg">Purchase Now</a></p>
+                                <p><a href="single.php" class="btn btn-primary btn-outline btn-lg">Purchase Now</a></p>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@ $idcategoria = htmlspecialchars($_POST['idcategoria']);
                                 <span class="price">$540</span>
                                 <h2>The WW Chair</h2>
                                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.</p>
-                                <p><a href="single.html" class="btn btn-primary btn-outline btn-lg">Purchase Now</a></p>
+                                <p><a href="single.php" class="btn btn-primary btn-outline btn-lg">Purchase Now</a></p>
                             </div>
                         </div>
                     </div>
@@ -94,13 +94,13 @@ $idcategoria = htmlspecialchars($_POST['idcategoria']);
                     <div class="product-grid" style="background-image:url(images/product-5.jpg);">
                         <div class="inner">
                             <p>
-                                <a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-                                <a href="single.html" class="icon"><i class="icon-eye"></i></a>
+                                <a href="single.php" class="icon"><i class="icon-shopping-cart"></i></a>
+                                <a href="single.php" class="icon"><i class="icon-eye"></i></a>
                             </p>
                         </div>
                     </div>
                     <div class="desc">
-                        <h3><a href="single.html">Earing Wireless</a></h3>
+                        <h3><a href="single.php">Earing Wireless</a></h3>
                         <span class="price">$100</span>
                     </div>
                 </div>
@@ -110,13 +110,13 @@ $idcategoria = htmlspecialchars($_POST['idcategoria']);
                     <div class="product-grid" style="background-image:url(images/product-6.jpg);">
                         <div class="inner">
                             <p>
-                                <a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-                                <a href="single.html" class="icon"><i class="icon-eye"></i></a>
+                                <a href="single.php" class="icon"><i class="icon-shopping-cart"></i></a>
+                                <a href="single.php" class="icon"><i class="icon-eye"></i></a>
                             </p>
                         </div>
                     </div>
                     <div class="desc">
-                        <h3><a href="single.html">Sculptural Coffee Table</a></h3>
+                        <h3><a href="single.php">Sculptural Coffee Table</a></h3>
                         <span class="price">$960</span>
                     </div>
                 </div>
