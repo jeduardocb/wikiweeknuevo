@@ -83,6 +83,50 @@ function getCepas($idcategoria){
 
 	desconectar_bd($con);
 }
+     //Crea un select con los datos de una consulta
+  //@param $id: Campo en una tabla que contiene el id
+  //@param $columna_descripcion: Columna de una tabla con una descripción
+  //@param $tabla: La tabla a consultar en la bd
+  function crear_select($id, $columna_descripcion, $tabla) {
+    $conexion_bd = conectar_bd();  
+      
+      
+    $resultado = '<div class="input-field"><select name="'.$tabla.'" id="'.$tabla.'"><option value="" disabled selected>Selecciona una opción</option>';
+    
+            
+    $consulta = "SELECT $id  , $columna_descripcion  FROM $tabla";
+    $resultados = $conexion_bd->query($consulta);
+    while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
+
+      $resultado .= '<option value="'.$row["$id"].'">'.$row["$columna_descripcion"].'</option>';
+       
+    }
+        
+    desconectar_bd($conexion_bd);
+    $resultado .=  '</select></div>';
+    return $resultado;
+  }
+   
+  function getTerpenos() {
+    $conexion_bd = conectar_bd();  
+      
+      
+    $resultado = '';
+    
+            
+    $consulta = "select nombre from terpenos";
+    $resultados = $conexion_bd->query($consulta);
+    while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
+        $resultado .='<div class="checkbox terpenos">
+      <label><input type="checkbox" value="'.$row["nombre"].'">' .$row["nombre"].'</label>
+    </div>';
+     
+       
+    }
+        
+    desconectar_bd($conexion_bd);
+    return $resultado;
+  }
 
 function getDescripcion($idweed){
 	$con = conectar_bd();
