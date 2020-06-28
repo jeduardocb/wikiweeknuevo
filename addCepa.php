@@ -60,7 +60,7 @@ include_once("util.php");
                 <option value="> 12">> 12</option>
               </select>
         </div>
-        <button type="button" id="add-cepa" class="btn btn-primary">ADD</button>
+        <button type="button" id="add-cepa" onclick="addCepa;" class="btn btn-primary">ADD</button>
 
     </form>
 </div>
@@ -69,10 +69,11 @@ include_once("util.php");
 include("_footer.html");
 ?>
 <script >
-    window.onload = function(){
-document.getElementById("add-cepa").onclick = function() {
-    addCepa();
+   /* window.onload = function(){
+document.getElementById("add-cepa").onclick= function() {
     alert("asdf");
+    addCepa();
+    
 };
-    }
+    }*/
 </script>

@@ -1,5 +1,5 @@
 function addCepa(){
-    alert("asdf");
+    alert("estas seguro");
     $.post("controlador_addCepa.php", {
         nombre = $("#name").val(),
         category = $("#categoria").val(),//te arroga el id de la categoria
