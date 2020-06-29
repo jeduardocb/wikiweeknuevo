@@ -14,7 +14,15 @@
 function desconectar_bd($mysql){
 		mysqli_close($mysql);
 	}
-
+function limpia_entrada($variable) {
+    return $variable = htmlspecialchars($variable);
+}
+function limpia_entradas($arr){
+    foreach($arr as &$key){
+        $key = limpia_entrada($key);
+    }
+    return $arr;
+}
 function getCategorias(){
 
 	 $con = conectar_bd();
@@ -60,7 +68,7 @@ function getCepas($idcategoria){
 			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
 			echo '<div class="col-md-4 text-center animate-box">
                 <div class="product">
-                    <div class="product-grid" style="background-image:url(images/product-1.jpg);">
+                    <div class="product-grid" style="background-image:url(images/main2.jpg);">
                         <div class="inner">
                             <p>
                                 <a href="single.html" class="icon"><i class="icon-eye"></i></a>
@@ -87,7 +95,7 @@ function getCepas($idcategoria){
     $conexion_bd = conectar_bd();  
       
       
-    $resultado = '<div class="input-field"><select name="'.$tabla.'" id="'.$tabla.'"><option value="" disabled selected>Selecciona una opción</option>';
+    $resultado = '<select class="form-control" name="'.$tabla.'" id="'.$tabla.'"><option value="" disabled selected>Selecciona una opción</option>';
     
             
     $consulta = "SELECT $id  , $columna_descripcion  FROM $tabla";
@@ -99,7 +107,7 @@ function getCepas($idcategoria){
     }
         
     desconectar_bd($conexion_bd);
-    $resultado .=  '</select></div>';
+    $resultado .=  '</select>';
     return $resultado;
   }
    
@@ -110,11 +118,11 @@ function getCepas($idcategoria){
     $resultado = '';
     
             
-    $consulta = "select nombre from terpenos";
+    $consulta = "select nombre,id_terpeno from terpenos";
     $resultados = $conexion_bd->query($consulta);
     while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
-        $resultado .='<div class="checkbox terpenos">
-      <label><input type="checkbox" value="'.$row["nombre"].'">' .$row["nombre"].'</label>
+        $resultado .='<div class="checkbox" id="checkterpenos">
+      <label><input class="terpenos" type="checkbox" value="'.$row["id_terpeno"].'">' .$row["nombre"].'</label>
     </div>';
      
        

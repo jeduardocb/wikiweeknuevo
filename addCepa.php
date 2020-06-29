@@ -11,12 +11,12 @@ include_once("util.php");
         </div>
 
         <div class="form-group">
-        <h5>Category</h5>
+        <h5>Categoria</h5>
         <?= crear_select("id","nombre","categoria") ?>
         </div>
 
         <div class="form-group">
-        <h5>Terpenes</h5>
+        <h5>Terpenos</h5>
          <?= getTerpenos() ?>
         </div>
         
@@ -48,7 +48,7 @@ include_once("util.php");
                 <option value="> 78">> 78</option>
               </select>
             <label for="sel1">Rendimiento (Oz/Ft)^2:</label>
-              <select class="form-control" id="sel">
+              <select class="form-control" id="rendimiento">
                 <option>0.5 - 1</option>
                 <option>1 - 3</option>
                 <option>3 - 6</option>
@@ -68,7 +68,8 @@ include_once("util.php");
 <?php
 include("_footer.html");
 ?>
-<script >
+<script type="text/javascript">
+    document.getElementById("add-cepa").onclick=addCepa;
    /* window.onload = function(){
 document.getElementById("add-cepa").onclick= function() {
     alert("asdf");
