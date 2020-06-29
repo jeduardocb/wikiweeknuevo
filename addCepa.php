@@ -6,8 +6,12 @@ include_once("util.php");
 <div class="container">
     <form>
         <div class="form-group ">
-          <label for="usr">Name:</label>
+          <label for="usr">Nombre:</label>
           <input type="text" class="form-control " id="name">
+        </div>
+         <div class="form-group ">
+          <label for="usr">Descripcion:</label>
+          <input type="text" class="form-control " id="descripcion">
         </div>
 
         <div class="form-group">
@@ -22,15 +26,17 @@ include_once("util.php");
         
         <div class="input-group">
             <h5>CBD</h5>
-            <input type="text" id="cbdmin" class="form-control" placeholder="MinVal">
-            <input type="text" id="cbdmax" class="form-control" placeholder="MaxVal">
+            <input type="number" id="cbdmin" class="form-control" placeholder="0">
+            <input type="number" id="cbdmax" class="form-control" placeholder="10">
         </div>
         
+      
         <div class="input-group">
-            <br>
+              
             <h5>THC</h5>
-            <input type="text" id="thcmin" class="form-control" placeholder="MinVal">
-            <input type="text" id="thcmax" class="form-control" placeholder="MaxVal">
+            
+            <input type="number" id="thcmin" class="form-control" placeholder="0">
+            <input type="number" id="thcmax" class="form-control" placeholder="10">
         </div>
         <div class="form-group">
                 <h5>Grow info</h5>
@@ -49,9 +55,9 @@ include_once("util.php");
               </select>
             <label for="sel1">Rendimiento (Oz/Ft)^2:</label>
               <select class="form-control" id="rendimiento">
-                <option>0.5 - 1</option>
-                <option>1 - 3</option>
-                <option>3 - 6</option>
+                <option value="0.5 - 1">0.5 - 1</option>
+                <option value="1 - 3">1 - 3</option>
+                <option value="3 - 6">3 - 6</option>
               </select>
             <label for="sel1">Florecimiento (En Semanas):</label>
               <select class="form-control" id="florecimiento">

@@ -4,7 +4,6 @@ function addCepa(){
     $('#checkterpenos input:checked').each(function() {
         terpenos.push($(this).attr('value'));
     });
-    //console.log(selected);
     if(confirm("¿Estas seguro de agregar esta Cepa?")){
             $.post("controlador_addCepa.php", {
             nombre : $("#name").val(),
@@ -17,7 +16,8 @@ function addCepa(){
             altura : $("#altura").val(),
             rendimiento:$("#rendimiento").val(),
             florecimiento : $("#florecimiento").val(),
-            terpenos
+            terpenos,
+            descripcion:$("#descripcion").val()
         }).done(function (data) {
             console.log(data)    
                 

@@ -10,13 +10,17 @@
    $thcmin = htmlspecialchars($_POST["thcmin"]);
    $thcmax = htmlspecialchars($_POST["thcmax"]);
    $dificultad = htmlspecialchars($_POST["dificultad"]);
-   $altura = htmlspecialchars($_POST["altura"]);
+   $altura = ($_POST["altura"]);
    $rendimiento = htmlspecialchars($_POST["rendimiento"]);
-   $florecimiento =htmlspecialchars($_POST["florecimiento"]);
+   $descripcion = htmlspecialchars($_POST["descripcion"]);
+   $florecimiento =($_POST["florecimiento"]);
    $terpenos = limpia_entradas($_POST["terpenos"]);
-    foreach ($terpenos as &$valor) {
-        echo $valor;
-    }
-    
 
+    foreach ($terpenos as &$valor) {
+        //echo $valor;
+    }
+    addCbd($cbdmin,$cbdmax);
+    addThc($thcmin,$thcmax);
+    addCrecimiento($dificultad,$altura,$rendimiento,$florecimiento);
+    echo addCepa($category,$nombre,$descripcion);
 ?>

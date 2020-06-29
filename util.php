@@ -131,5 +131,75 @@ function getCepas($idcategoria){
     desconectar_bd($conexion_bd);
     return $resultado;
   }
+function insertIntoDb($dml, ...$args){
+    $conDb =  conectar_bd();
+    $types='';
+    //Verifica los tipos de variable de los argumentos y termina el proceso si no son int, double, string o BLOB
+    foreach ($args as $arg){
+        $types.=substr(gettype($arg),0,1);
+        if(preg_match('/[^idsb]/', $types)){
+            die("Invalid argument, only Int, double, string and BLOB accepted");
+        }
+    }
+    if ( !($statement = $conDb->prepare($dml)) ) {
+        die("Error: (" . $conDb->errno . ") " . $conDb->error);
+        return 0;
+    }
+    //Unir los parámetros de la función con los parámetros de la consulta
+    //El primer argumento de bind_param es el formato de cada parámetro
+    if (!$statement->bind_param($types, ...$args)) {
+        die("Error en vinculación: (" . $statement->errno . ") " . $statement->error);
+        return 0;
+    }
+    //Executar la consulta
+    if (!$statement->execute()) {
+        die("Error en ejecución: (" . $statement->errno . ") " . $statement->error);
+        return 0;
+    }
+    $id = $conDb->insert_id;
+    desconectar_bd($conDb);
+    return $id;
+}
+//Función que conecta a la bd, realiza un query y vuelve a cerrar la bd. Recibe el SQL del query y regresa un objeto mysqli result
+function sqlqry($qry){
+    $con = conectar_bd();
+    if(!$con){
+        return false;
+    }
+    $result = mysqli_query($con, $qry);
+    desconectar_bd($con);
+    return $result;
+}
+function addCbd($cbdmin,$cbdmax) {
+    //Prepara la consulta
+    $dml = 'insert into cbd (min,max) values(?,?) ';
+    return insertIntoDb($dml,$cbdmin,$cbdmax);
+  }
+function addThc($thcmin,$thcmax) {
+    //Prepara la consulta
+    $dml = 'insert into thc (min,max) values(?,?) ';
+    return insertIntoDb($dml,$thcmin,$thcmax);
+  }
+function addCrecimiento($dificultad,$altura,$rendimiento,$florecimiento) {
+    //Prepara la consulta
+    $dml = 'insert into crecimiento (dificultad,altura,rendimiento,florecimiento) values (?,?,?,?);';
+    return insertIntoDb($dml,$dificultad,$altura,$rendimiento,$florecimiento);
+  }
+function addCepa($category,$nombre,$descripcion) {
+    $sql= "select id_crecimiento from crecimiento ORDER BY id_crecimiento DESC LIMIT 1;";
+    $crecimiento=mysqli_fetch_assoc(sqlqry($sql));
+    $crecimiento=$crecimiento["id_crecimiento"];
+    
+    $sql= "select id_cbd from cbd ORDER BY id_cbd DESC LIMIT 1;";
+    $cbd=mysqli_fetch_assoc(sqlqry($sql));
+    $cbd=$cbd["id_cbd"];
+    
+    $sql= "select id_thc from thc ORDER BY id_thc DESC LIMIT 1;";
+    $thc=mysqli_fetch_assoc(sqlqry($sql));
+    $thc=$thc["id_thc"];
+    
+    $dml = 'insert into weed (id_categoria,id_crecimiento,id_cbd,id_thc,nombre,descripcion) values (?,?,?,?,?,?);';
+    return insertIntoDb($dml,$category,$crecimiento,$cbd,$thc,$nombre,$descripcion);
+  }
 
 ?> 
