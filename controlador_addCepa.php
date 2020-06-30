@@ -15,12 +15,17 @@
    $descripcion = htmlspecialchars($_POST["descripcion"]);
    $florecimiento =($_POST["florecimiento"]);
    $terpenos = limpia_entradas($_POST["terpenos"]);
-
-    foreach ($terpenos as &$valor) {
-        //echo $valor;
-    }
+   $porcentajes = limpia_entradas($_POST["porcentajes"]);
+    
+    
     addCbd($cbdmin,$cbdmax);
     addThc($thcmin,$thcmax);
     addCrecimiento($dificultad,$altura,$rendimiento,$florecimiento);
     echo addCepa($category,$nombre,$descripcion);
+    $count = count($terpenos);
+    for ($i = 0; $i < $count; $i++) {
+        print_r($terpenos[$i]);
+        print_r($porcentajes[$i]);
+        echo addTerpenos($terpenos[$i],$porcentajes[$i]);
+    }
 ?>

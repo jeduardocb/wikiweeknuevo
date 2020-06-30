@@ -122,7 +122,8 @@ function getCepas($idcategoria){
     $resultados = $conexion_bd->query($consulta);
     while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
         $resultado .='<div class="checkbox" id="checkterpenos">
-      <label><input class="terpenos" type="checkbox" value="'.$row["id_terpeno"].'">' .$row["nombre"].'</label>
+      <label><input class="terpenos" type="checkbox" idt="'.$row["id_terpeno"].'"  value="'.$row["id_terpeno"].'">' .$row["nombre"].'</label>
+      <input type="number" class="form-control" id="'.$row["id_terpeno"].'" placeholder="5">
     </div>';
      
        
@@ -201,5 +202,13 @@ function addCepa($category,$nombre,$descripcion) {
     $dml = 'insert into weed (id_categoria,id_crecimiento,id_cbd,id_thc,nombre,descripcion) values (?,?,?,?,?,?);';
     return insertIntoDb($dml,$category,$crecimiento,$cbd,$thc,$nombre,$descripcion);
   }
-
+function addTerpenos($id_terpeno,$porcentaje){
+    $sql= "select id from weed ORDER BY id DESC LIMIT 1;";
+    $weed=mysqli_fetch_assoc(sqlqry($sql));
+    $weed=$weed["id"];
+    
+    
+    $dml = 'insert into weed_terpenos (id_weed,id_terpeno,porcentaje) values (?,?,?);';
+    return insertIntoDb($dml,$weed,$id_terpeno,$porcentaje);
+}
 ?> 
