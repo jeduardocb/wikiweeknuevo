@@ -57,10 +57,11 @@ function getCepas($idcategoria){
 	if ($result->num_rows > 0) {
 		// output data of each row
 		while ($row = $result->fetch_assoc()) {
+			$idweed = $row["wid"];
 			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
 			echo '<div class="col-md-4 text-center animate-box">
 					<div class="product">
-					<form id="formulario" action="single.php" method="get">
+					<form id="'.$row["wid"].'" action="single.php" method="get">
 						<input type="hidden" name="idweed" value="' . $row["wid"] . '">
 						
 							<div class="product-grid" style="background-image:url(images/product-1.jpg);">
@@ -71,7 +72,7 @@ function getCepas($idcategoria){
 								</div>
 							</div>
 							<div class="desc">
-								<h3><a id="nombre"  href="javascript:{}" onclick="document.getElementById("formulario").submit();">'.$row["nombre"]. '</a></h3>
+								<h3><a id="nombre" href="javascript:{}" onclick="document.getElementById('. "'$idweed'".').submit();">'.$row["nombre"]. '</a></h3>
 							</div>
 						</form>
              		</div>
@@ -127,13 +128,5 @@ function getCepas($idcategoria){
     desconectar_bd($conexion_bd);
     return $resultado;
   }
-
-function getDescripcion($idweed){
-	$con = conectar_bd();
-
-
-
-	desconectar_bd($con);
-}
 
 ?> 
