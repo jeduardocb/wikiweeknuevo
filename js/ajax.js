@@ -8,7 +8,6 @@ function addCepa(){
         auxiliar=$(this).attr('idt');
         porcentajes.push($('#'+auxiliar).val());
     });
-    console.log(porcentajes);
     if(confirm("¿Estas seguro de agregar esta Cepa?")){
             $.post("controlador_addCepa.php", {
             nombre : $("#name").val(),
