@@ -39,7 +39,7 @@ include_once("util.php");
             <input type="number" id="thcmax" class="form-control" placeholder="10">
         </div>
         <div class="form-group">
-                <h5>Grow info</h5>
+                <h5>Crecimiento</h5>
               <label for="sel1">Difficulty:</label>
               <select class="form-control" id="dificultad">
                 <option value="facil">Facil</option>
