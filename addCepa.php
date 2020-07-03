@@ -76,11 +76,4 @@ include("_footer.html");
 ?>
 <script type="text/javascript">
     document.getElementById("add-cepa").onclick=addCepa;
-   /* window.onload = function(){
-document.getElementById("add-cepa").onclick= function() {
-    alert("asdf");
-    addCepa();
-    
-};
-    }*/
 </script>
