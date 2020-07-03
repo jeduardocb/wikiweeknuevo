@@ -30,3 +30,22 @@ function addCepa(){
     }//if
 
 }
+function addTerpeno(){
+    if(confirm("¿Estas seguro de agregar este nuevo Terpeno?")){
+            $.post("controlador_addTerpeno.php", {
+            terpeno : $("#nuevoTerpeno").val(),
+        }).done(function (data) {
+            console.log(data)  ;  
+        });
+    }//if
+
+}function addCategoria(){
+    if(confirm("¿Estas seguro de agregar esta nueva Categoria?")){
+            $.post("controlador_addCategoria.php", {
+            categoria : $("#nuevaCategoria").val(),
+        }).done(function (data) {
+            console.log(data)  ;  
+        });
+    }//if
+
+}

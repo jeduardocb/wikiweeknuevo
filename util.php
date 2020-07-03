@@ -208,6 +208,7 @@ function addCepa($category,$nombre,$descripcion) {
     $dml = 'insert into weed (id_categoria,id_crecimiento,id_cbd,id_thc,nombre,descripcion) values (?,?,?,?,?,?);';
     return insertIntoDb($dml,$category,$crecimiento,$cbd,$thc,$nombre,$descripcion);
   }
+//funcion para agregar los terpenos de la nueva cepa
 function addTerpenos($id_terpeno,$porcentaje){
     $sql= "select id from weed ORDER BY id DESC LIMIT 1;";
     $weed=mysqli_fetch_assoc(sqlqry($sql));
@@ -217,5 +218,13 @@ function addTerpenos($id_terpeno,$porcentaje){
     $dml = 'insert into weed_terpenos (id_weed,id_terpeno,porcentaje) values (?,?,?);';
     return insertIntoDb($dml,$weed,$id_terpeno,$porcentaje);
 }
-
+//funcion para agregar nuevos terpenos que no existen
+function agregarTerpeno($terpeno){
+    $dml = 'insert into terpenos (nombre) values (?);';
+    return insertIntoDb($dml,$terpeno);
+}
+function agregarCategoria($categoria){
+    $dml = 'insert into categoria (nombre) values (?);';
+    return insertIntoDb($dml,$categoria);
+}
 ?> 
