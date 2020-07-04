@@ -24,8 +24,6 @@
     echo addCepa($category,$nombre,$descripcion);
     $count = count($terpenos);
     for ($i = 0; $i < $count; $i++) {
-        print_r($terpenos[$i]);
-        print_r($porcentajes[$i]);
         echo addTerpenos($terpenos[$i],$porcentajes[$i]);
     }
 ?>
