@@ -1,6 +1,4 @@
 function addCepa(){
-     
-    ////////////////////TERPENOS////////////////////
     var terpenos = [];
     var porcentajes=[];
     let auxiliar;
@@ -9,41 +7,34 @@ function addCepa(){
         auxiliar=$(this).attr('idt');
         porcentajes.push($('#'+auxiliar).val());
     });
-    ////////////////////ARCHIVOS////////////////////
-    var archivos_nombre = [];
-    var archivos = $('#archivo').prop('files');
-    var archivos_file = [];
 
-    for (let index = 0; index < archivos.length; index++) {
-        archivos_nombre[index] = archivos[index].name;
-        archivos_file[index] = $("#archivo")[0].files[index];
-        console.log(archivos_file);
-    }
-
-
-    if(confirm("¿Estas seguro de agregar esta Cepa?")){
-        $.post("controlador_addCepa.php", processData = false, {
-            nombre : $("#name").val(),
-            category : $("#categoria").val(),//te arroga el id de la categoria
-            cbdmax : $("#cbdmax").val(),
-            cbdmin : $("#cbdmin").val(),
-            thcmin : $("#thcmin").val(),
-            thcmax : $("#thcmax").val(),
-            dificultad : $("#dificultad").val(),
-            altura : $("#altura").val(),
-            rendimiento:$("#rendimiento").val(),
-            florecimiento : $("#florecimiento").val(),
+        var parametros = {
+                "nombre" : $("#name").val(),
+            "category" : $("#categoria").val(),//te arroga el id de la categoria
+            "cbdmax" : $("#cbdmax").val(),
+            "cbdmin" : $("#cbdmin").val(),
+            "thcmin" : $("#thcmin").val(),
+            "thcmax" : $("#thcmax").val(),
+            "dificultad" : $("#dificultad").val(),
+            "altura" : $("#altura").val(),
+            "rendimiento":$("#rendimiento").val(),
+            "florecimiento" : $("#florecimiento").val(),
+            "descripcion":$("#descripcion").val(),
             terpenos,
-            descripcion:$("#descripcion").val(),
-            porcentajes,
-            ////////// ENVIAR ARCHIVOS///////////////
-            archivos_nombre,
-            archivos_file
-        }).done(function (data) {
-            console.log(data)    
-                
+            porcentajes
+            
+        };
+        $.ajax({
+                data:  parametros, //datos que se envian a traves de ajax
+                url:   'controlador_addCepa.php', //archivo que recibe la peticion
+                type:  'post', //método de envio
+                beforeSend: function () {
+                        $("#resultado").html("Procesando, espere por favor...");
+                },
+                success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                        $("#resultado").html(response);
+                }
         });
-    }//if
 
 }
 function addTerpeno(){
