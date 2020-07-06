@@ -19,6 +19,7 @@ $brand-body-color: #818892;
 $brand-selection-color: #f9f6f0;
 $brand-overlay-color: #3b3d40;
 $brand-bg-color: $brand-white;
+$green-brand: #034638;
 
 $input-border-focus:  $brand-primary !default;
 $form-group-margin-bottom:       30px !default;
@@ -102,6 +103,45 @@ $form-group-margin-bottom:       30px !default;
 
 /* =======================================================
 *
+* 	our styles
+*
+* ======================================================= */
+
+.categoria{
+	font-size: 20px;
+	color: #069173;
+}
+
+.product-title{
+	color: #295229;
+}
+
+.verde-icono{
+	color: #428542;
+}
+
+.reviews{
+	background: $brand-lighter;
+}
+
+.tarjeta-cepa{
+	margin-bottom: 5px;
+}
+
+.progress-calmante{
+	background-color: #1A7C85;
+}
+
+.progress-energizante{
+	background-color: #B82712;
+}
+
+.review-title{
+	margin-bottom: -12px;
+}
+
+/* =======================================================
+*
 * 	Template Style 
 *
 * ======================================================= */
@@ -172,7 +212,7 @@ h1, h2, h3, h4, h5, h6, figure {
 
 .fh5co-nav {
 	padding: 18px 0;
-	background: $brand-white;
+	background: $green-brand;
 	@media screen and (max-width: $screen-sm) {
 		padding: 20px 0;
 	}
@@ -1247,7 +1287,7 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 
 #fh5co-footer {
-	background: #efefef;
+	background: $green-brand;
 	.fh5co-footer-links {
 		padding: 0;
 		margin: 0;	

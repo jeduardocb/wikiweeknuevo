@@ -1,5 +1,6 @@
 function addCepa(){
      
+    ////////////////////TERPENOS////////////////////
     var terpenos = [];
     var porcentajes=[];
     let auxiliar;
@@ -8,8 +9,20 @@ function addCepa(){
         auxiliar=$(this).attr('idt');
         porcentajes.push($('#'+auxiliar).val());
     });
+    ////////////////////ARCHIVOS////////////////////
+    var archivos_nombre = [];
+    var archivos = $('#archivo').prop('files');
+    var archivos_file = [];
+
+    for (let index = 0; index < archivos.length; index++) {
+        archivos_nombre[index] = archivos[index].name;
+        archivos_file[index] = $("#archivo")[0].files[index];
+        console.log(archivos_file);
+    }
+
+
     if(confirm("¿Estas seguro de agregar esta Cepa?")){
-            $.post("controlador_addCepa.php", {
+        $.post("controlador_addCepa.php", processData = false, {
             nombre : $("#name").val(),
             category : $("#categoria").val(),//te arroga el id de la categoria
             cbdmax : $("#cbdmax").val(),
@@ -22,7 +35,10 @@ function addCepa(){
             florecimiento : $("#florecimiento").val(),
             terpenos,
             descripcion:$("#descripcion").val(),
-            porcentajes
+            porcentajes,
+            ////////// ENVIAR ARCHIVOS///////////////
+            archivos_nombre,
+            archivos_file
         }).done(function (data) {
             console.log(data)    
                 

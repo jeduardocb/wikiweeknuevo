@@ -17,15 +17,27 @@
    $terpenos = limpia_entradas($_POST["terpenos"]);
    $porcentajes = limpia_entradas($_POST["porcentajes"]);
     
-    
-    addCbd($cbdmin,$cbdmax);
-    addThc($thcmin,$thcmax);
-    addCrecimiento($dificultad,$altura,$rendimiento,$florecimiento);
-    echo addCepa($category,$nombre,$descripcion);
-    $count = count($terpenos);
-    for ($i = 0; $i < $count; $i++) {
-        print_r($terpenos[$i]);
-        print_r($porcentajes[$i]);
-        echo addTerpenos($terpenos[$i],$porcentajes[$i]);
-    }
+/*addCbd($cbdmin,$cbdmax);
+addThc($thcmin,$thcmax);
+addCrecimiento($dificultad,$altura,$rendimiento,$florecimiento);
+echo addCepa($category,$nombre,$descripcion);
+$count = count($terpenos);
+for ($i = 0; $i < $count; $i++) {
+    echo addTerpenos($terpenos[$i],$porcentajes[$i]);
+}*/
+
+echo $nombre;
+
+////////// ENVIAR ARCHIVOS///////////////
+
+$archivos_nombre = ($_POST["archivos_nombre"]);
+//$archivos = ($_POST["archivos_file"]);
+
+//echo addFotos($archivos);
+
+foreach ($archivos_nombre as $archivo) {
+    //echo addFotos($archivo);
+}
+
+
 ?>

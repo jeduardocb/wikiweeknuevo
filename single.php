@@ -1,7 +1,7 @@
 <?php
 include("_header.html");
 include("_navbar.html");
-include_once("cepa_controller.php");
+//include_once("cepa_controller.php");
 include_once("util.php");
 
 $idweed = htmlspecialchars($_GET['idweed']);
@@ -14,14 +14,14 @@ $idweed = htmlspecialchars($_GET['idweed']);
 
 
 	<div id="fh5co-product">
-		<div class="container">
+		<div class="container tarjeta-cepa">
 			<div class="card">
 				<div class="container-fliud">
 					<div class="wrapper row">
 						<div class="preview col-md-6">
 
 							<div class="preview-pic tab-content">
-								<div class="tab-pane active" id="pic-1"><img src="http://placekitten.com/400/252" />
+								<div class="tab-pane active" id="pic-1"><img src="images/bubba.png" width="500" height="500" />
 								</div>
 								<div class="tab-pane" id="pic-2"><img src="http://placekitten.com/400/252" /></div>
 								<div class="tab-pane" id="pic-3"><img src="http://placekitten.com/400/252" /></div>
@@ -40,41 +40,75 @@ $idweed = htmlspecialchars($_GET['idweed']);
 
 						</div>
 						<div class="details col-md-6">
-							<h3 class="product-title"><?php nombre($idweed); ?></h3>
-							<div class="rating">
-								<div class="stars">
-									<span class="fa fa-star checked"></span>
-									<span class="fa fa-star checked"></span>
-									<span class="fa fa-star checked"></span>
-									<span class="fa fa-star"></span>
-									<span class="fa fa-star"></span>
+							<div class="row">
+								<div class="col-md-6">
+									<a class="categoria" href=""><?= getCategoria($idweed) ?> </a>
 								</div>
-								<span class="review-no">41 reviews</span>
+								<div class="col-md-6 text-right">
+									<div class="rating">
+										<div class="stars">
+											<span class="review-no">4.4 </span><span class="fa fa-star checked" style="color: #069173;"></span><span class="review-no"> 41 reviews </span>
+										</div>
+									</div>
+								</div>
 							</div>
-							<p class="product-description"><?php descipcion($idweed); ?></p>
-							<h4 class="price">current price: <span>$180</span></h4>
-							<p class="vote"><strong>91%</strong> of buyers enjoyed this product! <strong>(87
-									votes)</strong></p>
-							<h5 class="sizes">sizes:
-								<span class="size" data-toggle="tooltip" title="small">s</span>
-								<span class="size" data-toggle="tooltip" title="medium">m</span>
-								<span class="size" data-toggle="tooltip" title="large">l</span>
-								<span class="size" data-toggle="tooltip" title="xtra large">xl</span>
-							</h5>
-							<h5 class="colors">colors:
-								<span class="color orange not-available" data-toggle="tooltip" title="Not In store"></span>
-								<span class="color green"></span>
-								<span class="color blue"></span>
-							</h5>
-							<div class="action">
-								<button class="add-to-cart btn btn-default" type="button">add to cart</button>
-								<button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
+
+							<hr>
+							<h1 class="product-title text-center"><?php nombre($idweed); ?></h1>
+
+							<p class="product-description text-justify"><?php descripcion($idweed); ?></p>
+							<div class="row">
+								<div class="col-md-12 text-center">
+									<hr>
+									<h3 style="color: #295229;">Cannabinoides</h3>
+								</div>
+
+								<div class="col-md-6">
+									<h4>
+										<i class="fa fa-cannabis verde-icono">
+										</i> THC: <span class="verde-icono">
+											<?php thc($idweed); ?>%
+										</span>
+									</h4>
+								</div>
+								<div class="col-md-6 text-right">
+									<h4>
+										<i class="fas fa-seedling verde-icono"></i>
+										CBD: <span class="verde-icono">
+											<?php cbd($idweed); ?>%
+										</span>
+									</h4>
+								</div>
+							</div>
+							</h4>
+							<?= getProgressBar($idweed); ?>
+							<div class="row reviews">
+								<div class="col-md-12 review-title">
+									<h4>Calculado por 41 reseñas: </h4>
+								</div>
+								<div class="col-md-6 text-left">
+									Calmante
+								</div>
+								<div class="col-md-6 text-right">
+									Energizante
+								</div>
+								<div class="col-md-12">
+									<div class="progress">
+										<div class="progress-bar progress-bar-striped progress-bar-animated progress-calmante" role="progressbar" style="width:70%">
+											Calmante
+										</div>
+										<div class="progress-bar progress-bar-striped progress-bar-animated progress-energizante" role="progressbar" style="width:30%">
+											Energizante
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<br>
 		<div class="container">
 			<div class="row">
 				<!--product detail-->
