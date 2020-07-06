@@ -4,14 +4,14 @@ include("_navbar.html");
 include_once("util.php");
 ?>
 <div class="container">
-    <form>
+    <form id="addCepa">
         <div class="form-group ">
           <label for="usr">Nombre:</label>
           <input type="text" class="form-control " id="name">
         </div>
          <div class="form-group ">
           <label for="usr">Descripcion:</label>
-          <input type="text" class="form-control " id="descripcion">
+             <textarea  type="textarea" class="form-control " id="descripcion"></textarea>
         </div>
 
         <div class="form-group">
@@ -66,14 +66,18 @@ include_once("util.php");
                 <option value="> 12">> 12</option>
               </select>
         </div>
-        <button type="button" id="add-cepa" onclick="addCepa;" class="btn btn-primary">ADD</button>
+        <button type="button" id="add-cepa"  class="btn btn-primary">ADD</button>
 
     </form>
+    <br/>
+Resultado: <span id="resultado">0</span>
 </div>
 
 <?php
 include("_footer.html");
 ?>
 <script type="text/javascript">
+
+    
     document.getElementById("add-cepa").onclick=addCepa;
 </script>
