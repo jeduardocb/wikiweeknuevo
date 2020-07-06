@@ -1,5 +1,5 @@
 function addCepa(){
-    var terpenos = [];
+    /*var terpenos = [];
     var porcentajes=[];
     let auxiliar;
     $('#checkterpenos input:checked').each(function() {
@@ -8,7 +8,17 @@ function addCepa(){
         porcentajes.push($('#'+auxiliar).val());
     });
 
-        var parametros = {
+        var archivos_nombre = [];
+        var archivos = $('#archivo').prop('files');
+        var archivos_file = [];
+
+        for (let index = 0; index < archivos.length; index++) {
+            archivos_nombre[index] = archivos[index].name;
+            archivos_file[index] = $("#archivo")[0].files[index];
+            console.log(archivos_file);
+        }*/
+
+        /*var parametros = {
                 "nombre" : $("#name").val(),
             "category" : $("#categoria").val(),//te arroga el id de la categoria
             "cbdmax" : $("#cbdmax").val(),
@@ -21,13 +31,18 @@ function addCepa(){
             "florecimiento" : $("#florecimiento").val(),
             "descripcion":$("#descripcion").val(),
             terpenos,
-            porcentajes
-            
-        };
+            porcentajes,
+            ////////// ENVIAR ARCHIVOS///////////////
+            "archivos_nombre": archivos_nombre,
+            "archivos_file": archivos_file
+        };*/
         $.ajax({
-                data:  parametros, //datos que se envian a traves de ajax
+            data: new FormData(this), //datos que se envian a traves de ajax
                 url:   'controlador_addCepa.php', //archivo que recibe la peticion
                 type:  'post', //método de envio
+                dataType: 'json',
+                contentType: false,
+                processData: false,
                 beforeSend: function () {
                         $("#resultado").html("Procesando, espere por favor...");
                 },
@@ -35,7 +50,6 @@ function addCepa(){
                         $("#resultado").html(response);
                 }
         });
-
 }
 function addTerpeno(){
     if(confirm("¿Estas seguro de agregar este nuevo Terpeno?")){
