@@ -98,34 +98,34 @@ function getCepas($idcategoria){
   //@param $columna_descripcion: Columna de una tabla con una descripción
   //@param $tabla: La tabla a consultar en la bd
   function crear_select($id, $columna_descripcion, $tabla) {
-    $conexion_bd = conectar_bd();  
+    $conion_bd = conectar_bd();  
       
       
     $resultado = '<select class="form-control" name="'.$tabla.'" id="'.$tabla.'"><option value="" disabled selected>Selecciona una opción</option>';
     
             
     $consulta = "SELECT $id  , $columna_descripcion  FROM $tabla";
-    $resultados = $conexion_bd->query($consulta);
+    $resultados = $conion_bd->query($consulta);
     while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
 
       $resultado .= '<option value="'.$row["$id"].'">'.$row["$columna_descripcion"].'</option>';
        
     }
         
-    desconectar_bd($conexion_bd);
+    desconectar_bd($conion_bd);
     $resultado .=  '</select>';
     return $resultado;
   }
    
   function getTerpenos() {
-    $conexion_bd = conectar_bd();  
+    $conion_bd = conectar_bd();  
       
       
     $resultado = '';
     
             
     $consulta = "select nombre,id_terpeno from terpenos";
-    $resultados = $conexion_bd->query($consulta);
+    $resultados = $conion_bd->query($consulta);
     while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
         $resultado .= '<div class="checkbox" id="checkterpenos">
       <label>
@@ -137,7 +137,7 @@ function getCepas($idcategoria){
        
     }
         
-    desconectar_bd($conexion_bd);
+    desconectar_bd($conion_bd);
     return $resultado;
   }
 
@@ -220,40 +220,6 @@ function addTerpenos($id_terpeno,$porcentaje){
     
     $dml = 'insert into weed_terpenos (id_weed,id_terpeno,porcentaje) values (?,?,?);';
     return insertIntoDb($dml,$weed,$id_terpeno,$porcentaje);
-}
-
-function guardarArchivo($archivo){
-  //Como el elemento es un arreglos utilizamos foreach para extraer todos los valores
-  echo "antes foreach";
-  foreach ($archivo["archivo"]['tmp_name'] as $key => $tmp_name) {
-    //Validamos que el archivo exista
-    echo "dentro foreach";
-    if ($archivo["archivo"]["name"][$key]) {
-      echo "antes if";
-      $filename = $archivo["archivo"]["name"][$key]; //Obtenemos el nombre original del archivo
-      $source = $archivo["archivo"]["tmp_name"][$key]; //Obtenemos un nombre temporal del archivo
-
-      $directorio = 'images/'; //Declaramos un  variable con la ruta donde guardaremos los archivos
-
-      //Validamos si la ruta de destino existe, en caso de no existir la creamos
-      if (!file_exists($directorio)) {
-        mkdir($directorio, 0777) or die("No se puede crear el directorio de extracci&oacute;n");
-      }
-
-      $dir = opendir($directorio); //Abrimos el directorio de destino
-      $target_path = $directorio . '/' . $filename; //Indicamos la ruta de destino, así como el nombre del archivo
-
-      //Movemos y validamos que el archivo se haya cargado correctamente
-      //El primer campo es el origen y el segundo el destino
-      if (move_uploaded_file($source, $target_path)) {
-        echo "copiado";
-        echo "El archivo $filename se ha almacenado en forma exitosa.<br>";
-      } else {
-        echo "Ha ocurrido un error, por favor inténtelo de nuevo.<br>";
-      }
-      closedir($dir); //Cerramos el directorio de destino
-    }
-  }
 }
 
 //funcion para agregar nuevos terpenos que no existen
@@ -427,6 +393,122 @@ function getCategoria($idweed)
   }
 
   desconectar_bd($con);
+}
+
+function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $rendimiento, $florecimiento,$id_categoria, $nombre, $descripcion, $terpenos, $porcentajes, $nombres_arch, $archivos){
+
+  $servername = "mysql1008.mochahost.com";
+  $username = "dawbdorg_1704641";
+  $password = "1704641";
+  $dbname = "dawbdorg_A01704641";
+  $con = new mysqli($servername, $username, $password, $dbname);
+  if ($con->connect_errno) {
+    printf("Conexión fallida: %s\n", $con->connect_error);
+    exit();
+  }
+
+  //$con = conectar_bd();
+
+  $auxiliar = 0;
+  $count = count($porcentajes);
+
+  
+  try {
+    $con->autocommit(false);
+    $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+    echo "entra al try<br>";
+      if (!($con->query("INSERT INTO cbd (min,max) VALUES($cbdmin,$cbdmax)"))) {
+      throw new Exception("no jala cbd");
+      }
+      
+      echo "bloque cbd<br>";
+      if (!(mysqli_fetch_assoc($con->query("SELECT id_cbd FROM cbd ORDER BY id_cbd DESC LIMIT 1")))) {
+        throw new Exception("no jala id_cbd");
+      }else{
+        $id_cbd = mysqli_fetch_assoc($con->query("SELECT id_cbd FROM cbd ORDER BY id_cbd DESC LIMIT 1"));
+        $id_cbd = $id_cbd["id_cbd"];
+      }
+      
+      if (!($con->query("INSERT INTO thc (min,max) VALUES($thcmin,$thcmax)"))) {
+        throw new Exception("no jala thc");
+      }
+
+    if (!(mysqli_fetch_assoc($con->query("SELECT id_thc FROM thc ORDER BY id_thc DESC LIMIT 1")))) {
+      throw new Exception("no jala id_thc");
+    } else {
+      $id_thc = mysqli_fetch_assoc($con->query("SELECT id_thc FROM thc ORDER BY id_thc DESC LIMIT 1"));
+      $id_thc = $id_thc["id_thc"];
+    }
+
+    echo "bloque thc<br>";
+
+    if (!($con->query("INSERT INTO crecimiento (dificultad,altura,rendimiento,florecimiento) VALUES ('$dificultad','$altura','$rendimiento','$florecimiento')"))) {
+      throw new Exception("no jala crecimiento");
+    }
+
+    if (!(mysqli_fetch_assoc($con->query("SELECT id_crecimiento FROM crecimiento ORDER BY id_crecimiento DESC LIMIT 1")))) {
+      throw new Exception("no jala id_crecimiento");
+    } else {
+      $id_crecimiento = mysqli_fetch_assoc($con->query("SELECT id_crecimiento FROM crecimiento ORDER BY id_crecimiento DESC LIMIT 1"));
+      $id_crecimiento = $id_crecimiento["id_crecimiento"];
+    }
+
+    echo "bloque crecimiento<br>";
+
+    if (!($con->query("INSERT INTO weed (id_categoria,id_crecimiento,id_cbd,id_thc,nombre,descripcion) values ($id_categoria,$id_crecimiento,$id_cbd,$id_thc,'$nombre','$descripcion')"))) {
+      throw new Exception("no jala weed");
+    }
+
+    if (!(mysqli_fetch_assoc($con->query("SELECT id FROM weed ORDER BY id DESC LIMIT 1")))) {
+      throw new Exception("no jala id_weed");
+    } else {
+      $id_weed = mysqli_fetch_assoc($con->query("SELECT id FROM weed ORDER BY id DESC LIMIT 1"));
+      $id_weed = $id_weed["id"];
+    }
+
+    echo "bloque weed<br>";
+
+      for ($i = 0; $i < $count; $i++) {
+        if ($porcentajes[$i] != '') {
+            $ter = $terpenos[$auxiliar];
+            $por = $porcentajes[$i];
+            if (!($con->query("INSERT INTO weed_terpenos (id_weed, id_terpeno, porcentaje) values ($id_weed, $ter, $por)"))) {
+              throw new Exception("no jala weed_terpenos");
+            }
+            $auxiliar++;
+        }
+      }
+
+    echo "bloque weed_terpenos<br>";
+      for ($i=0; $i < count($nombres_arch); $i++) {
+        $newFilePath = "images/cepas/" . $nombres_arch[$i];
+        // Check if file already exists
+        if (file_exists($newFilePath)) {
+          echo "Sorry, file already exists.";
+          throw new Exception("no jala ya existe la foto");
+        }
+        echo $archivos['upload']['name'][$i];
+        if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
+          if (!($con->query("INSERT INTO fotos (id_weed, nombre) values ($id_weed, '$nombres_arch[$i]')"))) {
+            throw new Exception("no jala nombre foto bd");
+          }
+        }else{
+          throw new Exception("no jala subir fotos");
+        }
+      }
+    echo "bloque fotos<br>";
+      echo $con->commit() . "<br>";
+     echo $con->autocommit(true)."<br>";
+      
+      $con->close();
+    echo "fin commit<br>";
+    } catch (Exception $e) {
+      $con->rollback();
+      echo 'Something fails: ',  $e->getMessage(), "\n";
+    echo "errror, falio ferga<br>";
+  }
+
 }
 
 
