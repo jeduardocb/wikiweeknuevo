@@ -65,10 +65,11 @@ function getCepas($idcategoria){
 	if ($result->num_rows > 0) {
 		// output data of each row
 		while ($row = $result->fetch_assoc()) {
+			$idweed = $row["wid"];
 			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
 			echo '<div class="col-md-4 text-center animate-box">
 					<div class="product">
-					<form id="formulario" action="single.php" method="get">
+					<form id="'.$row["wid"].'" action="single.php" method="get">
 						<input type="hidden" name="idweed" value="' . $row["wid"] . '">
 						
 							<div class="product-grid" style="background-image:url(images/product-1.jpg);">
@@ -79,7 +80,7 @@ function getCepas($idcategoria){
 								</div>
 							</div>
 							<div class="desc">
-								<h3><a id="nombre"  href="javascript:{}" onclick="document.getElementById("formulario").submit();">'.$row["nombre"]. '</a></h3>
+								<h3><a id="nombre" href="javascript:{}" onclick="document.getElementById('. "'$idweed'".').submit();">'.$row["nombre"]. '</a></h3>
 							</div>
 						</form>
              		</div>
@@ -126,9 +127,11 @@ function getCepas($idcategoria){
     $consulta = "select nombre,id_terpeno from terpenos";
     $resultados = $conexion_bd->query($consulta);
     while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
-        $resultado .='<div class="checkbox" id="checkterpenos">
-      <label><input class="terpenos" type="checkbox" idt="'.$row["id_terpeno"].'"  value="'.$row["id_terpeno"].'">' .$row["nombre"].'</label>
-      <input type="number" class="form-control" id="'.$row["id_terpeno"].'" placeholder="5">
+        $resultado .= '<div class="checkbox" id="checkterpenos">
+      <label>
+        <input class="terpenos" type="checkbox" name="terpenos[]" idt="'.$row["id_terpeno"].'"  value="'.$row["id_terpeno"].'">' .$row["nombre"]. '
+      </label>
+      <input type="number" name="porcentajes[]" class="form-control" id="'.$row["id_terpeno"].'" placeholder="5">
     </div>';
      
        
@@ -218,6 +221,41 @@ function addTerpenos($id_terpeno,$porcentaje){
     $dml = 'insert into weed_terpenos (id_weed,id_terpeno,porcentaje) values (?,?,?);';
     return insertIntoDb($dml,$weed,$id_terpeno,$porcentaje);
 }
+
+function guardarArchivo($archivo){
+  //Como el elemento es un arreglos utilizamos foreach para extraer todos los valores
+  echo "antes foreach";
+  foreach ($archivo["archivo"]['tmp_name'] as $key => $tmp_name) {
+    //Validamos que el archivo exista
+    echo "dentro foreach";
+    if ($archivo["archivo"]["name"][$key]) {
+      echo "antes if";
+      $filename = $archivo["archivo"]["name"][$key]; //Obtenemos el nombre original del archivo
+      $source = $archivo["archivo"]["tmp_name"][$key]; //Obtenemos un nombre temporal del archivo
+
+      $directorio = 'images/'; //Declaramos un  variable con la ruta donde guardaremos los archivos
+
+      //Validamos si la ruta de destino existe, en caso de no existir la creamos
+      if (!file_exists($directorio)) {
+        mkdir($directorio, 0777) or die("No se puede crear el directorio de extracci&oacute;n");
+      }
+
+      $dir = opendir($directorio); //Abrimos el directorio de destino
+      $target_path = $directorio . '/' . $filename; //Indicamos la ruta de destino, así como el nombre del archivo
+
+      //Movemos y validamos que el archivo se haya cargado correctamente
+      //El primer campo es el origen y el segundo el destino
+      if (move_uploaded_file($source, $target_path)) {
+        echo "copiado";
+        echo "El archivo $filename se ha almacenado en forma exitosa.<br>";
+      } else {
+        echo "Ha ocurrido un error, por favor inténtelo de nuevo.<br>";
+      }
+      closedir($dir); //Cerramos el directorio de destino
+    }
+  }
+}
+
 //funcion para agregar nuevos terpenos que no existen
 function agregarTerpeno($terpeno){
     $dml = 'insert into terpenos (nombre) values (?);';
@@ -227,4 +265,169 @@ function agregarCategoria($categoria){
     $dml = 'insert into categoria (nombre) values (?);';
     return insertIntoDb($dml,$categoria);
 }
+
+function getProgressBar($idweed)
+{
+
+  $con = conectar_bd();
+  $contador = 0;
+
+  $sql = "SELECT terpenos.id_terpeno, terpenos.nombre, weed_terpenos.porcentaje
+  FROM terpenos
+  INNER JOIN weed_terpenos
+  ON terpenos.id_terpeno = weed_terpenos.id_terpeno WHERE weed_terpenos.id_weed = $idweed
+  ORDER BY porcentaje DESC";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+
+      if ($contador == 0) {
+        echo '<div class="progress">
+                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="' . $row["porcentaje"] . '"
+                  aria-valuemin="0" aria-valuemax="100" style="width:' . $row["porcentaje"] . '%">
+                    ' . $row["nombre"] . '
+                  </div>
+                </div>';
+                
+      }elseif ($contador == 1) {
+        echo '<div class="progress">
+                  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="' . $row["porcentaje"] . '"
+                  aria-valuemin="0" aria-valuemax="100" style="width:' . $row["porcentaje"] . '%">
+                    ' . $row["nombre"] . '
+                  </div>
+                </div>';
+        } elseif ($contador == 2) {
+        echo '<div class="progress">
+                  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="' . $row["porcentaje"] . '"
+                  aria-valuemin="0" aria-valuemax="100" style="width:' . $row["porcentaje"] . '%">
+                    ' . $row["nombre"] . '
+                  </div>
+                </div>';
+          }
+      $contador++;
+    }
+
+  } else {
+    echo "0 results";
+  }
+
+  desconectar_bd($con);
+}
+
+function nombre($idweed)
+{
+  $con = conectar_bd();
+
+
+  $sql = "SELECT nombre FROM weed WHERE id=$idweed";
+  $result = $con->query($sql);
+  $nombre = mysqli_fetch_assoc($result);
+
+  if ($result->num_rows > 0) {
+    echo $nombre["nombre"];
+  }
+
+  desconectar_bd($con);
+}
+
+function descripcion($idweed)
+{
+  $con = conectar_bd();
+
+
+  $sql = "SELECT descripcion FROM weed WHERE id=$idweed";
+  $result = $con->query($sql);
+  $descripcion = mysqli_fetch_assoc($result);
+
+  if ($result->num_rows > 0) {
+    echo $descripcion["descripcion"];
+  }
+
+  desconectar_bd($con);
+}
+
+function thc($idweed)
+{
+  $con = conectar_bd();
+
+
+  $sql = "SELECT weed.id AS idweed, thc.id_thc, thc.max, thc.min
+    FROM weed
+    INNER JOIN thc
+    ON weed.id_thc = thc.id_thc AND id=$idweed";
+  $result = $con->query($sql);
+  $thc = mysqli_fetch_assoc($result);
+
+  if ($result->num_rows > 0) {
+    if ($thc["max"] != 0) {
+      echo $thc["max"] . " - ";
+      echo $thc["min"];
+    } else {
+      if ($thc["min"] < 1) {
+        echo "<1";
+      } else {
+        echo $thc["min"];
+      }
+    }
+  }
+
+  desconectar_bd($con);
+}
+
+function cbd($idweed)
+{
+  $con = conectar_bd();
+
+
+  $sql = "SELECT weed.id AS idweed, cbd.id_cbd, cbd.max, cbd.min
+    FROM weed
+    INNER JOIN cbd
+    ON weed.id_thc = cbd.id_cbd AND id=$idweed";
+  $result = $con->query($sql);
+  $cbd = mysqli_fetch_assoc($result);
+
+  if ($result->num_rows > 0) {
+
+    if ($cbd["max"] != 0) {
+      echo $cbd["max"] . " ";
+      echo $cbd["min"];
+    } else {
+      if ($cbd["min"] < 1) {
+        echo "<1";
+      }else{
+        echo $cbd["min"];
+      }
+      
+    }
+  }
+
+  desconectar_bd($con);
+}
+
+function getCategoria($idweed)
+{
+  $con = conectar_bd();
+
+
+  $sql = "SELECT categoria.nombre, weed.id
+  FROM categoria
+  INNER JOIN weed
+  ON categoria.id = weed.id
+  WHERE weed.id=$idweed";
+  $result = $con->query($sql);
+  $categoria = mysqli_fetch_assoc($result);
+
+  $result = $con->query($sql);
+  $categoria = mysqli_fetch_assoc($result);
+
+  if ($result->num_rows > 0) {
+    echo $categoria["nombre"];
+  }
+
+  desconectar_bd($con);
+}
+
+
 ?> 
