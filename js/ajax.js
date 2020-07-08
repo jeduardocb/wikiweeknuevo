@@ -60,7 +60,8 @@ function addTerpeno(){
         });
     }//if
 
-}function addCategoria(){
+}
+function addCategoria(){
     if(confirm("¿Estas seguro de agregar esta nueva Categoria?")){
             $.post("controlador_addCategoria.php", {
             categoria : $("#nuevaCategoria").val(),

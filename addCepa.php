@@ -68,7 +68,7 @@ include_once("util.php");
     </div>
     <div class="form-group">
       <label class="col-sm-2 control-label">Archivos</label>
-      <input type="file" class="form-control" id="fileToUpload" name="fileToUpload[]" multiple>
+      <input type="file" class="form-control" id="upload" name="upload[]" multiple>
     </div>
     <input type="submit" value="Upload Image" name="submit">
 
