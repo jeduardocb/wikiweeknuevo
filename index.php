@@ -72,36 +72,14 @@ include_once("util.php");
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div id="Carousel" class="carousel slide">
 
-					<ol class="carousel-indicators">
-						<li data-target="#Carousel" data-slide-to="0" class="active"></li>
-						<li data-target="#Carousel" data-slide-to="1"></li>
-						<li data-target="#Carousel" data-slide-to="2"></li>
-					</ol>
-
-					<!-- Carousel items -->
-					<div class="carousel-inner">
-
-						<div class="item active">
 							<div class="row">
 								<?= getCategorias();  ?>
 							</div>
-							<!--.row-->
-						</div>
-						<!--.item-->
-					</div>
-					<!--.row-->
-				</div>
 				<!--.item-->
 
 			</div>
 			<!--.carousel-inner-->
-		</div>
-		<!--.carousel-inner-->
-		<div class="control-box pager">
-			<a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a>
-			<a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
 		</div>
 	</div>
 	<!--.Carousel-->
