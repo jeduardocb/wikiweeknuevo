@@ -4,6 +4,7 @@ include("_navbar.html");
 include_once("util.php");
 ?>
 <div class="container">
+    <div class="alert alert-success text-center" id="mensaje" hidden></div>
     <form>
       <div class="form-group">
         <label for="exampleInputEmail1">Nombre del Nuevo Terpeno:</label>

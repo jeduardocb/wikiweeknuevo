@@ -18,26 +18,8 @@ $idweed = htmlspecialchars($_GET['idweed']);
 			<div class="card">
 				<div class="container-fliud">
 					<div class="wrapper row">
-						<div class="preview col-md-6">
-
-							<div class="preview-pic tab-content">
-								<div class="tab-pane active" id="pic-1"><img src="images/bubba.png" width="500" height="500" />
-								</div>
-								<div class="tab-pane" id="pic-2"><img src="http://placekitten.com/400/252" /></div>
-								<div class="tab-pane" id="pic-3"><img src="http://placekitten.com/400/252" /></div>
-								<div class="tab-pane" id="pic-4"><img src="http://placekitten.com/400/252" /></div>
-								<div class="tab-pane" id="pic-5"><img src="http://placekitten.com/400/252" /></div>
-							</div>
-							<ul class="preview-thumbnail nav nav-tabs">
-								<li class="active">
-									<a data-target="#pic-1" data-toggle="tab">
-										<img src="http://placekitten.com/200/126" />
-									</a>
-								</li>
-								<li><a data-target="#pic-2" data-toggle="tab"><img src="http://placekitten.com/200/126" /></a>
-								</li>
-							</ul>
-
+						<div class="preview col-md-6 text-center">
+                            <?= getImagenes($idweed) ?>
 						</div>
 						<div class="details col-md-6">
 							<div class="row">
@@ -80,7 +62,7 @@ $idweed = htmlspecialchars($_GET['idweed']);
 									</h4>
 								</div>
 							</div>
-							</h4>
+							
 							<?= getProgressBar($idweed); ?>
 							<div class="row reviews">
 								<div class="col-md-12 review-title">

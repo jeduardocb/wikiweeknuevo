@@ -56,7 +56,21 @@ function addTerpeno(){
             $.post("controlador_addTerpeno.php", {
             terpeno : $("#nuevoTerpeno").val(),
         }).done(function (data) {
-            console.log(data)  ;  
+            document.getElementById("mensaje").removeAttribute("hidden");   
+            if(parseInt(data)!=0  ){
+                if(Number.isNaN(parseInt(data))){
+                    document.querySelector('.alert').classList.remove('alert-success');
+                    document.querySelector('.alert').classList.add('alert-danger');
+                     $("#mensaje").html("Se produjo un error al agregar el Terpeno");
+                    return;
+                }
+                $("#mensaje").html("Se ha insertado exitosamente el Terpeno");
+            }else{
+                document.querySelector('.alert').classList.remove('alert-success');
+                document.querySelector('.alert').classList.add('alert-danger');
+                $("#mensaje").html("Se produjo un error al agregar el Terpeno");
+            }
+            
         });
     }//if
 
@@ -66,7 +80,20 @@ function addCategoria(){
             $.post("controlador_addCategoria.php", {
             categoria : $("#nuevaCategoria").val(),
         }).done(function (data) {
-            console.log(data)  ;  
+            document.getElementById("mensaje").removeAttribute("hidden");   
+            if(parseInt(data)!=0  ){
+                if(Number.isNaN(parseInt(data))){
+                    document.querySelector('.alert').classList.remove('alert-success');
+                    document.querySelector('.alert').classList.add('alert-danger');
+                     $("#mensaje").html("Se produjo un error al agregar la Categoria");
+                    return;
+                }
+                $("#mensaje").html("Se ha insertado exitosamente la Categoria");
+            }else{
+                document.querySelector('.alert').classList.remove('alert-success');
+                document.querySelector('.alert').classList.add('alert-danger');
+                $("#mensaje").html("Se produjo un error al agregar la Categoria");
+            } 
         });
     }//if
 
