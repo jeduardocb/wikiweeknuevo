@@ -37,9 +37,9 @@ function getCategorias(){
 			echo '<div class="col-md-3">
 					<form action="catalogo.php" method="post">
 						<input type="hidden" name="idcategoria" value="'.$row["id"].'">
-										<input type="image" src="http://placehold.it/250x250" alt="Submit Form" style="max-width:100%;"/>
+                                  <input type="image" src="http://placehold.it/250x250" alt="Submit Form" style="max-width:100%;"/>
 									<div class="caption">
-										<h4>'.$row["nombre"]. '</h4>
+										<h4>'.$row["nombre"].'</h4>
 										<p>Nullam Condimentum Nibh Etiam Sem</p>
 									</div>
 						</form>
@@ -131,7 +131,7 @@ function getCepas($idcategoria){
       <label>
         <input class="terpenos" type="checkbox" name="terpenos[]" idt="'.$row["id_terpeno"].'"  value="'.$row["id_terpeno"].'">' .$row["nombre"]. '
       </label>
-      <input type="number" name="porcentajes[]" class="form-control" id="'.$row["id_terpeno"].'" placeholder="5">
+      <input type="number" name="porcentajes[]" class="form-control" id="'.$row["id_terpeno"].'" placeholder="5" min="1" max="100">
     </div>';
      
        
@@ -325,11 +325,10 @@ function thc($idweed)
     ON weed.id_thc = thc.id_thc AND id=$idweed";
   $result = $con->query($sql);
   $thc = mysqli_fetch_assoc($result);
-
   if ($result->num_rows > 0) {
     if ($thc["max"] != 0) {
-      echo $thc["max"] . " - ";
-      echo $thc["min"];
+      echo $thc["min"] . " - ";
+      echo $thc["max"];
     } else {
       if ($thc["min"] < 1) {
         echo "<1";
@@ -350,15 +349,14 @@ function cbd($idweed)
   $sql = "SELECT weed.id AS idweed, cbd.id_cbd, cbd.max, cbd.min
     FROM weed
     INNER JOIN cbd
-    ON weed.id_thc = cbd.id_cbd AND id=$idweed";
+    ON weed.id_cbd = cbd.id_cbd AND id=$idweed";
   $result = $con->query($sql);
   $cbd = mysqli_fetch_assoc($result);
-
   if ($result->num_rows > 0) {
 
     if ($cbd["max"] != 0) {
-      echo $cbd["max"] . " ";
-      echo $cbd["min"];
+      echo $cbd["min"] . " ";
+      echo $cbd["max"];
     } else {
       if ($cbd["min"] < 1) {
         echo "<1";
@@ -397,6 +395,12 @@ function getCategoria($idweed)
 
 function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $rendimiento, $florecimiento,$id_categoria, $nombre, $descripcion, $terpenos, $porcentajes, $nombres_arch, $archivos){
 
+    if($cbdmax == ""){
+        $cbdmax=0;
+    }
+    if($thcmax="" == ""){
+        $thcmax=0;
+    }
   $servername = "mysql1008.mochahost.com";
   $username = "dawbdorg_1704641";
   $password = "1704641";
@@ -502,14 +506,62 @@ function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $r
      echo $con->autocommit(true)."<br>";
       
       $con->close();
+      $_SESSION["mensaje"]=true;
+      header('location: ./addCepa.php');
     echo "fin commit<br>";
     } catch (Exception $e) {
       $con->rollback();
-      echo 'Something fails: ',  $e->getMessage(), "\n";
-    echo "errror, falio ferga<br>";
+      $_SESSION["mensaje"]=false;
+      header('location: ./addCepa.php');
+      //echo 'Something fails: ',  $e->getMessage(), "\n";
+    //echo "errror, falio ferga<br>";
   }
 
 }
 
+function getImagenes($idweed)
+{
 
+    $con = conectar_bd();
+    $bandera = true;
+    $contador = 0;
+    $sql = "SELECT nombre FROM fotos where id_weed=$idweed";
+    $result = $con->query($sql);
+    $cadena1 = '<div class="preview-pic tab-content">';
+    $cadena2 = '<ul class="preview-thumbnail nav nav-tabs" style="margin-left:15px;">';
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+        if($bandera){
+            $cadena1.= ' <div class="tab-pane active" id="pic-'.$contador.'"><img src="images/cepas/' . $row["nombre"] . '" width="440" height="440" />
+								</div>';
+        }else{
+            $cadena1.= '<div class="tab-pane" id="pic-'.$contador.'"><img src="images/cepas/' . $row["nombre"] . '"  width="440" height="440"/></div>';
+        }
+        if($bandera){
+            $cadena2.= ' <li class="active">
+									<a data-target="#pic-'.$contador.'" data-toggle="tab">
+										<img img src="images/cepas/' . $row["nombre"] . '" width="122" height="122 " />
+									</a>
+								</li>';
+            $bandera=false;
+        }else{
+            $cadena2.= '<li><a data-target="#pic-'.$contador.'" data-toggle="tab"><img src="images/cepas/' . $row["nombre"] . '" width="122" height="122" /></a>
+								</li>';
+        }
+        $contador++;
+        	
+
+  } 
+
+ 
+  }else{
+      echo "No hay imagenes";
+  }
+    $cadena1.='</div>';
+    $cadena2.='</ul>';
+    return $cadena1.$cadena2;
+
+ desconectar_bd($con);
+}
 ?> 
