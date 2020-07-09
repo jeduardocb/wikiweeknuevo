@@ -33,13 +33,14 @@ function getCategorias(){
 	if ($result->num_rows > 0) {
 		// output data of each row
 		while ($row = $result->fetch_assoc()) {
+      $id = $row["id"];
 			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
 			echo '<div class="col-md-3">
-					<form action="catalogo.php" method="post">
-						<input type="hidden" name="idcategoria" value="'.$row["id"].'">
+					<form id="'.$row["id"].'" action="catalogo.php" method="post">
+						<input type="hidden" name="idcategoria" value="'.$row["id"]. '">
                                   <input type="image" src="http://placehold.it/250x250" alt="Submit Form" style="max-width:100%;"/>
 									<div class="caption">
-										<h4>'.$row["nombre"].'</h4>
+										<h4><a href="javascript:{}" onclick="document.getElementById(' . "'$id'" . ').submit();">'.$row["nombre"].'</a></h4>
 										<p>Nullam Condimentum Nibh Etiam Sem</p>
 									</div>
 						</form>
