@@ -2,6 +2,20 @@
 include("_header.html");
 include("_navbar.html");
 include_once("util.php");
+
+session_start();
+if (isset($_SESSION["mensaje"])) {
+  if ($_SESSION["mensaje"] == true) {
+    echo '<div class="alert alert-success text-center">
+                    <strong>La Categoria se ha subido correctamente</strong> 
+                  </div>';
+  } else {
+    echo '<div class="alert alert-danger text-center">
+                    <strong>Hubo un error al subir la Categoria</strong> 
+                </div>';
+  }
+  $_SESSION["mensaje"] = null;
+}
 ?>
 <div class="container">
     <div class="alert alert-success text-center" id="mensaje" hidden></div>
