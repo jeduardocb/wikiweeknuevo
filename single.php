@@ -19,7 +19,7 @@ $idweed = htmlspecialchars($_GET['idweed']);
 				<div class="container-fliud">
 					<div class="wrapper row">
 						<div class="preview col-md-6 text-center">
-                            <?= getImagenes($idweed) ?>
+                            <?= getImagenesWeed($idweed) ?>
 						</div>
 						<div class="details col-md-6">
 							<div class="row">
@@ -36,9 +36,9 @@ $idweed = htmlspecialchars($_GET['idweed']);
 							</div>
 
 							<hr>
-							<h1 class="product-title text-center"><?php nombre($idweed); ?></h1>
+							<h1 class="product-title text-center"><?php getNombreWeed($idweed); ?></h1>
 
-							<p class="product-description text-justify"><?php descripcion($idweed); ?></p>
+							<p class="product-description text-justify"><?php getDescripcionWeed($idweed); ?></p>
 							<div class="row">
 								<div class="col-md-12 text-center">
 									<hr>
@@ -49,7 +49,7 @@ $idweed = htmlspecialchars($_GET['idweed']);
 									<h4>
 										<i class="fa fa-cannabis verde-icono">
 										</i> THC: <span class="verde-icono">
-											<?php thc($idweed); ?>%
+											<?php getThc($idweed); ?>%
 										</span>
 									</h4>
 								</div>
@@ -57,7 +57,7 @@ $idweed = htmlspecialchars($_GET['idweed']);
 									<h4>
 										<i class="fas fa-seedling verde-icono"></i>
 										CBD: <span class="verde-icono">
-											<?php cbd($idweed); ?>%
+											<?php getCbd($idweed); ?>%
 										</span>
 									</h4>
 								</div>
