@@ -38,7 +38,7 @@ function getCategorias(){
 			echo '<div class="col-md-3">
 					<form id="'.$row["id"].'" action="catalogo.php" method="post">
 						<input type="hidden" name="idcategoria" value="'.$row["id"]. '">
-                                  <input type="image" src="http://placehold.it/250x250" alt="Submit Form" style="max-width:100%;"/>
+                                  <input type="image" src="images/categoria/' .$row["nombre_foto"]. '" alt="Submit Form" style="max-width:100%;" height="250" width="250"/>
 									<div class="caption">
 										<h4><a href="javascript:{}" onclick="document.getElementById(' . "'$id'" . ').submit();">'.$row["nombre"].'</a></h4>
 										<p>Nullam Condimentum Nibh Etiam Sem</p>
@@ -181,61 +181,13 @@ function sqlqry($qry){
     desconectar_bd($con);
     return $result;
 }
-function addCbd($cbdmin,$cbdmax) {
-    //Prepara la consulta
-    $dml = 'insert into cbd (min,max) values(?,?) ';
-    return insertIntoDb($dml,$cbdmin,$cbdmax);
-  }
-function addThc($thcmin,$thcmax) {
-    //Prepara la consulta
-    $dml = 'insert into thc (min,max) values(?,?) ';
-    return insertIntoDb($dml,$thcmin,$thcmax);
-  }
-function addCrecimiento($dificultad,$altura,$rendimiento,$florecimiento) {
-    //Prepara la consulta
-    $dml = 'insert into crecimiento (dificultad,altura,rendimiento,florecimiento) values (?,?,?,?);';
-    return insertIntoDb($dml,$dificultad,$altura,$rendimiento,$florecimiento);
-  }
-function addCepa($category,$nombre,$descripcion) {
-    $sql= "select id_crecimiento from crecimiento ORDER BY id_crecimiento DESC LIMIT 1;";
-    $crecimiento=mysqli_fetch_assoc(sqlqry($sql));
-    $crecimiento=$crecimiento["id_crecimiento"];
-    
-    $sql= "select id_cbd from cbd ORDER BY id_cbd DESC LIMIT 1;";
-    $cbd=mysqli_fetch_assoc(sqlqry($sql));
-    $cbd=$cbd["id_cbd"];
-    
-    $sql= "select id_thc from thc ORDER BY id_thc DESC LIMIT 1;";
-    $thc=mysqli_fetch_assoc(sqlqry($sql));
-    $thc=$thc["id_thc"];
-    
-    $dml = 'insert into weed (id_categoria,id_crecimiento,id_cbd,id_thc,nombre,descripcion) values (?,?,?,?,?,?);';
-    return insertIntoDb($dml,$category,$crecimiento,$cbd,$thc,$nombre,$descripcion);
-  }
-//funcion para agregar los terpenos de la nueva cepa
-function addTerpenos($id_terpeno,$porcentaje){
-    $sql= "select id from weed ORDER BY id DESC LIMIT 1;";
-    $weed=mysqli_fetch_assoc(sqlqry($sql));
-    $weed=$weed["id"];
-    
-    
-    $dml = 'insert into weed_terpenos (id_weed,id_terpeno,porcentaje) values (?,?,?);';
-    return insertIntoDb($dml,$weed,$id_terpeno,$porcentaje);
-}
-
 //funcion para agregar nuevos terpenos que no existen
 function agregarTerpeno($terpeno){
     $dml = 'insert into terpenos (nombre) values (?);';
     return insertIntoDb($dml,$terpeno);
 }
-function agregarCategoria($categoria){
-    $dml = 'insert into categoria (nombre) values (?);';
-    return insertIntoDb($dml,$categoria);
-}
-
 function getProgressBar($idweed)
 {
-
   $con = conectar_bd();
   $contador = 0;
 
@@ -283,7 +235,7 @@ function getProgressBar($idweed)
   desconectar_bd($con);
 }
 
-function nombre($idweed)
+function getNombreWeed($idweed)
 {
   $con = conectar_bd();
 
@@ -299,7 +251,7 @@ function nombre($idweed)
   desconectar_bd($con);
 }
 
-function descripcion($idweed)
+function getDescripcionWeed($idweed)
 {
   $con = conectar_bd();
 
@@ -315,7 +267,7 @@ function descripcion($idweed)
   desconectar_bd($con);
 }
 
-function thc($idweed)
+function getThc($idweed)
 {
   $con = conectar_bd();
 
@@ -342,7 +294,7 @@ function thc($idweed)
   desconectar_bd($con);
 }
 
-function cbd($idweed)
+function getCbd($idweed)
 {
   $con = conectar_bd();
 
@@ -402,22 +354,14 @@ function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $r
     if($thcmax="" == ""){
         $thcmax=0;
     }
-  $servername = "mysql1008.mochahost.com";
-  $username = "dawbdorg_1704641";
-  $password = "1704641";
-  $dbname = "dawbdorg_A01704641";
-  $con = new mysqli($servername, $username, $password, $dbname);
+     $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
   if ($con->connect_errno) {
     printf("Conexión fallida: %s\n", $con->connect_error);
     exit();
   }
-
-  //$con = conectar_bd();
-
   $auxiliar = 0;
   $count = count($porcentajes);
-
-  
+    
   try {
     $con->autocommit(false);
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
@@ -520,7 +464,7 @@ function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $r
 
 }
 
-function getImagenes($idweed)
+function getImagenesWeed($idweed)
 {
 
     $con = conectar_bd();
@@ -565,4 +509,47 @@ function getImagenes($idweed)
 
  desconectar_bd($con);
 }
+function agregarCategoria($categoria,$nombre_foto,$archivo,$target_file){
+  $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
+  if ($con->connect_errno) {
+    printf("Conexión fallida: %s\n", $con->connect_error);
+    exit();
+  }
+  try {
+    $con->autocommit(false);
+    $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+    echo "entra al try<br>";
+      if (!($con->query("INSERT INTO categoria (nombre,nombre_foto) VALUES ('$categoria' ,'$nombre_foto')"))) {
+        throw new Exception("No se pudo insertar la categoria");
+      }
+     
+      
+
+      if (move_uploaded_file($archivo["upload"]["tmp_name"], $target_file)) {
+        echo "The file ". basename( $archivo["upload"]["name"]). " has been uploaded.";
+      } else {
+          throw new Exception("Sorry, there was an error uploading your file.");
+      }
+    
+      
+      
+     $con->commit() . "<br>";
+      $con->autocommit(true)."<br>";
+      
+      $con->close();
+      $_SESSION["mensaje"]=true;
+      header('location: ./addCategoria.php');
+      echo "fin commit<br>";
+    } catch (Exception $e) {
+      $con->rollback();
+      $_SESSION["mensaje"]=false;
+      header('location: ./addCategoria.php');
+      echo 'Something fails: ',  $e->getMessage(), "\n";
+    //echo "errror, falio ferga<br>";
+  }
+
+}
+
+
 ?> 

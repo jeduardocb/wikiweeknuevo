@@ -3,7 +3,6 @@ include("_header.html");
 include("_navbar.html");
 include_once("util.php");
 session_start();
-$mensaje;
 
 if(isset($_SESSION["mensaje"])){
     if($_SESSION["mensaje"] == true){
