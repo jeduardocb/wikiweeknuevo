@@ -4,9 +4,7 @@ include("_navbar.html");
 include_once("util.php");
 
 $idcategoria = htmlspecialchars($_POST['idcategoria']);
-
 ?>
-
 <aside id="fh5co-hero" class="js-fullheight">
     <div class="flexslider js-fullheight">
         <ul class="slides">
@@ -87,47 +85,8 @@ $idcategoria = htmlspecialchars($_POST['idcategoria']);
         <div class="row">
             <?= getCepas($idcategoria); ?>
         </div>
-        <!--<div class="row">
-
-            <div class="col-md-4 text-center animate-box">
-                <div class="product">
-                    <div class="product-grid" style="background-image:url(images/product-5.jpg);">
-                        <div class="inner">
-                            <p>
-                                <a href="single.php" class="icon"><i class="icon-shopping-cart"></i></a>
-                                <a href="single.php" class="icon"><i class="icon-eye"></i></a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="desc">
-                        <h3><a href="single.php">Earing Wireless</a></h3>
-                        <span class="price">$100</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center animate-box">
-                <div class="product">
-                    <div class="product-grid" style="background-image:url(images/product-6.jpg);">
-                        <div class="inner">
-                            <p>
-                                <a href="single.php" class="icon"><i class="icon-shopping-cart"></i></a>
-                                <a href="single.php" class="icon"><i class="icon-eye"></i></a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="desc">
-                        <h3><a href="single.php">Sculptural Coffee Table</a></h3>
-                        <span class="price">$960</span>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </div>
 </div>
-
-
-
-
 <div id="fh5co-counter" class="fh5co-bg fh5co-counter" style="background-image:url(images/img_bg_5.jpg);">
     <div class="container">
         <div class="row">

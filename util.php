@@ -551,5 +551,71 @@ function agregarCategoria($categoria,$nombre_foto,$archivo,$target_file){
 
 }
 
+function cortarDescripcion($text, $maxchar, $end = '...')
+{
+  if (strlen($text) > $maxchar || $text == '') {
+    $words = preg_split('/\s/', $text);
+    $output = '';
+    $i      = 0;
+    while (1) {
+      $length = strlen($output) + strlen($words[$i]);
+      if ($length > $maxchar) {
+        break;
+      } else {
+        $output .= " " . $words[$i];
+        ++$i;
+      }
+    }
+    $output .= $end;
+  } else {
+    $output = $text;
+  }
+  return $output;
+}
+
+function getCepaCarrusel(){
+
+  $con = conectar_bd();
+  $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, weed.descripcion, categoria.nombre AS catNombre
+          FROM weed, categoria
+          WHERE weed.id_categoria = categoria.id
+          AND weed.id > 28
+          LIMIT 5";
+  $result = $con->query($sql);
+
+    if ($result->num_rows > 0) {
+      // output data of each row
+      while ($row = $result->fetch_assoc()) {
+        echo '<li style="background-image: url(images/cepas/fondo2.jpeg);">
+                <div class="overlay-gradient"></div>
+                <div class="container">
+                  <div class="col-md-6 col-md-offset-3 col-md-pull-3 js-fullheight slider-text">
+                    <div class="slider-text-inner">
+                      <div class="desc">
+                        <span class="price">'.$row["catNombre"].'</span>
+                        <h2 class="text-center">'.$row["weedNombre"]. '</h2>
+                        <p class="text-justify">'. cortarDescripcion($row["descripcion"], 550). '</p>
+                        <div class="row">';
+                          $sql2 = "SELECT fotos.nombre AS fotoNombre FROM fotos, weed WHERE fotos.id_weed = ". $row["weedId"] ." LIMIT 2";
+                          $result2 = $con->query($sql2);
+                          if ($result2->num_rows > 0) {
+                            while ($row2 = $result2->fetch_assoc()) {
+                              echo '<div class="col-md-4 text-center">
+                                      <img src="images/cepas/'.$row2["fotoNombre"].'"/>
+                                    </div>';
+                            }
+                          }
+                    echo '<div class="col-md-4 text-center" style="display: inline-block; vertical-align: middle; float: none;">
+                            <p><a href="single.html" class="btn btn-primary btn-outline btn-lg">ver</a></p>                        
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>';
+      }
+  }
+}
 
 ?> 
