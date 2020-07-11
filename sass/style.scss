@@ -19,7 +19,7 @@ $brand-body-color: #818892;
 $brand-selection-color: #f9f6f0;
 $brand-overlay-color: #3b3d40;
 $brand-bg-color: $brand-white;
-$green-brand: #034638;
+$green-brand: #499b4a;
 
 $input-border-focus:  $brand-primary !default;
 $form-group-margin-bottom:       30px !default;
@@ -226,7 +226,7 @@ h1, h2, h3, h4, h5, h6, figure {
 	}
 	a {
 		padding: 5px 10px;
-		color: $brand-black;
+		color: white;
 	}
 	.menu-1, .menu-2 {
 		@media screen and (max-width: $screen-sm ) {
@@ -246,7 +246,8 @@ h1, h2, h3, h4, h5, h6, figure {
 			}
 			input[type=text]{
 				padding: 6px 10px;
-				width: 40%;
+				border-radius: 10px;
+				//width: 40%;
 				// border: 1px solid rgba($brand-black,.1);
 				border: none;
 				float: right;
@@ -265,7 +266,7 @@ h1, h2, h3, h4, h5, h6, figure {
 				background: transparent;
 				border: none;
 				i{
-					color: rgba($brand-black,.5);
+					color: rgba(white,.5);
 				}
 				&:hover, &:focus{
 					background: transparent !important;
@@ -279,7 +280,7 @@ h1, h2, h3, h4, h5, h6, figure {
 			}
 			a {
 				&.cart{
-					color: rgba(0,0,0,1);
+					color: rgb(253, 253, 253);
 					span{
 						position: relative;
 						small{
@@ -311,13 +312,13 @@ h1, h2, h3, h4, h5, h6, figure {
 				font-size: 13px;
 				padding: 30px 10px;
 				text-transform: uppercase;
-				color: rgba(0,0,0,.5);
+				color: white;
 				@include transition(.5s);
 				&:hover,&:focus, &:active {
 					color: rgba(0,0,0,1);
 				}
 				&.cart{
-					color: rgba(0,0,0,1);
+					color: rgb(255, 255, 255);
 					span{
 						position: relative;
 						small{
@@ -410,6 +411,7 @@ h1, h2, h3, h4, h5, h6, figure {
 #fh5co-hero {
 	min-height: 700px;
 	background: $brand-white url(../images/loader.gif) no-repeat center center;
+	box-shadow: 0px -2px 7px 3px #357401;
 	.btn {
 		font-size: 24px;
 		&.btn-primary {
@@ -873,7 +875,7 @@ h1, h2, h3, h4, h5, h6, figure {
 #fh5co-about,
 #fh5co-contact,
 #fh5co-footer{
-	padding: 7em 0;
+	padding: 15px 0;
 	clear: both;
 	@media screen and (max-width: $screen-sm) {
 		padding: 3em 0;
@@ -1772,7 +1774,7 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 
 .row-pb-md {
-	padding-bottom: 4em!important;
+	padding-bottom: 10px!important;
 }
 .row-pb-sm {
 	padding-bottom: 2em!important;

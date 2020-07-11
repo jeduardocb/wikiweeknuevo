@@ -586,7 +586,7 @@ function getCepaCarrusel(){
     if ($result->num_rows > 0) {
       // output data of each row
       while ($row = $result->fetch_assoc()) {
-        echo '<li style="background-image: url(images/cepas/fondo2.jpeg);">
+        echo '<li style="background-image: url(images/fondo4.jpg);">
                 <div class="overlay-gradient"></div>
                 <div class="container">
                   <div class="col-md-6 col-md-offset-3 col-md-pull-3 js-fullheight slider-text">
