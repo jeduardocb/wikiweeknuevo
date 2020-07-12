@@ -579,7 +579,8 @@ function getCepaCarrusel(){
   $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, weed.descripcion, categoria.nombre AS catNombre
           FROM weed, categoria
           WHERE weed.id_categoria = categoria.id
-          ORDER BY RAND ( ) LIMIT 5";
+          AND weed.id > 28
+          LIMIT 5";
   $result = $con->query($sql);
 
     if ($result->num_rows > 0) {

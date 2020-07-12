@@ -21,7 +21,7 @@ if(isset($_SESSION["mensaje"])){
 <div class="container">
   <form id="addCepa" action="controlador_addCepa.php" method="POST" enctype="multipart/form-data">
     <div class="form-group ">
-      <label for="usr" >Nombre:</label>
+      <label for="usr">Nombre:</label>
       <input type="text" class="form-control " id="name" name="name" required>
     </div>
     <div class="form-group ">
@@ -30,35 +30,30 @@ if(isset($_SESSION["mensaje"])){
     </div>
 
     <div class="form-group">
-      <label>Categoria</label>
+      <h5>Categoria</h5>
       <?= crear_select("id", "nombre", "categoria") ?>
     </div>
     <div class="form-group">
-      <label>Terpenos</label>
+      <h5>Terpenos</h5>
       <?= getTerpenos() ?>
     </div>
 
-    <div class="form-group">
-      <label>CBD</label>
-        <p >Mínimo:</p>
+    <div class="input-group">
+      <h5>CBD</h5>
       <input type="number" id="cbdmin" name="cbdmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" required>
-        
-        <p >Máximo:</p>
       <input type="number" id="cbdmax" name="cbdmax" class="form-control" placeholder="10" min="0" max="100" step="0.01">
-        
     </div>
 
 
     <div class="input-group">
 
-      <label>THC</label>
-        <p >Mínimo:</p>
+      <h5>THC</h5>
+
       <input type="number" id="thcmin" name="thcmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" required>
-        <p >Máximo:</p>
       <input type="number" id="thcmax" name="thcmax" class="form-control" placeholder="10" min="0" max="100" step="0.01">
     </div>
     <div class="form-group">
-      <label>Crecimiento</label>
+      <h5>Crecimiento</h5>
       <label for="sel1">Difficulty:</label>
       <select class="form-control" id="dificultad" name="dificultad" required>
         <option value="facil">Facil</option>
@@ -68,8 +63,9 @@ if(isset($_SESSION["mensaje"])){
 
       <label for="sel1">Altura (pulgadas):</label>
       <select class="form-control" id="altura" name="altura" required>
-        <option value="< 30"> < 30   </option> 
-          <option value="30 - 78">30 - 78</option>
+        <option value="< 30">
+          < 30</option> <option value="30 - 78">30 - 78
+        </option>
         <option value="> 78">> 78</option>
       </select>
       <label for="sel1">Rendimiento (Oz/Ft)^2:</label>
