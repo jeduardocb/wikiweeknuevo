@@ -607,7 +607,7 @@ function getCepaCarrusel(){
                             }
                           }
                     echo '<div class="col-md-4 text-center" style="display: inline-block; vertical-align: middle; float: none;">
-                            <p><a href="single.html" class="btn btn-primary btn-outline btn-lg">ver</a></p>                        
+                            <p><a href="single.php?idweed='. $row["weedId"]. ' " class="btn btn-primary btn-outline btn-lg">ver</a></p>                        
                           </div>
                         </div>
                       </div>

@@ -59,7 +59,7 @@ include_once("util.php");
 							</span>
 
 							<span class="counter js-counter" data-from="0" data-to="22070" data-speed="5000" data-refresh-interval="50">1</span>
-							<span class="counter-label">Creativity Fuel</span>
+							<span class="counter-label">Visitas</span>
 
 						</div>
 					</div>
@@ -70,7 +70,7 @@ include_once("util.php");
 							</span>
 
 							<span class="counter js-counter" data-from="0" data-to="450" data-speed="5000" data-refresh-interval="50">1</span>
-							<span class="counter-label">Happy Clients</span>
+							<span class="counter-label">Cepas</span>
 						</div>
 					</div>
 					<div class="col-md-3 col-sm-6 animate-box">
@@ -79,7 +79,7 @@ include_once("util.php");
 								<i class="icon-shop"></i>
 							</span>
 							<span class="counter js-counter" data-from="0" data-to="700" data-speed="5000" data-refresh-interval="50">1</span>
-							<span class="counter-label">All Products</span>
+							<span class="counter-label">Categorias</span>
 						</div>
 					</div>
 					<div class="col-md-3 col-sm-6 animate-box">
