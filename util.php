@@ -675,36 +675,30 @@ function getNombreCategoria($idcategoria){
 
 function getListadoCepas(){
   $con = conectar_bd();
-  $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, weed.descripcion, categoria.nombre AS catNombre
-          FROM weed, categoria
-          WHERE weed.id_categoria = categoria.id
-          ORDER BY RAND ( ) LIMIT 6";
+  $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, fotos.nombre
+          FROM weed, fotos
+          WHERE weed.id = fotos.id_weed;";
   $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-      echo '<div class="col-md-4 text-center animate-box">
-				      <div class="product">';
-      $sql2 = "SELECT fotos.nombre AS fotoNombre FROM fotos, weed WHERE fotos.id_weed = " . $row["weedId"] . " LIMIT 1";
-      $result2 = $con->query($sql2);
-      if ($result2->num_rows > 0) {
-        while ($row2 = $result2->fetch_assoc()) {
-          echo '<div class="product-grid" style="background-image:url(images/cepas/' . $row2["fotoNombre"] . '">';
-        }
-      }
-      echo '<div class="inner">
-							<p>
-								<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-							</p>
-						</div>
-					</div>
-					<div class="desc">
-						<h3><a href="single.html">' . $row["weedNombre"] . '</a></h3>
-						<span class="price">' . $row["catNombre"] . '</span>
-					</div>
-				</div>
-			</div>';
+      echo '<tr>
+                <td data-th="Product">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4 class="nomargin">'.$row['weedNombre'].'</h4>
+                        </div>
+                        <div class="col-sm-6 hidden-xs">
+                          <img src="images/cepas/'.$row["nombre"].'" style="with: 20px;" class="img-responsive" />
+                        </div>
+                    </div>
+                </td>
+                <td class="actions" data-th="">
+                    <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
+                    <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>';
     }
   }
   desconectar_bd($con);
