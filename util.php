@@ -511,7 +511,7 @@ function getImagenesWeed($idweed)
 
  desconectar_bd($con);
 }
-function agregarCategoria($categoria,$nombre_foto,$archivo,$target_file){
+function agregarCategoria($categoria,$nombre_foto,$archivo,$target_file,$descripcion){
   $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
   if ($con->connect_errno) {
     printf("Conexión fallida: %s\n", $con->connect_error);
@@ -522,7 +522,7 @@ function agregarCategoria($categoria,$nombre_foto,$archivo,$target_file){
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
     echo "entra al try<br>";
-      if (!($con->query("INSERT INTO categoria (nombre,nombre_foto) VALUES ('$categoria' ,'$nombre_foto')"))) {
+      if (!($con->query("INSERT INTO categoria (nombre,nombre_foto,descripcion) VALUES ('$categoria' ,'$nombre_foto' ,'$descripcion')"))) {
         throw new Exception("No se pudo insertar la categoria");
       }
      
@@ -643,12 +643,12 @@ function getCepasDestacadas(){
       }
       echo '<div class="inner">
 							<p>
-								<a href="single.html" class="icon"><i class="icon-eye"></i></a>
+								<a href="single.php?idweed='.$row["weedId"].'" class="icon"><i class="icon-eye"></i></a>
 							</p>
 						</div>
 					</div>
 					<div class="desc">
-						<h3><a href="single.html">'.$row["weedNombre"]. '</a></h3>
+						<h3><a href="single.php?idweed='.$row["weedId"].'">'.$row["weedNombre"]. '</a></h3>
 						<span class="price">' . $row["catNombre"] . '</span>
 					</div>
 				</div>

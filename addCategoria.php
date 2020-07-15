@@ -26,6 +26,10 @@
         <input type="text" class="form-control" name="nuevaCategoria" id="nuevaCategoria"  placeholder="Hibrido" required>
       </div>
         <div class="form-group">
+        <label for="exampleInputEmail1">Descripción de la Categoria:</label>
+            <textarea type="text" class="form-control" name="descripcionCategoria" id="descripcionCategoria"  placeholder="Hibrido" required></textarea>
+      </div>
+        <div class="form-group">
         <label class="col-sm-2 control-label">Sube una imagen:</label>
         <input type="file" class="form-control" id="upload" name="upload"  required>
     </div>
