@@ -10,9 +10,6 @@ $idweed = htmlspecialchars($_GET['idweed']);
 <div class="fh5co-loader"></div>
 
 <div id="page">
-
-
-
 	<div id="fh5co-product">
 		<div class="container tarjeta-cepa">
 			<div class="card">
@@ -56,7 +53,7 @@ $idweed = htmlspecialchars($_GET['idweed']);
 								<div class="col-md-6 text-right">
 									<h4>
 										<i class="fas fa-seedling verde-icono"></i>
-										CBD: <span class="verde-icono">
+									CBD:<span class="verde-icono">
 											<?php getCbd($idweed); ?>%
 										</span>
 									</h4>
@@ -96,11 +93,9 @@ $idweed = htmlspecialchars($_GET['idweed']);
 				<!--product detail-->
 				<div class="fh5co-tabs animate-box">
 					<ul class="fh5co-tab-nav">
-						<li class="active"><a href="#" data-tab="1"><span class="icon visible-xs"><i class="icon-file"></i></span><span class="hidden-xs">Product
-									Details</span></a></li>
+						<li class="active"><a href="#" data-tab="1"><span class="icon visible-xs"><i class="icon-file"></i></span><span class="hidden-xs">Detalles</span></a></li>
 						<li><a href="#" data-tab="2"><span class="icon visible-xs"><i class="icon-bar-graph"></i></span><span class="hidden-xs">Specification</span></a></li>
-						<li><a href="#" data-tab="3"><span class="icon visible-xs"><i class="icon-star"></i></span><span class="hidden-xs">Feedback &amp;
-									Ratings</span></a></li>
+						<li><a href="#" data-tab="3"><span class="icon visible-xs"><i class="icon-star"></i></span><span class="hidden-xs">Reviews</span></a></li>
 					</ul>
 
 					<!-- Tabs -->
@@ -196,7 +191,6 @@ $idweed = htmlspecialchars($_GET['idweed']);
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
