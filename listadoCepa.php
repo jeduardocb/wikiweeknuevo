@@ -21,7 +21,7 @@ if (isset($_SESSION["mensaje"])) {
 
 <div class="container">
     <h1>Modificar cepa</h1>
-    <table id="cart" class="table table-hover table-condensed table-responsive">
+    <table id="cart" class="table table-responsive">
         <thead>
             <tr>
                 <th style="width:50%">Cepa</th>
@@ -29,20 +29,7 @@ if (isset($_SESSION["mensaje"])) {
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td data-th="Product">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <h4 class="nomargin">Taladro 20 Velocidades Rojo con brocas de repuesto</h4>
-                        </div>
-                        <div class="col-sm-4 hidden-xs"><img src="http://placehold.it/100x100" alt="..." class="img-responsive" /></div>
-                    </div>
-                </td>
-                <td class="actions" data-th="">
-                    <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
-                    <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                </td>
-            </tr>
+            <?= getListadoCepas(); ?>
         </tbody>
     </table>
 </div>
