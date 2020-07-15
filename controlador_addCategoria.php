@@ -4,7 +4,9 @@
     session_start();
 
     $categoria = htmlspecialchars($_POST["nuevaCategoria"]);
-    print_r($categoria);
+    $descripcion= htmlspecialchars($_POST["descripcionCategoria"]);
+
+    //print_r($categoria);
     $archivo = $_FILES;
 
     $target_dir = "./images/categoria/";
@@ -43,7 +45,7 @@ if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg
   $uploadOk = 0;
 }
     if($uploadOk == 1){
-        echo agregarCategoria($categoria,$_FILES["upload"]["name"], $archivo,$target_file);
+        echo agregarCategoria($categoria,$_FILES["upload"]["name"], $archivo,$target_file,$descripcion);
 
     }else{
         
