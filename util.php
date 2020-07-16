@@ -56,26 +56,38 @@ function getCategorias(){
 function getCepas($idcategoria){
 	$con = conectar_bd();
 
-	$sql = "SELECT categoria.id AS catid, weed.id AS wid, weed.descripcion, weed.nombre, fotos.nombre AS foto
+	$sql = "SELECT categoria.id AS catid, weed.id AS wid, weed.descripcion, weed.nombre
           FROM weed
           INNER JOIN categoria
           ON weed.id_categoria = categoria.id
-          INNER JOIN fotos
-          ON weed.id = fotos.id_weed
           AND categoria.id = $idcategoria";
 	$result = $con->query($sql);
-
+    $nombre="";
+    $bandera=true;
 	if ($result->num_rows > 0) {
 		// output data of each row
 		while ($row = $result->fetch_assoc()) {
 			$idweed = $row["wid"];
+            $idnumerico=intval($idweed);
+            $sql1 = "select nombre from fotos where id_weed=$idnumerico";
+            $result1 = $con->query($sql1);
+            while (($row1 = $result1->fetch_assoc())&& $bandera) {
+                $nombre=$row1["nombre"];
+               // print_r(strlen($nombre));
+                for($i=0;$i<strlen($nombre);$i++){
+                    if($nombre[$i]=="1"){
+                        $bandera=false;
+                    }
+                }
+            }
+             $bandera=true;    
 			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
 			echo '<div class="col-md-4 text-center animate-box">
 					<div class="product">
 					<form id="'.$row["wid"].'" action="single.php" method="get">
 						<input type="hidden" name="idweed" value="' . $row["wid"] . '">
 						
-							<div class="product-grid" style="background-image:url(images/cepas/'.$row["foto"]. '">
+							<div class="product-grid" style="background-image:url(images/cepas/'.$nombre. '">
 								<div class="inner">
 									<p>
 										<a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon"><i class="icon-eye"></i></a>
@@ -353,7 +365,7 @@ function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $r
     if($cbdmax == ""){
         $cbdmax=0;
     }
-    if($thcmax="" == ""){
+    if($thcmax==""){
         $thcmax=0;
     }
      $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
@@ -459,7 +471,7 @@ function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $r
     } catch (Exception $e) {
       $con->rollback();
       $_SESSION["mensaje"]=false;
-      header('location: ./addCepa.php');
+      //header('location: ./addCepa.php');
       //echo 'Something fails: ',  $e->getMessage(), "\n";
     //echo "errror, falio ferga<br>";
   }
