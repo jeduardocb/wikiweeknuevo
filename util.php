@@ -23,6 +23,16 @@ function limpia_entradas($arr){
     }
     return $arr;
 }
+function modifyDb($dml){
+    $conDb = conectar_bd();
+
+    $conDb->query($dml);
+    $res=mysqli_affected_rows($conDb);
+
+    desconectar_bd($conDb);
+    return $res;
+}
+
 function getCategorias(){
 
 	 $con = conectar_bd();
@@ -716,4 +726,85 @@ function getListadoCepas(){
   desconectar_bd($con);
 }
 
+function getListadoTerpenos(){
+  $contador = 0;
+  $con = conectar_bd();
+  $sql = "SELECT  * from terpenos";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      echo '<div class="row">
+
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="'.$contador.'"  value="'.$row["nombre"].'">
+               <input type="hidden" class="form-control" name="id'.$contador.'"  value="'.$row["id_terpeno"].'">
+            </div>
+            <div class="col-md-2">
+            <a class=" btn btn-danger btn-sm" href="controlador_eliminarTerpenos.php?id_terpeno='.$row["id_terpeno"] .'"><i class="fa fa-trash" ></i></a>
+
+            </div>
+        </div>
+      ';
+        $contador++;
+    }
+  }else{
+      echo '0 results';
+  }
+  desconectar_bd($con);
+}
+function editarTerpenos($nombre,$id){
+ $dml = "UPDATE terpenos
+SET nombre = '$nombre'
+WHERE id_terpeno = $id;";
+    return modifyDb($dml);
+}
+function eliminarTerpeno($id){
+ $dml = "delete from terpenos WHERE id_terpeno = $id;";
+    return modifyDb($dml);
+}
+
+    function getListadoCategorias(){
+  $contador = 0;
+  $con = conectar_bd();
+  $sql = "SELECT  * from categoria";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      echo '<div class="row">
+
+            <div class="col-md-2">
+                <input type="text" class="form-control" name="'.$contador.'"  value="'.$row["nombre"].'">
+               <input type="hidden" class="form-control" name="id'.$contador.'"  value="'.$row["id"].'">
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="descripcion'.$contador.'"  value="'.$row["descripcion"].'">
+               
+            </div>
+            <div class="col-md-2">
+            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoria.php?id_categoria='.$row["id"].'"><i class="fa fa-trash" ></i></a>
+
+            </div>
+        </div>
+      ';
+        $contador++;
+    }
+  }else{
+      echo '0 results';
+  }
+  desconectar_bd($con);
+}
+function editarCategoria($id,$nombre,$descripcion){
+ $dml = "UPDATE categoria
+SET nombre='$nombre',descripcion='$descripcion'
+WHERE id = $id;";
+    return modifyDb($dml);
+}
+function eliminarCategoria($id){
+ $dml = "delete from categoria WHERE id = $id;";
+    return modifyDb($dml);
+}
 ?> 
