@@ -24,13 +24,13 @@ function limpia_entradas($arr){
     return $arr;
 }
 function modifyDb($dml){
-    $conDb = conectar_bd();
+  $conDb = conectar_bd();
 
-    $conDb->query($dml);
-    $res=mysqli_affected_rows($conDb);
+  $conDb->query($dml);
+  $res = mysqli_affected_rows($conDb);
 
-    desconectar_bd($conDb);
-    return $res;
+  desconectar_bd($conDb);
+  return $res;
 }
 
 function getCategorias(){
@@ -709,10 +709,10 @@ function getListadoCepas(){
                 <td data-th="Product">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h4 class="nomargin">'.$row['weedNombre'].'</h4>
+                            <h4 class="nomargin">' . $row['weedNombre'] . '</h4>
                         </div>
                         <div class="col-sm-6 hidden-xs">
-                          <img src="images/cepas/'.$row["nombre"].'" style="with: 20px;" class="img-responsive" />
+                          <img src="images/cepas/' . $row["nombre"] . '" style="with: 20px;" class="img-responsive" />
                         </div>
                     </div>
                 </td>
@@ -753,6 +753,7 @@ function getListadoTerpenos(){
   }
   desconectar_bd($con);
 }
+
 function editarTerpenos($nombre,$id){
  $dml = "UPDATE terpenos
 SET nombre = '$nombre'
@@ -764,7 +765,8 @@ function eliminarTerpeno($id){
     return modifyDb($dml);
 }
 
-function getListadoCategorias(){
+function getListadoCategorias()
+{
   $contador = 0;
   $con = conectar_bd();
   $sql = "SELECT  * from categoria";
@@ -776,34 +778,37 @@ function getListadoCategorias(){
       echo '<div class="row">
 
             <div class="col-md-2">
-                <input type="text" class="form-control" name="'.$contador.'"  value="'.$row["nombre"].'">
-               <input type="hidden" class="form-control" name="id'.$contador.'"  value="'.$row["id"].'">
+                <input type="text" class="form-control" name="' . $contador . '"  value="' . $row["nombre"] . '">
+               <input type="hidden" class="form-control" name="id' . $contador . '"  value="' . $row["id"] . '">
             </div>
             <div class="col-md-8">
-                <input type="text" class="form-control" name="descripcion'.$contador.'"  value="'.$row["descripcion"].'">
+                <input type="text" class="form-control" name="descripcion' . $contador . '"  value="' . $row["descripcion"] . '">
                
             </div>
             <div class="col-md-2">
-            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoria.php?id_categoria='.$row["id"].'"><i class="fa fa-trash" ></i></a>
+            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoria.php?id_categoria=' . $row["id"] . '"><i class="fa fa-trash" ></i></a>
 
             </div>
         </div>
       ';
-        $contador++;
+      $contador++;
     }
-  }else{
-      echo '0 results';
+  } else {
+    echo '0 results';
   }
   desconectar_bd($con);
 }
-function editarCategoria($id,$nombre,$descripcion){
- $dml = "UPDATE categoria
+function editarCategoria($id, $nombre, $descripcion){
+  $dml = "UPDATE categoria
 SET nombre='$nombre',descripcion='$descripcion'
 WHERE id = $id;";
-    return modifyDb($dml);
+  return modifyDb($dml);
 }
-function eliminarCategoria($id){
- $dml = "delete from categoria WHERE id = $id;";
-    return modifyDb($dml);
+
+function eliminarCategoria($id)
+{
+  $dml = "delete from categoria WHERE id = $id;";
+  return modifyDb($dml);
 }
+
 ?> 
