@@ -731,7 +731,6 @@ function getListadoTerpenos(){
   $con = conectar_bd();
   $sql = "SELECT  * from terpenos";
   $result = $con->query($sql);
-
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
@@ -765,7 +764,7 @@ function eliminarTerpeno($id){
     return modifyDb($dml);
 }
 
-    function getListadoCategorias(){
+function getListadoCategorias(){
   $contador = 0;
   $con = conectar_bd();
   $sql = "SELECT  * from categoria";
