@@ -759,7 +759,7 @@ function formEditCepa($idweed, $nombre, $descripcion, $categoria){
   echo '<form id="addCepa" action="controlador_editCepa.php" method="GET" enctype="multipart/form-data">
         <div class="form-group ">
             <label for="usr">Nombre:</label>
-            <input type="text" class="form-control " id="name" name="name" value="'. $nombre . '" required>
+            <input type="text" class="form-control " id="name" name="name" value="'.$nombre .'" required>
         </div>
         <div class="form-group ">
             <label for="usr">Descripcion:</label>
