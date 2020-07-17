@@ -780,12 +780,12 @@ function eliminarCategoria($id)
   return modifyDb($dml);
 }
 
-function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria)
+function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria, $categoriaId)
 {
   $conion_bd = conectar_bd();
 
 
-  $resultado = '<select class="form-control" name="' . $tabla . '" id="' . $tabla . '" value=""><option disabled selected>' . $categoria . '</option>';
+  $resultado = '<select class="form-control" name="' . $tabla . '" id="'. $tabla .'"><option value="'.$categoriaId.'" selected>'. $categoria .'</option>';
 
 
   $consulta = "SELECT $id  , $columna_descripcion  FROM $tabla";
@@ -802,7 +802,7 @@ function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria)
   return $resultado;
 }
 
-function formEditCepa($idweed, $nombre, $descripcion, $categoria)
+function formEditCepa($idweed, $nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento)
 {
   $con = conectar_bd();
   $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId
@@ -826,7 +826,7 @@ function formEditCepa($idweed, $nombre, $descripcion, $categoria)
 
         <div class="form-group">
             <label>Categoria</label>
-            ' . crear_selectEdit("id", "nombre", "categoria", $categoria) . '
+            ' . crear_selectEdit("id", "nombre", "categoria", $categoria, $categoriaId) . '
         </div>
         <div class="form-group">
             <label>Terpenos</label>
@@ -836,9 +836,9 @@ function formEditCepa($idweed, $nombre, $descripcion, $categoria)
         <div class="input-group">
             <label>CBD</label>
             <p>Mínimo:</p>
-            <input type="number" id="cbdmin" name="cbdmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" required>
+            <input type="number" id="cbdmin" name="cbdmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" value="'.$minCBD.'" required>
             <p>Máximo:</p>
-            <input type="number" id="cbdmax" name="cbdmax" class="form-control" placeholder="10" min="0" max="100" step="0.01">
+            <input type="number" id="cbdmax" name="cbdmax" class="form-control" placeholder="10" min="0" max="100" step="0.01" value="'.$maxCBD.'">
         </div>
 
 
@@ -846,13 +846,13 @@ function formEditCepa($idweed, $nombre, $descripcion, $categoria)
 
             <label>THC</label>
             <p>Mínimo:</p>
-            <input type="number" id="thcmin" name="thcmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" required>
+            <input type="number" id="thcmin" name="thcmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" value="'.$minTHC.'" required>
             <p>Máximo:</p>
-            <input type="number" id="thcmax" name="thcmax" class="form-control" placeholder="10" min="0" max="100" step="0.01">
+            <input type="number" id="thcmax" name="thcmax" class="form-control" placeholder="10" min="0" max="100" step="0.01" value="' . $maxTHC.'">
         </div>
         <div class="form-group">
             <label>Crecimiento</label>
-            <label for="sel1">Difficulty:</label>
+            <label for="sel1">Dificultad:</label>
             <select class="form-control" id="dificultad" name="dificultad" required>
                 <option value="facil">Facil</option>
                 <option value="moderado">Moderado</option>
