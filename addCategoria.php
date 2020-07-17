@@ -33,7 +33,11 @@
         <label class="col-sm-2 control-label">Sube una imagen:</label>
         <input type="file" class="form-control" id="upload" name="upload"  required>
     </div>
-      <input type="submit" value="Upload Image" name="submit">
+      <input type="submit" value="Agregar Categoria" name="submit">
+    </form>
+    <form action="controlador_editarCategoria.php" method="post"> 
+        <?= getListadoCategorias(); ?>
+        <input type="submit" value="Editar Categorias" name="submit">
     </form>
 
 </div>

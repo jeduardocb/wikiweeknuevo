@@ -24,10 +24,17 @@ if (isset($_SESSION["mensaje"])) {
         <label for="exampleInputEmail1">Nombre del Nuevo Terpeno:</label>
         <input type="text" class="form-control" id="nuevoTerpeno" aria-describedby="emailHelp" placeholder="Spicy">
       </div>
-      <button type="button" id="add-Terpeno"class="btn btn-primary">Agregar Terpeno</button>
+        
+      <button type="button" id="add-Terpeno" class="btn btn-primary">Agregar Terpeno</button>
+        
     </form>
-
+    <hr>
+     <form action="controlador_editarTerpenos.php" method="post">
+    <?= getListadoTerpenos(); ?>
+         <input type="submit" value="Editar Terpenos" name="submit">
+     </form>
 </div>
+ 
 
 <?php
 include("_footer.html");

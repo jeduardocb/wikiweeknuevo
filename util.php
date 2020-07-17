@@ -23,6 +23,16 @@ function limpia_entradas($arr){
     }
     return $arr;
 }
+function modifyDb($dml){
+    $conDb = conectar_bd();
+
+    $conDb->query($dml);
+    $res=mysqli_affected_rows($conDb);
+
+    desconectar_bd($conDb);
+    return $res;
+}
+
 function getCategorias(){
 
 	 $con = conectar_bd();
@@ -750,84 +760,87 @@ function formEditCepa($idweed, $nombre, $descripcion, $categoria){
   $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId
           FROM weed WHERE weed.id = $idweed";
           $result = $con->query($sql);
+}
+function getListadoTerpenos(){
+  $contador = 0;
+  $con = conectar_bd();
+  $sql = "SELECT  * from terpenos";
+  $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
+      echo '<div class="row">
+
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="'.$contador.'"  value="'.$row["nombre"].'">
+               <input type="hidden" class="form-control" name="id'.$contador.'"  value="'.$row["id_terpeno"].'">
+            </div>
+            <div class="col-md-2">
+            <a class=" btn btn-danger btn-sm" href="controlador_eliminarTerpenos.php?id_terpeno='.$row["id_terpeno"] .'"><i class="fa fa-trash" ></i></a>
+
+            </div>
+        </div>
+      ';
+        $contador++;
     }
+  }else{
+      echo '0 results';
   }
-  echo '<form id="addCepa" action="controlador_editCepa.php" method="GET" enctype="multipart/form-data">
-        <div class="form-group ">
-            <label for="usr">Nombre:</label>
-            <input type="text" class="form-control " id="name" name="name" value="'.$nombre .'" required>
-        </div>
-        <div class="form-group ">
-            <label for="usr">Descripcion:</label>
-            <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>' . $descripcion . '</textarea>
-        </div>
-
-        <div class="form-group">
-            <label>Categoria</label>
-            '. crear_selectEdit("id", "nombre", "categoria", $categoria).'
-        </div>
-        <div class="form-group">
-            <label>Terpenos</label>
-            <?= getTerpenos() ?>
-        </div>
-
-        <div class="input-group">
-            <label>CBD</label>
-            <p>Mínimo:</p>
-            <input type="number" id="cbdmin" name="cbdmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" required>
-            <p>Máximo:</p>
-            <input type="number" id="cbdmax" name="cbdmax" class="form-control" placeholder="10" min="0" max="100" step="0.01">
-        </div>
-
-
-        <div class="input-group">
-
-            <label>THC</label>
-            <p>Mínimo:</p>
-            <input type="number" id="thcmin" name="thcmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" required>
-            <p>Máximo:</p>
-            <input type="number" id="thcmax" name="thcmax" class="form-control" placeholder="10" min="0" max="100" step="0.01">
-        </div>
-        <div class="form-group">
-            <label>Crecimiento</label>
-            <label for="sel1">Difficulty:</label>
-            <select class="form-control" id="dificultad" name="dificultad" required>
-                <option value="facil">Facil</option>
-                <option value="moderado">Moderado</option>
-                <option value="dificil">Dificil</option>
-            </select>
-
-            <label for="sel1">Altura (pulgadas):</label>
-            <select class="form-control" id="altura" name="altura" required>
-                <option value="< 30">
-                    < 30</option> <option value="30 - 78">30 - 78
-                </option>
-                <option value="> 78">> 78</option>
-            </select>
-            <label for="sel1">Rendimiento (Oz/Ft)^2:</label>
-            <select class="form-control" id="rendimiento" name="rendimiento" required>
-                <option value="0.5 - 1">0.5 - 1</option>
-                <option value="1 - 3">1 - 3</option>
-                <option value="3 - 6">3 - 6</option>
-            </select>
-            <label for="sel1">Florecimiento (En Semanas):</label>
-            <select class="form-control" id="florecimiento" name="florecimiento" required>
-                <option value="7 - 9">7 - 9</option>
-                <option value="10 - 12">10 - 12</option>
-                <option value="> 12">> 12</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Archivos</label>
-            <input type="file" class="form-control" id="upload" name="upload[]" multiple required>
-        </div>
-        <input type="submit" value="Upload Image" name="submit">
-
-    </form>';
+  desconectar_bd($con);
+}
+function editarTerpenos($nombre,$id){
+ $dml = "UPDATE terpenos
+SET nombre = '$nombre'
+WHERE id_terpeno = $id;";
+    return modifyDb($dml);
+}
+function eliminarTerpeno($id){
+ $dml = "delete from terpenos WHERE id_terpeno = $id;";
+    return modifyDb($dml);
 }
 
+    function getListadoCategorias(){
+  $contador = 0;
+  $con = conectar_bd();
+  $sql = "SELECT  * from categoria";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+     echo '<div class="row">
+
+            <div class="col-md-2">
+                <input type="text" class="form-control" name="'.$contador.'"  value="'.$row["nombre"].'">
+               <input type="hidden" class="form-control" name="id'.$contador.'"  value="'.$row["id"].'">
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="descripcion'.$contador.'"  value="'.$row["descripcion"].'">
+               
+            </div>
+            <div class="col-md-2">
+            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoria.php?id_categoria='.$row["id"].'"><i class="fa fa-trash" ></i></a>
+
+            </div>
+        </div>
+      ';
+        $contador++;
+    }
+  }else{
+      echo '0 results';
+  }
+  desconectar_bd($con);
+}
+function editarCategoria($id,$nombre,$descripcion){
+ $dml = "UPDATE categoria
+SET nombre='$nombre',descripcion='$descripcion'
+WHERE id = $id;";
+    return modifyDb($dml);
+}
+function eliminarCategoria($id){
+ $dml = "delete from categoria WHERE id = $id;";
+    return modifyDb($dml);
+}
+>>>>>>> 5c3e494f6daea503551e2012ffcc118e8755f684
 ?> 
