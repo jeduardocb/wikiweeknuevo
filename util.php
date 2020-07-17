@@ -810,5 +810,4 @@ function eliminarCategoria($id)
   $dml = "delete from categoria WHERE id = $id;";
   return modifyDb($dml);
 }
-
-?> 
+?>
