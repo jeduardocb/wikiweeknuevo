@@ -20,7 +20,7 @@ if (isset($_SESSION["mensaje"])) {
 if (isset($_GET["idweed"])) {
     $idweed = $_GET["idweed"];
     $con = conectar_bd();
-    $sql = "SELECT weed.nombre, weed.descripcion, categoria.nombre AS catNom, categoria.id AS catId,  weed.id_cbd, cbd.min AS minCbd, cbd.max AS maxCbd, thc.max AS maxThc, thc.min AS minThc, crecimiento.altura, crecimiento.dificultad, crecimiento.florecimiento, crecimiento.rendimiento
+    $sql = "SELECT weed.id AS idweed, weed.nombre, weed.descripcion, categoria.nombre AS catNom, categoria.id AS catId,  weed.id_cbd, cbd.min AS minCbd, cbd.max AS maxCbd, thc.max AS maxThc, thc.min AS minThc, crecimiento.altura, crecimiento.dificultad, crecimiento.florecimiento, crecimiento.rendimiento
             FROM weed, categoria, cbd, thc, crecimiento
             WHERE weed.id_categoria = categoria.id
             AND weed.id_cbd = cbd.id_cbd
@@ -31,6 +31,7 @@ if (isset($_GET["idweed"])) {
     $datos = mysqli_fetch_assoc($result);
 
     if ($result->num_rows > 0) {
+        $idweed = $datos["idweed"];
         $nombre = $datos["nombre"];
         $descripcion = $datos["descripcion"];
         $categoria = $datos["catNom"];
@@ -48,7 +49,7 @@ if (isset($_GET["idweed"])) {
 
 ?>
 <div class="container">
-    <?= formEditCepa($idweed, $nombre, $descripcion,$categoria, $categoriaId , $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento); ?>
+    <?= formEditCepa($nombre, $descripcion,$categoria, $categoriaId , $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento,$idweed); ?>
 </div>
 
 <?php

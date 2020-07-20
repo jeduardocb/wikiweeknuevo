@@ -802,7 +802,7 @@ function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria, $catego
   return $resultado;
 }
 
-function formEditCepa($idweed, $nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento)
+function formEditCepa($nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento, $idweed)
 {
   $con = conectar_bd();
   $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId
@@ -830,7 +830,7 @@ function formEditCepa($idweed, $nombre, $descripcion, $categoria, $categoriaId, 
         </div>
         <div class="form-group">
             <label>Terpenos</label>
-            <?= getTerpenos() ?>
+            '. getEditTerpenos($idweed).'
         </div>
 
         <div class="input-group">
@@ -853,31 +853,14 @@ function formEditCepa($idweed, $nombre, $descripcion, $categoria, $categoriaId, 
         <div class="form-group">
             <label>Crecimiento</label>
             <label for="sel1">Dificultad:</label>
-            <select class="form-control" id="dificultad" name="dificultad" required>
-                <option value="facil">Facil</option>
-                <option value="moderado">Moderado</option>
-                <option value="dificil">Dificil</option>
-            </select>
+            '.crear_selectDificultad($dificultad).'
 
             <label for="sel1">Altura (pulgadas):</label>
-            <select class="form-control" id="altura" name="altura" required>
-                <option value="< 30">
-                    < 30</option> <option value="30 - 78">30 - 78
-                </option>
-                <option value="> 78">> 78</option>
-            </select>
+            '. crear_selectAltura($altura).'
             <label for="sel1">Rendimiento (Oz/Ft)^2:</label>
-            <select class="form-control" id="rendimiento" name="rendimiento" required>
-                <option value="0.5 - 1">0.5 - 1</option>
-                <option value="1 - 3">1 - 3</option>
-                <option value="3 - 6">3 - 6</option>
-            </select>
+            '.crear_selectRendimiento($rendimiento).'
             <label for="sel1">Florecimiento (En Semanas):</label>
-            <select class="form-control" id="florecimiento" name="florecimiento" required>
-                <option value="7 - 9">7 - 9</option>
-                <option value="10 - 12">10 - 12</option>
-                <option value="> 12">> 12</option>
-            </select>
+            '. crear_selectFlorecimiento($florecimiento).'
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Archivos</label>
@@ -888,41 +871,368 @@ function formEditCepa($idweed, $nombre, $descripcion, $categoria, $categoriaId, 
     </form>';
 }
 
+function editarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $rendimiento, $florecimiento, $id_categoria, $nombre, $descripcion, $terpenos, $porcentajes, $nombres_arch, $archivos)
+{
+
+  if ($cbdmax == "") {
+    $cbdmax = 0;
+  }
+  if ($thcmax == "") {
+    $thcmax = 0;
+  }
+  $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
+  if ($con->connect_errno) {
+    printf("Conexión fallida: %s\n", $con->connect_error);
+    exit();
+  }
+  $auxiliar = 0;
+  $count = count($porcentajes);
+
+  try {
+    $con->autocommit(false);
+    $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+    echo "entra al try<br>";
+    if (!($con->query("INSERT INTO cbd (min,max) VALUES($cbdmin,$cbdmax)"))) {
+      throw new Exception("no jala cbd");
+    }
+
+    echo "bloque cbd<br>";
+    if (!(mysqli_fetch_assoc($con->query("SELECT id_cbd FROM cbd ORDER BY id_cbd DESC LIMIT 1")))) {
+      throw new Exception("no jala id_cbd");
+    } else {
+      $id_cbd = mysqli_fetch_assoc($con->query("SELECT id_cbd FROM cbd ORDER BY id_cbd DESC LIMIT 1"));
+      $id_cbd = $id_cbd["id_cbd"];
+    }
+
+    if (!($con->query("INSERT INTO thc (min,max) VALUES($thcmin,$thcmax)"))) {
+      throw new Exception("no jala thc");
+    }
+
+    if (!(mysqli_fetch_assoc($con->query("SELECT id_thc FROM thc ORDER BY id_thc DESC LIMIT 1")))) {
+      throw new Exception("no jala id_thc");
+    } else {
+      $id_thc = mysqli_fetch_assoc($con->query("SELECT id_thc FROM thc ORDER BY id_thc DESC LIMIT 1"));
+      $id_thc = $id_thc["id_thc"];
+    }
+
+    echo "bloque thc<br>";
+
+    if (!($con->query("INSERT INTO crecimiento (dificultad,altura,rendimiento,florecimiento) VALUES ('$dificultad','$altura','$rendimiento','$florecimiento')"))) {
+      throw new Exception("no jala crecimiento");
+    }
+
+    if (!(mysqli_fetch_assoc($con->query("SELECT id_crecimiento FROM crecimiento ORDER BY id_crecimiento DESC LIMIT 1")))) {
+      throw new Exception("no jala id_crecimiento");
+    } else {
+      $id_crecimiento = mysqli_fetch_assoc($con->query("SELECT id_crecimiento FROM crecimiento ORDER BY id_crecimiento DESC LIMIT 1"));
+      $id_crecimiento = $id_crecimiento["id_crecimiento"];
+    }
+
+    echo "bloque crecimiento<br>";
+
+    if (!($con->query("INSERT INTO weed (id_categoria,id_crecimiento,id_cbd,id_thc,nombre,descripcion) values ($id_categoria,$id_crecimiento,$id_cbd,$id_thc,'$nombre','$descripcion')"))) {
+      throw new Exception("no jala weed");
+    }
+
+    if (!(mysqli_fetch_assoc($con->query("SELECT id FROM weed ORDER BY id DESC LIMIT 1")))) {
+      throw new Exception("no jala id_weed");
+    } else {
+      $id_weed = mysqli_fetch_assoc($con->query("SELECT id FROM weed ORDER BY id DESC LIMIT 1"));
+      $id_weed = $id_weed["id"];
+    }
+
+    echo "bloque weed<br>";
+
+    for ($i = 0; $i < $count; $i++) {
+      if ($porcentajes[$i] != '') {
+        $ter = $terpenos[$auxiliar];
+        $por = $porcentajes[$i];
+        if (!($con->query("INSERT INTO weed_terpenos (id_weed, id_terpeno, porcentaje) values ($id_weed, $ter, $por)"))) {
+          throw new Exception("no jala weed_terpenos");
+        }
+        $auxiliar++;
+      }
+    }
+
+    echo "bloque weed_terpenos<br>";
+    for ($i = 0; $i < count($nombres_arch); $i++) {
+      $newFilePath = "images/cepas/" . $nombres_arch[$i];
+      // Check if file already exists
+      if (file_exists($newFilePath)) {
+        echo "Sorry, file already exists.";
+        throw new Exception("no jala ya existe la foto");
+      }
+      echo $archivos['upload']['name'][$i];
+      if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
+        if (!($con->query("INSERT INTO fotos (id_weed, nombre) values ($id_weed, '$nombres_arch[$i]')"))) {
+          throw new Exception("no jala nombre foto bd");
+        }
+      } else {
+        throw new Exception("no jala subir fotos");
+      }
+    }
+    echo "bloque fotos<br>";
+    echo $con->commit() . "<br>";
+    echo $con->autocommit(true) . "<br>";
+
+    $con->close();
+    $_SESSION["mensaje"] = true;
+    header('location: ./addCepa.php');
+    echo "fin commit<br>";
+  } catch (Exception $e) {
+    $con->rollback();
+    $_SESSION["mensaje"] = false;
+    //header('location: ./addCepa.php');
+    //echo 'Something fails: ',  $e->getMessage(), "\n";
+    //echo "errror, falio ferga<br>";
+  }
+}
+
 function getListadoCepas()
 {
   $con = conectar_bd();
-  $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, fotos.nombre
+  $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, (SELECT fotos.nombre FROM fotos WHERE fotos.nombre LIKE '%1%'AND fotos.id_weed = weed.id) AS foto
           FROM weed, fotos
-          WHERE weed.id = fotos.id_weed;";
+          WHERE weed.id = fotos.id_weed
+          group by weed.nombre";
   $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-      $idweed =  $row["weedId"];
-      echo '<tr>
-                <td data-th="Product">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h4 class="nomargin">' . $row['weedNombre'] . '</h4>
-                        </div>
-                        <div class="col-sm-6 hidden-xs">
-                          <img src="images/cepas/' . $row["nombre"] . '" style="with: 20px;" class="img-responsive" />
-                        </div>
-                    </div>
-                </td>
-                <td class="actions" data-th="">
-                <form id="' . $row["weedId"] . '" action="editCepa.php" method="get">
-						    <input type="hidden" name="idweed" value="' . $row["weedId"] . '">
-                      <a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon">
-                        <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
-                      </a>
-                    <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                </form>
-                </td>
-            </tr>';
+
+      if ($row["foto"] != null) {
+        $idweed =  $row["weedId"];
+        echo '<tr>
+                  <td data-th="Product">
+                      <div class="row">
+                          <div class="col-sm-6">
+                              <h4 class="nomargin">' . $row['weedNombre'] . '</h4>
+                          </div>
+                          <div class="col-sm-6 hidden-xs">
+                            <img src="images/cepas/' . $row["foto"] . '" style="with: 20px;" class="img-responsive" />
+                          </div>
+                      </div>
+                  </td>
+                  <td class="actions" data-th="">
+                  <form id="' . $row["weedId"] . '" action="editCepa.php" method="get">
+                  <input type="hidden" name="idweed" value="' . $row["weedId"] . '">
+                        <a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon">
+                          <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
+                        </a>
+                      <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                  </form>
+                  </td>
+              </tr>';
+      }else{
+        $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, (SELECT fotos.nombre FROM fotos WHERE fotos.id_weed = weed.id LIMIT 1) AS foto
+          FROM weed, fotos
+          WHERE weed.id = fotos.id_weed
+          group by weed.nombre";
+        $result = $con->query($sql);
+        $idweed =  $row["weedId"];
+        echo '<tr>
+                  <td data-th="Product">
+                      <div class="row">
+                          <div class="col-sm-6">
+                              <h4 class="nomargin">' . $row['weedNombre'] . '</h4>
+                          </div>
+                          <div class="col-sm-6 hidden-xs">
+                            <img src="images/cepas/' . $row["foto"] . '" style="with: 20px;" class="img-responsive" />
+                          </div>
+                      </div>
+                  </td>
+                  <td class="actions" data-th="">
+                  <form id="' . $row["weedId"] . '" action="editCepa.php" method="get">
+                  <input type="hidden" name="idweed" value="' . $row["weedId"] . '">
+                        <a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon">
+                          <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
+                        </a>
+                      <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                  </form>
+                  </td>
+              </tr>';
+      }
     }
   }
   desconectar_bd($con);
 }
+
+function crear_selectDificultad($dificultad){
+
+    if ($dificultad == "facil") {
+
+      $resultado = '<select class="form-control" id="dificultad" name="dificultad" required>
+        <option value="facil" selected>Facil</option>
+        <option value="moderado">Moderado</option>
+        <option value="dificil">Dificil</option>
+      </select>';
+    }
+
+    if ($dificultad == "moderado") {
+
+    $resultado = '<select class="form-control" id="dificultad" name="dificultad" required>
+        <option value="facil" >Facil</option>
+        <option value="moderado" selected>Moderado</option>
+        <option value="dificil">Dificil</option>
+      </select>';
+    }
+    if ($dificultad == "dificil") {
+    $resultado = '<select class="form-control" id="dificultad" name="dificultad" required>
+        <option value="facil" >Facil</option>
+        <option value="moderado">Moderado</option>
+        <option value="dificil" selected>Dificil</option>
+      </select>';
+    }
+
+
+  return $resultado;
+}
+
+function crear_selectAltura($altura)
+{
+
+  if ($altura == "< 30") {
+
+    $resultado = '<select class="form-control" id="altura" name="altura" required>
+                    <option value="< 30" selected>< 30</option>
+                    <option value="30 - 78">30 - 78</option>
+                    <option value="> 78">> 78</option>
+                  </select>';
+  }
+
+  if ($altura == "30 - 78") {
+
+    $resultado = '<select class="form-control" id="altura" name="altura" required>
+                    <option value="< 30">< 30</option>
+                    <option value="30 - 78" selected>30 - 78</option>
+                    <option value="> 78">> 78</option>
+                  </select>';
+  }
+  if ($altura == "> 78") {
+    $resultado = '<select class="form-control" id="altura" name="altura" required>
+                    <option value="< 30">< 30</option>
+                    <option value="30 - 78">30 - 78</option>
+                    <option value="> 78" selected>> 78</option>
+                  </select>';
+  }
+
+
+  return $resultado;
+}
+
+function crear_selectRendimiento($rendimiento)
+{
+
+  if ($rendimiento == "0.5 - 1") {
+
+    $resultado = '<select class="form-control" id="rendimiento" name="rendimiento" required>
+                  <option value="0.5 - 1" selected>0.5 - 1</option>
+                  <option value="1 - 3">1 - 3</option>
+                  <option value="3 - 6">3 - 6</option>
+                </select>';
+  }
+
+  if ($rendimiento == "1 - 3") {
+
+    $resultado = '<select class="form-control" id="rendimiento" name="rendimiento" required>
+                  <option value="0.5 - 1">0.5 - 1</option>
+                  <option value="1 - 3" selected>1 - 3</option>
+                  <option value="3 - 6">3 - 6</option>
+                </select>';
+  }
+  if ($rendimiento == "3 - 6") {
+    $resultado =
+    '<select class="form-control" id="rendimiento" name="rendimiento" required>
+                  <option value="0.5 - 1">0.5 - 1</option>
+                  <option value="1 - 3">1 - 3</option>
+                  <option value="3 - 6" selected>3 - 6</option>
+                </select>';
+  }
+
+
+  return $resultado;
+}
+
+function crear_selectFlorecimiento($florecimiento)
+{
+
+  if ($florecimiento == "7 - 9") {
+
+    $resultado = '<select class="form-control" id="florecimiento" name="florecimiento" required>
+                  <option value="7 - 9" selected>7 - 9</option>
+                  <option value="10 - 12">10 - 12</option>
+                  <option value="> 12">> 12</option>
+              </select>';
+  }
+
+  if ($florecimiento == "10 - 12") {
+
+    $resultado = '<select class="form-control" id="florecimiento" name="florecimiento" required>
+                    <option value="7 - 9">7 - 9</option>
+                    <option value="10 - 12" selected>10 - 12</option>
+                    <option value="> 12">> 12</option>
+                </select>';
+  }
+  if ($florecimiento == "> 12") {
+    $resultado =
+    '<select class="form-control" id="florecimiento" name="florecimiento" required>
+                    <option value="7 - 9">7 - 9</option>
+                    <option value="10 - 12">10 - 12</option>
+                    <option value="> 12" selected>> 12</option>
+                </select>';
+  }
+
+
+  return $resultado;
+}
+
+function getEditTerpenos($idweed)
+{
+  $conion_bd = conectar_bd();
+
+
+  $resultado = '';
+
+  $bandera=0;
+  $consulta2 = "SELECT id_terpeno, nombre FROM terpenos";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row2 = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+  
+  $consulta = "SELECT weed_terpenos.id_terpeno,weed_terpenos.porcentaje,terpenos.nombre
+              FROM weed_terpenos,terpenos 
+              WHERE id_weed =$idweed AND weed_terpenos.id_terpeno=terpenos.id_terpeno;";
+  $resultados = $conion_bd->query($consulta);
+  while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
+
+      if ($row2["id_terpeno"] == $row["id_terpeno"]) {
+
+        $resultado .= '<div class="checkbox" id="checkterpenos">
+          <label>
+            <input class="terpenos" type="checkbox" name="terpenos[]" idt="' . $row["id_terpeno"] . '"  value="' . $row["id_terpeno"] . '" checked>' . $row["nombre"] . '
+          </label>
+          <input type="number" name="porcentajes[]" class="form-control" id="' . $row["id_terpeno"] . '" value="'.$row["porcentaje"].'" placeholder="5" min="1" max="100">
+        </div>';
+        $bandera=1;
+      }
+    
+    }
+    if($bandera==0){
+      $resultado .= '<div class="checkbox" id="checkterpenos">
+          <label>
+            <input class="terpenos" type="checkbox" name="terpenos[]" idt="' . $row2["id_terpeno"] . '"  value="' . $row2["id_terpeno"] . '">' . $row2["nombre"] . '
+          </label>
+          <input type="number" name="porcentajes[]" class="form-control" id="' . $row2["id_terpeno"] . '" placeholder="5" min="1" max="100">
+        </div>';
+    }
+    $bandera=0;
+
+  }
+
+  desconectar_bd($conion_bd);
+  return $resultado;
+}
+
+
 ?>
