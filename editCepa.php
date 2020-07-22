@@ -49,7 +49,7 @@ if (isset($_GET["idweed"])) {
 
 ?>
 <div class="container">
-    <?= formEditCepa($nombre, $descripcion,$categoria, $categoriaId , $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento,$idweed); ?>
+    <?= formEditCepa($nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento, $idweed); ?>
 </div>
 
 <?php
@@ -60,4 +60,31 @@ include("_footer.html");
         document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight + 'px';
     }
     setHeight('descripcion');
+
+    function terpenos() {
+        let coleccionTerpenos = document.getElementsByClassName("terpenos");
+        let contador = 0;
+        for (let i = 0; i < coleccionTerpenos.length; i++) {
+            console.log(coleccionTerpenos[i]);
+            let aux = coleccionTerpenos[i].getAttribute("idt");
+
+            if (coleccionTerpenos[i].checked) {
+                console.log(aux);
+                $("#" + aux).prop("disabled", false);
+                //coleccionTerpenos[i].disabled = false;
+                $("#" + aux).prop("required", true);
+                contador++;
+            } else {
+                $("#" + aux).prop("disabled", true);
+                //coleccionTerpenos[i].disabled = true;
+                $("#" + aux).prop("required", false);
+            }
+        }
+    }
+
+    let x = document.getElementsByClassName("terpenos");
+    terpenos();
+    for (var i = 0; i < x.length; i++) {
+        x[i].addEventListener('click', terpenos);
+    }
 </script>

@@ -804,29 +804,21 @@ function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria, $catego
 
 function formEditCepa($nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento, $idweed)
 {
-  $con = conectar_bd();
-  $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId
-          FROM weed WHERE weed.id = $idweed";
-  $result = $con->query($sql);
 
-  if ($result->num_rows > 0) {
-    // output data of each row
-    while ($row = $result->fetch_assoc()) {
-    }
-  }
-  echo '<form id="addCepa" action="controlador_editCepa.php" method="GET" enctype="multipart/form-data">
+  echo '<form id="addCepa" action="controlador_editCepa.php" method="POST" enctype="multipart/form-data">
         <div class="form-group ">
             <label for="usr">Nombre:</label>
-            <input type="text" class="form-control " id="name" name="name" value="' . $nombre . '" required>
+            <input type="text" class="form-control " id="name" name="name" value="'.$nombre.'" required>
+            <input type="hidden" class="form-control " id="idWeed" name="idWeed" value="'.$idweed.'">
         </div>
         <div class="form-group ">
             <label for="usr">Descripcion:</label>
-            <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>' . $descripcion . '</textarea>
+            <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>'.$descripcion.'</textarea>
         </div>
 
         <div class="form-group">
             <label>Categoria</label>
-            ' . crear_selectEdit("id", "nombre", "categoria", $categoria, $categoriaId) . '
+            ' . crear_selectEdit("id", "nombre", "categoria", $categoria, $categoriaId).'
         </div>
         <div class="form-group">
             <label>Terpenos</label>
@@ -1232,6 +1224,67 @@ function getEditTerpenos($idweed)
 
   desconectar_bd($conion_bd);
   return $resultado;
+}
+
+function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $florecimiento, $rendimiento, $terpenos, $porcentajes){
+$con = conectar_bd();
+$auxiliar = 0;
+$dml = "UPDATE weed
+SET nombre = '$nombre', descripcion = '$descripcion', id_categoria = '$id_categoria'
+WHERE id = $idweed;";
+modifyDb($dml);
+
+  $crecimiento = "SELECT id_crecimiento FROM weed WHERE id = $idweed";
+  $result = $con->query($crecimiento);
+  $id_crecimiento = mysqli_fetch_assoc($result);
+
+  $id_crecimiento = $id_crecimiento["id_crecimiento"];
+
+  $dml = "UPDATE crecimiento
+  SET dificultad = '$dificultad', altura = '$altura', rendimiento = '$rendimiento', florecimiento = '$florecimiento'
+  WHERE id_crecimiento = $id_crecimiento;";
+  modifyDb($dml);
+
+  $cbd = "SELECT id_cbd FROM weed WHERE id = $idweed";
+  $result = $con->query($cbd);
+  $id_cbd = mysqli_fetch_assoc($result);
+
+  $id_cbd = $id_cbd["id_crecimiento"];
+
+  $dml = "UPDATE cbd
+  SET min = $cbdmin, max = $cbdmax
+  WHERE id_cbd = $id_cbd;";
+  modifyDb($dml);
+
+  $thc = "SELECT id_thc FROM weed WHERE id = $idweed";
+  $result = $con->query($thc);
+  $id_thc = mysqli_fetch_assoc($result);
+
+  $id_thc = $id_thc["id_crecimiento"];
+
+  $dml = "UPDATE thc
+  SET min = $thcmin, max = $thcmax
+  WHERE id_thc = $id_cbd;";
+  modifyDb($dml);
+
+  $dml = "DELETE FROM weed_terpenos
+          WHERE id_Weed = $idweed";
+
+  if (modifyDb($dml) != 0) {
+    
+    $count = count($porcentajes);
+    for ($i = 0; $i < $count; $i++) {
+
+      if ($porcentajes[$i] != '') {
+        $terpenos[$auxiliar];
+        $porcentajes[$i];
+        $dml = "INSERT INTO weed_terpenos (id_weed,id_terpeno,porcentaje) VALUES ($idweed, $terpenos[$auxiliar], $porcentajes[$i]);";
+        insertIntoDb($dml, $idweed, $terpenos[$auxiliar], $porcentajes[$i]);
+        $auxiliar++;
+      }
+
+    }
+  }
 }
 
 
