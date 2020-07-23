@@ -49,7 +49,8 @@ if (isset($_GET["idweed"])) {
 
 ?>
 <div class="container">
-    <?= formEditCepa($nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento, $idweed); ?>
+    <?= formEditCepa($nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento, $idweed);
+    tablaFotosEditCepa($idweed); ?>
 </div>
 
 <?php

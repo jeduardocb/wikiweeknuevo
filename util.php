@@ -852,13 +852,13 @@ function formEditCepa($nombre, $descripcion, $categoria, $categoriaId, $minCBD, 
             <label for="sel1">Rendimiento (Oz/Ft)^2:</label>
             '.crear_selectRendimiento($rendimiento).'
             <label for="sel1">Florecimiento (En Semanas):</label>
-            '. crear_selectFlorecimiento($florecimiento).'
+            '. crear_selectFlorecimiento($florecimiento). '
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Archivos</label>
-            <input type="file" class="form-control" id="upload" name="upload[]" multiple required>
+            <input type="file" class="form-control" id="archivo[]" name="archivo[]" multiple="">
         </div>
-        <input type="submit" value="Upload Image" name="submit">
+        <input type="submit" value="Actualizar" name="submit">
 
     </form>';
 }
@@ -1149,7 +1149,6 @@ function crear_selectRendimiento($rendimiento)
 
 function crear_selectFlorecimiento($florecimiento)
 {
-
   if ($florecimiento == "7 - 9") {
 
     $resultado = '<select class="form-control" id="florecimiento" name="florecimiento" required>
@@ -1168,8 +1167,7 @@ function crear_selectFlorecimiento($florecimiento)
                 </select>';
   }
   if ($florecimiento == "> 12") {
-    $resultado =
-    '<select class="form-control" id="florecimiento" name="florecimiento" required>
+    $resultado ='<select class="form-control" id="florecimiento" name="florecimiento" required>
                     <option value="7 - 9">7 - 9</option>
                     <option value="10 - 12">10 - 12</option>
                     <option value="> 12" selected>> 12</option>
@@ -1226,7 +1224,7 @@ function getEditTerpenos($idweed)
   return $resultado;
 }
 
-function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $florecimiento, $rendimiento, $terpenos, $porcentajes){
+function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $florecimiento, $rendimiento, $terpenos, $porcentajes, $nombres_arch){
 $con = conectar_bd();
 $auxiliar = 0;
 $dml = "UPDATE weed
@@ -1249,7 +1247,7 @@ modifyDb($dml);
   $result = $con->query($cbd);
   $id_cbd = mysqli_fetch_assoc($result);
 
-  $id_cbd = $id_cbd["id_crecimiento"];
+  $id_cbd = $id_cbd["id_cbd"];
 
   $dml = "UPDATE cbd
   SET min = $cbdmin, max = $cbdmax
@@ -1260,7 +1258,7 @@ modifyDb($dml);
   $result = $con->query($thc);
   $id_thc = mysqli_fetch_assoc($result);
 
-  $id_thc = $id_thc["id_crecimiento"];
+  $id_thc = $id_thc["id_thc"];
 
   $dml = "UPDATE thc
   SET min = $thcmin, max = $thcmax
@@ -1268,7 +1266,9 @@ modifyDb($dml);
   modifyDb($dml);
 
   $dml = "DELETE FROM weed_terpenos
-          WHERE id_Weed = $idweed";
+          WHERE id_weed = $idweed";
+
+          //////////////////////////////////// VERIFICAR IF
 
   if (modifyDb($dml) != 0) {
     
@@ -1278,11 +1278,66 @@ modifyDb($dml);
       if ($porcentajes[$i] != '') {
         $terpenos[$auxiliar];
         $porcentajes[$i];
-        $dml = "INSERT INTO weed_terpenos (id_weed,id_terpeno,porcentaje) VALUES ($idweed, $terpenos[$auxiliar], $porcentajes[$i]);";
+        $dml = "INSERT INTO weed_terpenos (id_weed, id_terpeno, porcentaje) VALUES (?, ?, ?);";
         insertIntoDb($dml, $idweed, $terpenos[$auxiliar], $porcentajes[$i]);
         $auxiliar++;
       }
 
+    }
+  }
+
+    $count = count($nombres_arch);
+    for ($i = 0; $i < $count; $i++) {
+
+        $dml = "INSERT INTO fotos (id_weed, nombre) VALUES (?, ?);";
+        insertIntoDb($dml, $idweed, $nombres_arch[$i]);
+
+    }
+}
+
+function tablaFotosEditCepa($idweed){
+
+  $con = conectar_bd();
+  $sql = "SELECT *
+          FROM fotos
+          WHERE id_weed = $idweed";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+
+      if ($row["nombre"] != null) {
+        $idFoto =  $row["id"];
+
+  echo '<table class="table">
+          <thead>
+              <th>foto</th>
+              <th>icono</th>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>
+                    <div class="row">
+                        <div class="col-sm-6 hidden-xs">
+                          <img src="images/cepas/' . $row["nombre"] . '" style="with: 20px;" class="img-responsive" />
+                        </div>
+                    </div>
+                  </td>
+                  <td>
+                    <form id="' . $row["id"] . '" action="borrarFotos.php" method="post">
+                    <input type="hidden" name="idfoto" value="' . $row["id"] . '">
+                    <input type="hidden" name="idweed" value="' . $row["id_weed"] . '">
+                        <a href="javascript:{}" onclick="document.getElementById(' . "'$idFoto'" . ').submit();" class="icon">
+                          <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                        </a>
+                      
+                  </form>
+                  </td>
+              </tr>
+          </tbody>
+      </table>';
+      }
     }
   }
 }
