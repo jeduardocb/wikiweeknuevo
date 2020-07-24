@@ -987,6 +987,7 @@ function getListadoCepas()
   $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, (SELECT fotos.nombre FROM fotos WHERE fotos.nombre LIKE '%1%'AND fotos.id_weed = weed.id) AS foto
           FROM weed, fotos
           WHERE weed.id = fotos.id_weed
+          AND weed.estado > 0
           group by weed.nombre";
   $result = $con->query($sql);
 
@@ -1008,19 +1009,22 @@ function getListadoCepas()
                       </div>
                   </td>
                   <td class="actions" data-th="">
-                  <form id="' . $row["weedId"] . '" action="editCepa.php" method="get">
+                  <form id="' . $row["weedId"] . '" action="editCepa.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idweed" value="' . $row["weedId"] . '">
                         <a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon">
                           <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
                         </a>
-                      <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                   </form>
-                  </td>
+                  <a href="borrarCepa.php?idweed='.$row["weedId"].'" class="icon" style="display: inline-block">
+                    <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                  </a>
+                </td>
               </tr>';
       }else{
         $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, (SELECT fotos.nombre FROM fotos WHERE fotos.id_weed = weed.id LIMIT 1) AS foto
           FROM weed, fotos
           WHERE weed.id = fotos.id_weed
+          AND weed.estado > 0
           group by weed.nombre";
         $result = $con->query($sql);
         $idweed =  $row["weedId"];
@@ -1036,13 +1040,15 @@ function getListadoCepas()
                       </div>
                   </td>
                   <td class="actions" data-th="">
-                  <form id="' . $row["weedId"] . '" action="editCepa.php" method="get">
+                  <form id="' . $row["weedId"] . '" action="editCepa.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idweed" value="' . $row["weedId"] . '">
                         <a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon">
                           <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
                         </a>
-                      <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                  </form>
+                    </form>
+                      <a href="borrarCepa.php?idweed=' . $row["weedId"] . '" class="icon" style="display: inline-block">
+                        <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                      </a>
                   </td>
               </tr>';
       }
