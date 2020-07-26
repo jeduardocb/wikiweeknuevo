@@ -753,13 +753,18 @@ function getListadoCategorias()
                 <input type="text" class="form-control" name="' . $contador . '"  value="' . $row["nombre"] . '">
                <input type="hidden" class="form-control" name="id' . $contador . '"  value="' . $row["id"] . '">
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <input type="text" class="form-control" name="descripcion' . $contador . '"  value="' . $row["descripcion"] . '">
                
             </div>
             <div class="col-md-2">
+                <img src="images/categoria/'.$row["nombre_foto"].'" width="100px">
+               
+            </div>
+            <div class="col-md-2">
+            <a class=" btn btn-primary btn-sm" href="vista_editarImagenCategoria.php?id_categoria=' . $row["id"] . '">Editar Imagen</a>
+            
             <a class=" btn btn-danger btn-sm" href="controlador_editarCategoria.php?id_categoria=' . $row["id"] . '"><i class="fa fa-trash" ></i></a>
-
             </div>
         </div>
       ';
@@ -1351,5 +1356,10 @@ function tablaFotosEditCepa($idweed){
   }
 }
 
+function editarImagenCategoria($categoria,$nombre){
+   $dml="UPDATE categoria SET nombre_foto='$nombre' WHERE id=$categoria;";
+    modifyDb($dml);
+        
+}
 
 ?>
