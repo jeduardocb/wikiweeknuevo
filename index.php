@@ -208,7 +208,6 @@ include_once("util.php");
 		</div>
 	</div>
 </div>
-
 <?php
 include("_footer.html");
 ?>
