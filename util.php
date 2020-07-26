@@ -45,16 +45,19 @@ function getCategorias(){
 		while ($row = $result->fetch_assoc()) {
       $id = $row["id"];
 			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
-			echo '<div class="col-md-3">
-					<form id="'.$row["id"].'" action="catalogo.php" method="post">
-						<input type="hidden" name="idcategoria" value="'.$row["id"]. '">
-                                  <input type="image" src="images/categoria/' .$row["nombre_foto"]. '" alt="Submit Form" style="max-width:100%;" height="250" width="250"/>
-									<div class="caption">
-										<h4><a href="javascript:{}" onclick="document.getElementById(' . "'$id'" . ').submit();">'.$row["nombre"].'</a></h4>
-										<p>Nullam Condimentum Nibh Etiam Sem</p>
-									</div>
-						</form>
-					</div>';
+      echo '
+            <div class="product-card">
+              <div class="product-tumb">
+                <form id="'.$row["id"].'" action="catalogo.php" method="post">
+                  <input type="hidden" name="idcategoria" value="'.$row["id"]. '">
+                        <input type="image" src="images/categoria/' .$row["nombre_foto"]. '" alt="Submit Form" style="max-width:100%;" height="250" width="250"/>                     
+              </div>
+                        <div class="product-details">
+                          <h4><a href="javascript:{}" onclick="document.getElementById(' . "'$id'" . ').submit();">'.$row["nombre"].'</a></h4>
+                          <p>Nullam Condimentum Nibh Etiam Sem</p>
+                        </div>
+                  </form>
+              </div>';
 		}
 	} else {
 		echo "0 results";
