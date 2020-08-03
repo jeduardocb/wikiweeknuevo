@@ -4,17 +4,17 @@ include("_navbar.html");
 include_once("util.php");
 session_start();
 
-if(isset($_SESSION["mensaje"])){
-    if($_SESSION["mensaje"] == true){
-        echo '<div class="alert alert-success text-center">
+if (isset($_SESSION["mensaje"])) {
+  if ($_SESSION["mensaje"] == true) {
+    echo '<div class="alert alert-success text-center">
                 <strong>La Cepa se ha subido correctamente</strong> 
               </div>';
-    }else{
-        echo '<div class="alert alert-danger text-center">
+  } else {
+    echo '<div class="alert alert-danger text-center">
                 <strong>Hubo un error al subir la Cepa</strong> 
             </div>';
-    }
-    $_SESSION["mensaje"] = null;
+  }
+  $_SESSION["mensaje"] = null;
 }
 
 ?>
@@ -40,9 +40,9 @@ if(isset($_SESSION["mensaje"])){
 
     <div class="input-group">
       <label>CBD</label>
-         <p >Mínimo:</p>
+      <p>Mínimo:</p>
       <input type="number" id="cbdmin" name="cbdmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" required>
-        <p >Máximo:</p>
+      <p>Máximo:</p>
       <input type="number" id="cbdmax" name="cbdmax" class="form-control" placeholder="10" min="0" max="100" step="0.01">
     </div>
 
@@ -50,9 +50,9 @@ if(isset($_SESSION["mensaje"])){
     <div class="input-group">
 
       <label>THC</label>
-    <p >Mínimo:</p>
+      <p>Mínimo:</p>
       <input type="number" id="thcmin" name="thcmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" required>
-        <p >Máximo:</p>
+      <p>Máximo:</p>
       <input type="number" id="thcmax" name="thcmax" class="form-control" placeholder="10" min="0" max="100" step="0.01">
     </div>
     <div class="form-group">
@@ -85,17 +85,38 @@ if(isset($_SESSION["mensaje"])){
       </select>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label">Archivos</label>
-        <input type="file" class="form-control" id="upload" name="upload[]" multiple required>
+      <label class="col-sm-2 control-label">Archivos</label>
+      <input type="file" class="form-control" id="upload" name="upload[]" multiple required>
     </div>
-        <input type="submit" value="Agregar Cepa" name="submit">
-    
+    <input type="submit" value="Agregar Cepa" name="submit">
+
   </form>
 </div>
 
 <?php
 include("_footer.html");
 ?>
-<!--<script type="text/javascript">
-  document.getElementById("add-cepa").onclick = addCepa;
-</script>-->
+<script>
+
+  function terpenos() {
+    let coleccionTerpenos = document.getElementsByClassName("terpenos");
+    for (let i = 0; i < coleccionTerpenos.length; i++) {
+      console.log(coleccionTerpenos[i]);
+      let aux = coleccionTerpenos[i].getAttribute("idt");
+      if (coleccionTerpenos[i].checked) {
+        console.log(aux);
+        $("#" + aux).prop("disabled", false);
+        $("#" + aux).prop("required", true);
+      } else {
+        $("#" + aux).prop("disabled", true);
+        $("#" + aux).prop("required", false);
+      }
+    }
+  }
+
+  let x = document.getElementsByClassName("terpenos");
+  terpenos();
+  for (var i = 0; i < x.length; i++) {
+    x[i].addEventListener('click', terpenos);
+  }
+</script>
