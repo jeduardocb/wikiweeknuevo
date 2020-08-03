@@ -162,7 +162,7 @@ include_once("util.php");
 		<div class="row">
 			<div class="display-t">
 				<div class="display-tc">
-					<div class="col-md-3 col-sm-6 animate-box">
+					<div class="col-md-4 col-sm-6 animate-box">
 						<div class="feature-center">
 							<span class="icon">
 								<i class="icon-eye"></i>
@@ -173,7 +173,7 @@ include_once("util.php");
 
 						</div>
 					</div>
-					<div class="col-md-3 col-sm-6 animate-box">
+					<div class="col-md-4 col-sm-6 animate-box">
 						<div class="feature-center">
 							<span class="icon">
 								<i class="icon-shopping-cart"></i>
@@ -183,24 +183,13 @@ include_once("util.php");
 							<span class="counter-label">Cepas</span>
 						</div>
 					</div>
-					<div class="col-md-3 col-sm-6 animate-box">
+					<div class="col-md-4 col-sm-6 animate-box">
 						<div class="feature-center">
 							<span class="icon">
 								<i class="icon-shop"></i>
 							</span>
 							<span class="counter js-counter" data-from="0" data-to="700" data-speed="5000" data-refresh-interval="50">1</span>
 							<span class="counter-label">Categorias</span>
-						</div>
-					</div>
-					<div class="col-md-3 col-sm-6 animate-box">
-						<div class="feature-center">
-							<span class="icon">
-								<i class="icon-clock"></i>
-							</span>
-
-							<span class="counter js-counter" data-from="0" data-to="5605" data-speed="5000" data-refresh-interval="50">1</span>
-							<span class="counter-label">Hours Spent</span>
-
 						</div>
 					</div>
 				</div>

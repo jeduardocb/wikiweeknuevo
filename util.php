@@ -432,7 +432,7 @@ function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $r
 
     echo "bloque crecimiento<br>";
 
-    if (!($con->query("INSERT INTO weed (id_categoria,id_crecimiento,id_cbd,id_thc,nombre,descripcion) values ($id_categoria,$id_crecimiento,$id_cbd,$id_thc,'$nombre','$descripcion')"))) {
+    if (!($con->query("INSERT INTO weed (id_categoria,id_crecimiento,id_cbd,id_thc,nombre,descripcion, estado) values ($id_categoria,$id_crecimiento,$id_cbd,$id_thc,'$nombre','$descripcion', 1)"))) {
       throw new Exception("no jala weed");
     }
 
@@ -606,6 +606,7 @@ function getCepaCarrusel(){
   $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, weed.descripcion, categoria.nombre AS catNombre
           FROM weed, categoria
           WHERE weed.id_categoria = categoria.id
+          AND estado = 1
           ORDER BY RAND ( ) LIMIT 5";
   $result = $con->query($sql);
 
@@ -651,6 +652,7 @@ function getCepasDestacadas(){
   $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, weed.descripcion, categoria.nombre AS catNombre
           FROM weed, categoria
           WHERE weed.id_categoria = categoria.id
+          AND estado = 1
           ORDER BY RAND ( ) LIMIT 6";
   $result = $con->query($sql);
 
