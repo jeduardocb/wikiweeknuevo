@@ -9,7 +9,7 @@ include_once("util.php");
     <a href="addTerpeno.php"> <button type="button" class="btn btn-info">Agregar Terpeno</button></a>
     <a href="addCategoria.php"> <button type="button" class="btn btn-info">Agregar Categoria</button></a>
     <a href="listadoCepa.php"> <button type="button" class="btn btn-info">Modificar Cepas</button></a>
-
+    <a href="agregar_blog.php"> <button type="button" class="btn btn-info">Agregar Blog</button></a>
 </div>
 
 <?php

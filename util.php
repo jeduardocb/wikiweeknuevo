@@ -477,18 +477,18 @@ function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $r
       echo $con->commit() . "<br>";
      echo $con->autocommit(true)."<br>";
       
-      $con->close();
+      
       $_SESSION["mensaje"]=true;
       header('location: ./addCepa.php');
     echo "fin commit<br>";
     } catch (Exception $e) {
       $con->rollback();
       $_SESSION["mensaje"]=false;
-      //header('location: ./addCepa.php');
+      header('location: ./addCepa.php');
       //echo 'Something fails: ',  $e->getMessage(), "\n";
     //echo "errror, falio ferga<br>";
   }
-
+$con->close();
 }
 
 function getImagenesWeed($idweed)
@@ -1362,6 +1362,72 @@ function editarImagenCategoria($categoria,$nombre){
    $dml="UPDATE categoria SET nombre_foto='$nombre' WHERE id=$categoria;";
     modifyDb($dml);
         
+}
+
+function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos){
+    $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
+  if ($con->connect_errno) {
+    printf("Conexión fallida: %s\n", $con->connect_error);
+    exit();
+  }
+
+    
+  try {
+    $con->autocommit(false);
+    $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+    echo "entra al try<br>";
+      if (!($con->query("INSERT INTO blog (titulo,descripcion,fecha,id_categoria_blog) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria )"))) {
+      throw new Exception("error al insertar el blog");
+      }
+      
+      echo "bloque fotos<br>";
+      if (!(mysqli_fetch_assoc($con->query("SELECT id FROM blog ORDER BY id DESC LIMIT 1")))) {
+        throw new Exception("error al sacar el select de id blog");
+      }else{
+        $id_blog = mysqli_fetch_assoc($con->query("SELECT id FROM blog ORDER BY id DESC LIMIT 1"));
+        $id_blog = $id_blog["id"];
+      }
+      
+    
+    
+
+  
+    echo "bloque de fotos<br>";
+      for ($i=0; $i < count($nombres_arch); $i++) {
+        $newFilePath = "images/blog/" . $nombres_arch[$i];
+        // Check if file already exists
+        if (file_exists($newFilePath)) {
+          echo "Sorry, file already exists.";
+          throw new Exception("La foto ya existe");
+        }
+       //echo $archivos['upload']['name'][$i];
+        if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
+          if (!($con->query("INSERT INTO fotos_blog (id_blog,nombre) values ($id_blog, '$nombres_arch[$i]')"))) {
+               echo "INSERT INTO fotos_blog (id_blog,nombre) values ($id_blog, '$nombres_arch[$i]')";
+            throw new Exception("error al hacer el insert");
+          }
+        }else{
+          throw new Exception("error al cargar las fotos");
+        }
+      }
+    echo "bloque fotos<br>";
+      echo $con->commit() . "<br>";
+     echo $con->autocommit(true)."<br>";
+      
+     
+      $_SESSION["mensaje"]=true;
+      header('location: ./agregar_blog.php');
+    echo "fin commit<br>";
+    } catch (Exception $e) {
+      $con->rollback();
+      $_SESSION["mensaje"]=false;
+      header('location: ./agregar_blog.php');
+      echo 'Something fails: ',  $e->getMessage(), "\n";
+    //echo "errror, falio ferga<br>";
+  }
+
+     $con->close();
 }
 
 ?>

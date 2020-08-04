@@ -85,7 +85,7 @@ if (isset($_SESSION["mensaje"])) {
       </select>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Archivos</label>
+      <label class="col-sm-2 control-label">Fotografias:</label>
       <input type="file" class="form-control" id="upload" name="upload[]" multiple required>
     </div>
     <input type="submit" value="Agregar Cepa" name="submit">
