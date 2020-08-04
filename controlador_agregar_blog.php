@@ -6,6 +6,7 @@
     $nombre = "";
     $nombres = [];
     
+    var_dump($_FILES);
 
     $files = array_filter($_FILES['upload']['name']); //something like that to be used before processing files.
 
