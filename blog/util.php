@@ -60,23 +60,36 @@ function cortarDescripcion($text, $maxchar, $end = '...')
     return $output;
 }
 
-function getBlogs()
-{
+function getBlogs(){
     $con = conectar_bd();
 
-    $sql = "SELECT * FROM blog, categoria_blog WHERE blog.id_categoria_blog = categoria_blog.id LIMIT 3";
+    $sql = "SELECT blog.id, blog.titulo, blog.descripcion, blog.fecha, categoria_blog.nombre FROM blog, categoria_blog WHERE blog.id_categoria_blog = categoria_blog.id LIMIT 3";
     $result = $con->query($sql);
 
     if ($result->num_rows > 0) {
         // output data of each row
         while ($row = $result->fetch_assoc()) {
+
+
+            $idBlog = $row['id'];
+            $sql_imagenes = "SELECT fotos_blog.nombre FROM fotos_blog
+            WHERE fotos_blog.id_blog = $idBlog
+            LIMIT 1";
+            $result_imagenes = $con->query($sql_imagenes);
+            $imagen = mysqli_fetch_assoc($result_imagenes);
+
+            if ($result_imagenes->num_rows > 0) {
+                $img = $imagen['nombre'];
+            }
+
+            desconectar_bd($con);
 ?>
             <div class="row d-flex align-items-stretch" style="margin-bottom: 15px; margin-top: 15px;">
                 <div class="text col-lg-7">
                     <div class="text-inner d-flex align-items-center">
                         <div class="content">
                             <header class="post-header">
-                                <div class="category"><a href="#"><?= $row['nombre'] ?></a></div><a href="post.html">
+                                <div class="category"><a href="#"><?= $row['nombre'] ?></a></div><a href="post.php?id=<?= $row['id'] ?>">
                                     <h2 class="h4"><?= $row['titulo'] ?></h2>
                                 </a>
                             </header>
@@ -91,7 +104,7 @@ function getBlogs()
                         </div>
                     </div>
                 </div>
-                <div class="image col-lg-5"><img src="img/fuegos.jpg" alt="..."></div>
+                <div class="image col-lg-5"><img src="../images/blog/<?= $img; ?>" alt="..."></div>
             </div>
         <?php
         }

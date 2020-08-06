@@ -35,6 +35,21 @@ function getDescripcion($idBlog)
   desconectar_bd($con);
 }
 
+function getDescripcion2($idBlog)
+{
+  $con = conectar_bd();
+
+  $sql = "SELECT descripcion2 FROM blog WHERE id=$idBlog";
+  $result = $con->query($sql);
+  $titulo = mysqli_fetch_assoc($result);
+
+  if ($result->num_rows > 0) {
+    echo $titulo['descripcion2'];
+  }
+
+  desconectar_bd($con);
+}
+
 function getImagen($idBlog)
 {
   $con = conectar_bd();
@@ -51,6 +66,38 @@ function getImagen($idBlog)
 
   desconectar_bd($con);
 }
+
+function getImagen2($idBlog)
+{
+  $con = conectar_bd();
+
+  $sql = "SELECT * FROM fotos_blog
+  WHERE fotos_blog.id_blog = $idBlog
+  ORDER BY id LIMIT 1 OFFSET 1";
+  $result = $con->query($sql);
+  $titulo = mysqli_fetch_assoc($result);
+
+  if ($result->num_rows > 0) {
+    echo $titulo['nombre'];
+  }
+
+  desconectar_bd($con);
+}
+
+function getSubtitulo($idBlog)
+{
+  $con = conectar_bd();
+
+  $sql = "SELECT subtitulo FROM blog WHERE id=$idBlog";
+  $result = $con->query($sql);
+  $titulo = mysqli_fetch_assoc($result);
+
+  if ($result->num_rows > 0) {
+    echo $titulo['subtitulo'];
+  }
+
+  desconectar_bd($con);
+}
 ?>
 <div class="container">
   <div class="row">
@@ -58,7 +105,7 @@ function getImagen($idBlog)
     <main class="post blog-post col-lg-12">
       <div class="container">
         <div class="post-single">
-          <div class="post-thumbnail"><img src="../images/<?php getImagen($idBlog);  ?>" alt="<?php getImagen($idBlog);  ?>" class="img-fluid"></div>
+          <div class="post-thumbnail"><img src="../images/blog/<?php getImagen($idBlog);  ?>" alt="<?php getImagen($idBlog);  ?>" class="img-fluid"></div>
           <div class="post-details">
             <div class="post-meta d-flex justify-content-between">
               <div class="category"><a href="#">Business</a><a href="#">Financial</a></div>
@@ -76,16 +123,9 @@ function getImagen($idBlog)
             </div>
             <div class="post-body">
               <p class="lead"><?php getDescripcion($idBlog);  ?></p>
-              <p> <img src="img/featured-pic-3.jpeg" alt="..." class="img-fluid"></p>
-              <h3>Lorem Ipsum Dolor</h3>
-              <p>div Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda temporibus iusto voluptates deleniti similique rerum ducimus sint ex odio saepe. Sapiente quae pariatur ratione quis perspiciatis deleniti accusantium</p>
-              <blockquote class="blockquote">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-                <footer class="blockquote-footer">Someone famous in
-                  <cite title="Source Title">Source Title</cite>
-                </footer>
-              </blockquote>
-              <p>quasi nam. Libero dicta eum recusandae, commodi, ad, autem at ea iusto numquam veritatis, officiis. Accusantium optio minus, voluptatem? Quia reprehenderit, veniam quibusdam provident, fugit iusto ullam voluptas neque soluta adipisci ad.</p>
+              <p> <img src="../images/<?php getImagen2($idBlog);  ?>" alt="../images/<?php getImagen2($idBlog);  ?>" class="img-fluid"></p>
+              <h3><?php getSubtitulo($idBlog); ?></h3>
+              <p><?php getDescripcion2($idBlog);  ?></p>
             </div>
             <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row"><a href="#" class="prev-post text-left d-flex align-items-center">
                 <div class="icon prev"><i class="fa fa-angle-left"></i></div>
