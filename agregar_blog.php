@@ -20,6 +20,11 @@ if (isset($_SESSION["mensaje"])) {
 ?>
 <div class="container">
   <form id="addBlog" action="controlador_agregar_blog.php" method="POST" enctype="multipart/form-data">
+   
+    <div class="form-group">
+      <label>Categoria:</label>
+      <?= crear_select("id", "nombre", "categoria_blog") ?>
+    </div>
     <div class="form-group ">
       <label for="usr">Titulo:</label>
       <input type="text" class="form-control " id="titulo" name="titulo" required>
@@ -28,11 +33,16 @@ if (isset($_SESSION["mensaje"])) {
       <label for="usr">Descripcion:</label>
       <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required></textarea>
     </div>
-
-    <div class="form-group">
-      <label>Categoria:</label>
-      <?= crear_select("id", "nombre", "categoria_blog") ?>
+      <div class="form-group ">
+      <label for="usr">Subtitulo:</label>
+      <input type="text" class="form-control " id="subtitulo" name="subtitulo" required>
     </div>
+    <div class="form-group ">
+      <label for="usr">Descripcion del Subtitulo:</label>
+      <textarea type="textarea" class="form-control " id="descripcionsubtitulo" name="descripcionsubtitulo" required></textarea>
+    </div>
+
+  
  
     <div class="form-group">
       <label class="col-sm-2 control-label">Fotografias:</label>
