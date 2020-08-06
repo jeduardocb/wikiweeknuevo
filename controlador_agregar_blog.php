@@ -23,9 +23,11 @@
     $titulo = htmlspecialchars($_POST["titulo"]);
     $id_categoria = htmlspecialchars($_POST["categoria_blog"]);//te arroga el id de la categoria
     $descripcion = htmlspecialchars($_POST["descripcion"]);
+    $subtitulo = htmlspecialchars($_POST["subtitulo"]);
+    $descripcionsubtitulo = htmlspecialchars($_POST["descripcionsubtitulo"]);
     $nombres_arch = $nombres;
     $archivos = $_FILES;
-    agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos);
+    agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos,$subtitulo,$descripcionsubtitulo);
 
 
 ?>
