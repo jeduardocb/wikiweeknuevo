@@ -1401,7 +1401,7 @@ function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $arch
           echo "Sorry, file already exists.";
           throw new Exception("La foto ya existe");
         }
-       //echo $archivos['upload']['name'][$i];
+       echo $archivos['upload']['name'][$i];
         if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
           if (!($con->query("INSERT INTO fotos_blog (id_blog,nombre) values ($id_blog, '$nombres_arch[$i]')"))) {
                echo "INSERT INTO fotos_blog (id_blog,nombre) values ($id_blog, '$nombres_arch[$i]')";
