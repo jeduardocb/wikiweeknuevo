@@ -1364,7 +1364,7 @@ function editarImagenCategoria($categoria,$nombre){
         
 }
 
-function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos){
+function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos,$subtitulo,$descripcionsubtitulo){
     $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
   if ($con->connect_errno) {
     printf("Conexión fallida: %s\n", $con->connect_error);
@@ -1377,7 +1377,7 @@ function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $arch
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
     echo "entra al try<br>";
-      if (!($con->query("INSERT INTO blog (titulo,descripcion,fecha,id_categoria_blog) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria )"))) {
+      if (!($con->query("INSERT INTO blog (titulo,descripcion,fecha,id_categoria_blog,subtitulo,descripcion2) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo')"))) {
       throw new Exception("error al insertar el blog");
       }
       
