@@ -1421,6 +1421,13 @@ function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $arch
     echo "fin commit<br>";
     } catch (Exception $e) {
       $con->rollback();
+    for ($i = 0; $i < count($nombres_arch); $i++) {
+      $newFilePath = "images/blog/" . $nombres_arch[$i];
+      // Check if file already exists
+      if (file_exists($newFilePath)) {
+         unlink($newFilePath);
+      }
+    }
       $_SESSION["mensaje"]=false;
       header('location: ./agregar_blog.php');
       echo 'Something fails: ',  $e->getMessage(), "\n";
