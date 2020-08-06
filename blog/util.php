@@ -72,17 +72,14 @@ function getBlogs(){
 
 
             $idBlog = $row['id'];
-            $sql_imagenes = "SELECT fotos_blog.nombre FROM fotos_blog
+            $sql_imagenes = "SELECT * FROM fotos_blog
             WHERE fotos_blog.id_blog = $idBlog
             LIMIT 1";
             $result_imagenes = $con->query($sql_imagenes);
             $imagen = mysqli_fetch_assoc($result_imagenes);
-
             if ($result_imagenes->num_rows > 0) {
                 $img = $imagen['nombre'];
             }
-
-            desconectar_bd($con);
 ?>
             <div class="row d-flex align-items-stretch" style="margin-bottom: 15px; margin-top: 15px;">
                 <div class="text col-lg-7">
