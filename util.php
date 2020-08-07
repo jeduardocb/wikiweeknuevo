@@ -1438,4 +1438,78 @@ function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $arch
      $con->close();
 }
 
+function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos,$subtitulo,$descripcionsubtitulo,$ingredientes){
+      $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
+  if ($con->connect_errno) {
+    printf("Conexión fallida: %s\n", $con->connect_error);
+    exit();
+  }
+
+    
+  try {
+    $con->autocommit(false);
+    $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+    echo "entra al try<br>";
+      if (!($con->query("INSERT INTO recetas (titulo,descripcion,fecha,id_categoria_receta,subtitulo,descripcion2,ingredientes) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo','$ingredientes')"))) {
+      throw new Exception("error al insertar el blog");
+      }
+      
+      echo "bloque fotos<br>";
+      if (!(mysqli_fetch_assoc($con->query("SELECT id FROM recetas ORDER BY id DESC LIMIT 1")))) {
+        throw new Exception("error al sacar el select de id blog");
+      }else{
+        $id_receta = mysqli_fetch_assoc($con->query("SELECT id FROM recetas ORDER BY id DESC LIMIT 1"));
+        $id_receta = $id_receta["id"];
+      }
+      
+    
+    
+
+  
+    echo "bloque de fotos<br>";
+      for ($i=0; $i < count($nombres_arch); $i++) {
+        $newFilePath = "images/recetas/" . $nombres_arch[$i];
+        // Check if file already exists
+        if (file_exists($newFilePath)) {
+          echo "Sorry, file already exists.";
+          throw new Exception("La foto ya existe");
+        }
+       echo $archivos['upload']['name'][$i];
+        if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
+          if (!($con->query("INSERT INTO fotos_recetas (id_receta,nombre) values ($id_receta, '$nombres_arch[$i]')"))) {
+               echo "INSERT INTO fotos_recetas (id_receta,nombre) values ($id_receta, '$nombres_arch[$i]')";
+            throw new Exception("error al hacer el insert");
+          }
+        }else{
+          throw new Exception("error al cargar las fotos");
+        }
+      }
+      //generar error
+      //throw new Exception("error al cargar las fotos");
+    echo "bloque fotos<br>";
+      echo $con->commit() . "<br>";
+     echo $con->autocommit(true)."<br>";
+      
+     
+      $_SESSION["mensaje"]=true;
+      header('location: ./agregar_receta.php');
+    echo "fin commit<br>";
+    } catch (Exception $e) {
+      $con->rollback();
+    for ($i = 0; $i < count($nombres_arch); $i++) {
+      $newFilePath = "images/recetas/" . $nombres_arch[$i];
+      // Check if file already exists
+      if (file_exists($newFilePath)) {
+         unlink($newFilePath);
+      }
+    }
+      $_SESSION["mensaje"]=false;
+      header('location: ./agregar_receta.php');
+      echo 'Something fails: ',  $e->getMessage(), "\n";
+    //echo "errror, falio ferga<br>";
+  }
+
+     $con->close();
+}
 ?>
