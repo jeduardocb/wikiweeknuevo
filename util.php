@@ -1410,6 +1410,8 @@ function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $arch
           throw new Exception("error al cargar las fotos");
         }
       }
+      //generar error
+      //throw new Exception("error al cargar las fotos");
     echo "bloque fotos<br>";
       echo $con->commit() . "<br>";
      echo $con->autocommit(true)."<br>";
