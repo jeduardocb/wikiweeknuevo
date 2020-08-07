@@ -211,7 +211,7 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 
 .fh5co-nav {
-	padding: 18px 0;
+	padding: 0px 0;
 	background: $green-brand;
 	@media screen and (max-width: $screen-sm) {
 		padding: 20px 0;
@@ -229,6 +229,7 @@ h1, h2, h3, h4, h5, h6, figure {
 		color: white;
 	}
 	.menu-1, .menu-2 {
+		margin-top: 2%;
 		@media screen and (max-width: $screen-sm ) {
 			display: none;
 		}

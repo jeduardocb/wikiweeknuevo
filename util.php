@@ -54,7 +54,6 @@ function getCategorias(){
               </div>
                         <div class="product-details">
                           <h4><a href="javascript:{}" onclick="document.getElementById(' . "'$id'" . ').submit();">'.$row["nombre"].'</a></h4>
-                          <p>Nullam Condimentum Nibh Etiam Sem</p>
                         </div>
                   </form>
               </div>';

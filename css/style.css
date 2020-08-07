@@ -124,7 +124,7 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 
 .fh5co-nav {
-  padding: 18px 0;
+  padding: 0px 0;
   background: #9BCC0D;
 }
 
@@ -146,6 +146,10 @@ h1, h2, h3, h4, h5, h6, figure {
 .fh5co-nav a {
   padding: 5px 10px;
   color: white;
+}
+
+.fh5co-nav .menu-1, .fh5co-nav .menu-2 {
+  margin-top: 2%;
 }
 
 @media screen and (max-width: 768px) {
