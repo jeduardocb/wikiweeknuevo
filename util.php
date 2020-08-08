@@ -811,57 +811,32 @@ function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria, $catego
   return $resultado;
 }
 
-function formEditCepa($nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento, $idweed)
+function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idweed)
 {
 
-  echo '<form id="addCepa" action="controlador_editCepa.php" method="POST" enctype="multipart/form-data">
-        <div class="form-group ">
-            <label for="usr">Nombre:</label>
-            <input type="text" class="form-control " id="name" name="name" value="'.$nombre.'" required>
-            <input type="hidden" class="form-control " id="idWeed" name="idWeed" value="'.$idweed.'">
+  echo '<form id="addCepa" action="controlador_editReceta.php" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="usr">Titulo:</label>
+            <input type="text" class="form-control " id="name" name="titulo" value="'.$nombre.'" required>
+            <input type="hidden" class="form-control " id="idWeed" name="idReceta" value="'.$idweed.'">
         </div>
-        <div class="form-group ">
+        <div class="form-group">
             <label for="usr">Descripcion:</label>
-            <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>'.$descripcion.'</textarea>
+            <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>'.$descripcion. '</textarea>
+        </div>
+        <div class="form-group">
+            <label for="usr">Subtitulo:</label>
+            <input type="text" class="form-control " id="name" name="subtitulo" value="' . $subtitulo . '" required>
+            <input type="hidden" class="form-control " id="idWeed" name="idWeed" value="' . $subtitulo . '">
+        </div>
+        <div class="form-group">
+            <label for="usr">Descripcion del subtitulo:</label>
+            <textarea type="textarea" class="form-control " id="descripcion2" name="descripcion2" required>' . $descripcion2 . '</textarea>
         </div>
 
         <div class="form-group">
             <label>Categoria</label>
-            ' . crear_selectEdit("id", "nombre", "categoria", $categoria, $categoriaId).'
-        </div>
-        <div class="form-group">
-            <label>Terpenos</label>
-            '. getEditTerpenos($idweed).'
-        </div>
-
-        <div class="input-group">
-            <label>CBD</label>
-            <p>Mínimo:</p>
-            <input type="number" id="cbdmin" name="cbdmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" value="'.$minCBD.'" required>
-            <p>Máximo:</p>
-            <input type="number" id="cbdmax" name="cbdmax" class="form-control" placeholder="10" min="0" max="100" step="0.01" value="'.$maxCBD.'">
-        </div>
-
-
-        <div class="input-group">
-
-            <label>THC</label>
-            <p>Mínimo:</p>
-            <input type="number" id="thcmin" name="thcmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" value="'.$minTHC.'" required>
-            <p>Máximo:</p>
-            <input type="number" id="thcmax" name="thcmax" class="form-control" placeholder="10" min="0" max="100" step="0.01" value="' . $maxTHC.'">
-        </div>
-        <div class="form-group">
-            <label>Crecimiento</label>
-            <label for="sel1">Dificultad:</label>
-            '.crear_selectDificultad($dificultad).'
-
-            <label for="sel1">Altura (pulgadas):</label>
-            '. crear_selectAltura($altura).'
-            <label for="sel1">Rendimiento (Oz/Ft)^2:</label>
-            '.crear_selectRendimiento($rendimiento).'
-            <label for="sel1">Florecimiento (En Semanas):</label>
-            '. crear_selectFlorecimiento($florecimiento). '
+            ' . crear_selectEdit("id", "nombre", "categoria_recetas", $categoria, $categoriaId).'
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Archivos</label>
@@ -1066,6 +1041,82 @@ function getListadoCepas()
   desconectar_bd($con);
 }
 
+function getListadoRecetas()
+{
+  $con = conectar_bd();
+  $sql = "SELECT recetas.titulo, recetas.id AS recetaId, (SELECT fotos_recetas.nombre FROM fotos_recetas WHERE fotos_recetas.nombre LIKE '%1%'AND fotos_recetas.id_receta = recetas.id) AS foto
+          FROM recetas, fotos_recetas
+          WHERE recetas.id = fotos_recetas.id_receta
+          AND recetas.estado > 0
+          group by recetas.titulo";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+
+      if ($row["foto"] != null) {
+        $idweed =  $row["recetaId"];
+        echo '<tr>
+                  <td data-th="Product">
+                      <div class="row">
+                          <div class="col-sm-6">
+                              <h4 class="nomargin">' . $row['titulo'] . '</h4>
+                          </div>
+                          <div class="col-sm-6 hidden-xs">
+                            <img src="images/recetas/' . $row["foto"] . '" style="with: 20px;" class="img-responsive" />
+                          </div>
+                      </div>
+                  </td>
+                  <td class="actions" data-th="">
+                  <form id="' . $row["recetaId"] . '" action="edit_receta.php" method="get" style="display: inline-block">
+                  <input type="hidden" name="idweed" value="' . $row["recetaId"] . '">
+                        <a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon">
+                          <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
+                        </a>
+                  </form>
+                  <a href="borrarCepa.php?idweed=' . $row["recetaId"] . '" class="icon" style="display: inline-block">
+                    <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                  </a>
+                </td>
+              </tr>';
+      } else {
+        $sql = "SELECT recetas.titulo, recetas.id AS recetaId, (SELECT fotos_recetas.nombre FROM fotos_recetas WHERE fotos_recetas.id_receta = recetas.id) AS foto
+          FROM recetas, fotos_recetas
+          WHERE recetas.id = fotos_recetas.id_receta
+          AND recetas.estado > 0
+          group by recetas.titulo";
+        $result = $con->query($sql);
+        $idweed =  $row["recetaId"];
+        echo '<tr>
+                  <td data-th="Product">
+                      <div class="row">
+                          <div class="col-sm-6">
+                              <h4 class="nomargin">' . $row['titulo'] . '</h4>
+                          </div>
+                          <div class="col-sm-6 hidden-xs">
+                            <img src="images/recetas/' . $row["foto"] . '" style="with: 20px;" class="img-responsive" />
+                          </div>
+                      </div>
+                  </td>
+                  <td class="actions" data-th="">
+                  <form id="' . $row["recetaId"] . '" action="edit_receta.php" method="get" style="display: inline-block">
+                  <input type="hidden" name="idweed" value="' . $row["recetaId"] . '">
+                        <a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon">
+                          <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
+                        </a>
+                    </form>
+                      <a href="borrarCepa.php?idweed=' . $row["recetaId"] . '" class="icon" style="display: inline-block">
+                        <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                      </a>
+                  </td>
+              </tr>';
+      }
+    }
+  }
+  desconectar_bd($con);
+}
+
 function crear_selectDificultad($dificultad){
 
     if ($dificultad == "facil") {
@@ -1240,12 +1291,12 @@ function getEditTerpenos($idweed)
 }
 
 function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $florecimiento, $rendimiento, $terpenos, $porcentajes, $nombres_arch){
-$con = conectar_bd();
-$auxiliar = 0;
-$dml = "UPDATE weed
-SET nombre = '$nombre', descripcion = '$descripcion', id_categoria = '$id_categoria'
-WHERE id = $idweed;";
-modifyDb($dml);
+  $con = conectar_bd();
+  $auxiliar = 0;
+  $dml = "UPDATE weed
+  SET nombre = '$nombre', descripcion = '$descripcion', id_categoria = '$id_categoria'
+  WHERE id = $idweed;";
+  modifyDb($dml);
 
   $crecimiento = "SELECT id_crecimiento FROM weed WHERE id = $idweed";
   $result = $con->query($crecimiento);
@@ -1310,6 +1361,22 @@ modifyDb($dml);
     }
 }
 
+function ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch)
+{
+  $dml = "UPDATE recetas
+  SET titulo = '$titulo', descripcion = '$descripcion', subtitulo = '$subtitulo', descripcion2 = '$descripcion2', id_categoria_receta = $id_categoria
+  WHERE id = $idReceta";
+  echo $dml;
+  modifyDb($dml);
+
+  $count = count($nombres_arch);
+  for ($i = 0; $i < $count; $i++) {
+
+    $dml = "INSERT INTO fotos_recetas (id_receta, nombre) VALUES (?, ?);";
+    insertIntoDb($dml, $idReceta, $nombres_arch[$i]);
+  }
+}
+
 function tablaFotosEditCepa($idweed){
 
   $con = conectar_bd();
@@ -1343,6 +1410,54 @@ function tablaFotosEditCepa($idweed){
                     <form id="' . $row["id"] . '" action="borrarFotos.php" method="post">
                     <input type="hidden" name="idfoto" value="' . $row["id"] . '">
                     <input type="hidden" name="idweed" value="' . $row["id_weed"] . '">
+                        <a href="javascript:{}" onclick="document.getElementById(' . "'$idFoto'" . ').submit();" class="icon">
+                          <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                        </a>
+                      
+                  </form>
+                  </td>
+              </tr>
+          </tbody>
+      </table>';
+      }
+    }
+  }
+}
+
+function tablaFotosEditReceta($idweed)
+{
+
+  $con = conectar_bd();
+  $sql = "SELECT *
+          FROM fotos_recetas
+          WHERE id_receta = $idweed";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+
+      if ($row["nombre"] != null) {
+        $idFoto =  $row["id"];
+
+        echo '<table class="table">
+          <thead>
+              <th>foto</th>
+              <th>icono</th>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>
+                    <div class="row">
+                        <div class="col-sm-6 hidden-xs">
+                          <img src="images/recetas/' . $row["nombre"] . '" style="with: 20px;" class="img-responsive" />
+                        </div>
+                    </div>
+                  </td>
+                  <td>
+                    <form id="' . $row["id"] . '" action="borrarFotos.php" method="post">
+                    <input type="hidden" name="idfoto" value="' . $row["id"] . '">
+                    <input type="hidden" name="idweed" value="' . $row["id_receta"] . '">
                         <a href="javascript:{}" onclick="document.getElementById(' . "'$idFoto'" . ').submit();" class="icon">
                           <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                         </a>

@@ -3,13 +3,13 @@ include('header.html');
 include('nav.html');
 include('util.php');
 
-$idBlog = $_GET['id'];
+$idRecetas = $_GET['id'];
 
-function getTitulo($idBlog)
+function getTitulo($idRecetas)
 {
   $con = conectar_bd();
 
-  $sql = "SELECT titulo FROM blog WHERE id=$idBlog";
+  $sql = "SELECT titulo FROM recetas WHERE id=$idRecetas";
   $result = $con->query($sql);
   $titulo = mysqli_fetch_assoc($result);
 
@@ -20,11 +20,11 @@ function getTitulo($idBlog)
   desconectar_bd($con);
 }
 
-function getDescripcion($idBlog)
+function getDescripcion($idRecetas)
 {
   $con = conectar_bd();
 
-  $sql = "SELECT descripcion FROM blog WHERE id=$idBlog";
+  $sql = "SELECT descripcion FROM recetas WHERE id=$idRecetas";
   $result = $con->query($sql);
   $titulo = mysqli_fetch_assoc($result);
 
@@ -35,11 +35,11 @@ function getDescripcion($idBlog)
   desconectar_bd($con);
 }
 
-function getDescripcion2($idBlog)
+function getDescripcion2($idRecetas)
 {
   $con = conectar_bd();
 
-  $sql = "SELECT descripcion2 FROM blog WHERE id=$idBlog";
+  $sql = "SELECT descripcion2 FROM recetas WHERE id=$idRecetas";
   $result = $con->query($sql);
   $titulo = mysqli_fetch_assoc($result);
 
@@ -50,12 +50,12 @@ function getDescripcion2($idBlog)
   desconectar_bd($con);
 }
 
-function getImagen($idBlog)
+function getImagen($idRecetas)
 {
   $con = conectar_bd();
 
-  $sql = "SELECT fotos_blog.nombre FROM fotos_blog
-    WHERE fotos_blog.id_blog = $idBlog
+  $sql = "SELECT fotos_recetas.nombre FROM fotos_recetas
+    WHERE fotos_recetas.id_receta = $idRecetas
     LIMIT 1";
   $result = $con->query($sql);
   $titulo = mysqli_fetch_assoc($result);
@@ -67,12 +67,12 @@ function getImagen($idBlog)
   desconectar_bd($con);
 }
 
-function getImagen2($idBlog)
+function getImagen2($idRecetas)
 {
   $con = conectar_bd();
 
-  $sql = "SELECT * FROM fotos_blog
-  WHERE fotos_blog.id_blog = $idBlog
+  $sql = "SELECT * FROM fotos_recetas
+  WHERE fotos_recetas.id_receta = $idRecetas
   ORDER BY id LIMIT 1 OFFSET 1";
   $result = $con->query($sql);
   $titulo = mysqli_fetch_assoc($result);
@@ -84,11 +84,11 @@ function getImagen2($idBlog)
   desconectar_bd($con);
 }
 
-function getSubtitulo($idBlog)
+function getSubtitulo($idRecetas)
 {
   $con = conectar_bd();
 
-  $sql = "SELECT subtitulo FROM blog WHERE id=$idBlog";
+  $sql = "SELECT subtitulo FROM recetas WHERE id=$idRecetas";
   $result = $con->query($sql);
   $titulo = mysqli_fetch_assoc($result);
 
@@ -105,12 +105,12 @@ function getSubtitulo($idBlog)
     <main class="post blog-post col-lg-12">
       <div class="container">
         <div class="post-single">
-          <div class="post-thumbnail"><img src="../images/blog/<?php getImagen($idBlog);  ?>" alt="<?php getImagen($idBlog);  ?>" class="img-fluid"></div>
+          <div class="post-thumbnail"><img src="../images/recetas/<?php getImagen($idRecetas);  ?>" alt="<?php getImagen($idRecetas);  ?>" class="img-fluid"></div>
           <div class="post-details">
             <div class="post-meta d-flex justify-content-between">
               <div class="category"><a href="#">Business</a><a href="#">Financial</a></div>
             </div>
-            <h1><?php getTitulo($idBlog); ?><a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
+            <h1><?php getTitulo($idRecetas); ?><a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
             <div class="post-footer d-flex align-items-center flex-column flex-sm-row"><a href="#" class="author d-flex align-items-center flex-wrap">
                 <div class="avatar"><img src="img/avatar-1.jpg" alt="..." class="img-fluid"></div>
                 <div class="title"><span>John Doe</span></div>
@@ -122,10 +122,10 @@ function getSubtitulo($idBlog)
               </div>
             </div>
             <div class="post-body">
-              <p class="lead"><?php getDescripcion($idBlog);  ?></p>
-              <p> <img src="../images/<?php getImagen2($idBlog);  ?>" alt="../images/<?php getImagen2($idBlog);  ?>" class="img-fluid"></p>
-              <h3><?php getSubtitulo($idBlog); ?></h3>
-              <p><?php getDescripcion2($idBlog);  ?></p>
+              <p class="lead"><?php getDescripcion($idRecetas);  ?></p>
+              <p> <img src="../images/recetas/<?php getImagen2($idRecetas);  ?>" alt="../images/<?php getImagen2($idRecetas);  ?>" class="img-fluid"></p>
+              <h3><?php getSubtitulo($idRecetas); ?></h3>
+              <p><?php getDescripcion2($idRecetas);  ?></p>
             </div>
             <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row"><a href="#" class="prev-post text-left d-flex align-items-center">
                 <div class="icon prev"><i class="fa fa-angle-left"></i></div>
