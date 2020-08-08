@@ -29,7 +29,7 @@ include('util.php');
   <div class="container">
     <!-- Post-->
 
-    <?php getBlogs(); ?>
+    <?php getRecetas(); ?>
   </div>
 </section>
 <!-- Divider Section-->
