@@ -1512,4 +1512,123 @@ function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $ar
 
      $con->close();
 }
+function getListadoBlog(){
+    $con = conectar_bd();
+ $sql = "SELECT blog.titulo AS tituloblog, blog.id AS blogId, (SELECT fotos_blog.nombre FROM fotos WHERE  fotos_blog.id_blog = blog.id LIMIT 1) AS foto
+          FROM blog, fotos_blog
+          WHERE blog.id = fotos_blog.id_blog
+          AND blog.estado > 0
+          group by blog.titulo;";
+        $result = $con->query($sql);
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+        $blogId =  $row["blogId"];
+        
+        echo '<tr>
+                  <td data-th="Product">
+                      <div class="row">
+                          <div class="col-sm-6">
+                              <h4 class="nomargin">' . $row['tituloblog'] . '</h4>
+                          </div>
+                          <div class="col-sm-6 hidden-xs">
+                            <img src="images/cepas/' . $row["foto"] . '" style="with: 20px;" class="img-responsive" />
+                          </div>
+                      </div>
+                  </td>
+                  <td class="actions" data-th="">
+                  <form id="' . $row["blogId"] . '" action="editBlog.php" method="get" style="display: inline-block">
+                  <input type="hidden" name="idblog" value="' . $row["blogId"] . '">
+                        <a href="javascript:{}" onclick="document.getElementById(' . "'$blogId'" . ').submit();" class="icon">
+                          <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
+                        </a>
+                    </form>
+                      <a href="borrarBlog.php?idweed=' . $row["blogId"] . '" class="icon" style="display: inline-block">
+                        <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                      </a>
+                  </td>
+              </tr>';
+      
+    }
+  }
+  desconectar_bd($con);
+
+
+}
+function formEditBlog($idblog,$nombre, $descripcion,$id_categoria_blog, $subtitulo,$descripcion2,$categoria){
+    echo '<form id="addCepa" action="controlador_editBlog.php" method="POST" enctype="multipart/form-data">
+     <div class="form-group">
+      <label>Categoria:</label>
+       '.crear_selectCategoria("id", "nombre", "categoria_blog",$categoria,$id_categoria_blog) .'  
+    </div>
+        <div class="form-group ">
+            <label for="usr">Titulo:</label>
+            <input type="text" class="form-control " id="titulo" name="titulo" value="'.$nombre.'" required>
+            <input type="hidden" class="form-control " id="idBlog" name="idBlog" value="'.$idblog.'">
+        </div>
+        
+    <div class="form-group ">
+      <label for="usr">Descripcion:</label>
+      <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>'.$descripcion .'</textarea>
+    </div>
+      <div class="form-group ">
+      <label for="usr">Subtitulo:</label>
+      <input type="text" class="form-control " value="'.$subtitulo.'" id="subtitulo" name="subtitulo" required>
+    </div>
+    <div class="form-group ">
+      <label for="usr">Descripcion del Subtitulo:</label>
+      <textarea type="textarea" class="form-control " id="descripcionsubtitulo" name="descripcionsubtitulo"  required>'.$descripcion2.'</textarea>
+    </div>
+        
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Archivos</label>
+            <input type="file" class="form-control" id="archivo[]" name="archivo[]" multiple="">
+        </div>
+        <input type="submit" value="Actualizar" name="submit">
+
+    </form>';
+}
+function crear_selectCategoria($id, $columna_descripcion, $tabla, $categoria, $categoriaId) {
+    $conion_bd = conectar_bd();
+
+
+  $resultado = '<select class="form-control" name="' . $tabla . '" id="'. $tabla .'"><option value="'.$categoriaId.'" selected>'. $categoria .'</option>';
+
+
+  $consulta = "SELECT $id  , $columna_descripcion  FROM $tabla";
+  $resultados = $conion_bd->query($consulta);
+  while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
+
+    if ($row["$columna_descripcion"] != $categoria) {
+      $resultado .= '<option value="' . $row["$id"] . '">' . $row["$columna_descripcion"] . '</option>';
+    }
+  }
+
+  desconectar_bd($conion_bd);
+  $resultado .=  '</select>';
+  return $resultado;
+}
+function  ActualizarBlog($id_categoria,$titulo,$idBlog,$descripcion,$subtitulo,$descripcionsubtitulo,$nombres_arch){
+    $con = conectar_bd();
+$auxiliar = 0;
+$dml = "UPDATE blog
+SET titulo = '$titulo', descripcion = '$descripcion', id_categoria_blog = '$id_categoria', subtitulo ='$subtitulo'  , descripcion2='$descripcionsubtitulo'
+WHERE id = $idBlog;";
+modifyDb($dml);
+
+  
+
+          //////////////////////////////////// VERIFICAR IF
+
+    $count = count($nombres_arch);
+    for ($i = 0; $i < $count; $i++) {
+
+        $dml = "INSERT INTO fotos_blog (id_blog, nombre) VALUES (?, ?);";
+        insertIntoDb($dml, $idBlog, $nombres_arch[$i]);
+
+    }
+
+    
+}
+
 ?>
