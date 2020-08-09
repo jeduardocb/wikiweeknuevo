@@ -7,11 +7,11 @@ session_start();
 if (isset($_SESSION["mensaje"])) {
   if ($_SESSION["mensaje"] == true) {
     echo '<div class="alert alert-success text-center">
-                <strong>El blog se ha subido correctamente</strong> 
+                <strong>La receta se ha subido correctamente</strong> 
               </div>';
   } else {
     echo '<div class="alert alert-danger text-center">
-                <strong>Hubo un error al subir el Blog</strong> 
+                <strong>Hubo un error al subir la receta</strong> 
             </div>';
   }
   $_SESSION["mensaje"] = null;

@@ -17,7 +17,6 @@
     }
 ?>
 
-
 <div class="container">
     <div class="alert alert-success text-center" id="mensaje" hidden></div>
     <form action="controlador_addCategoria.php" method="post" enctype="multipart/form-data">
