@@ -714,7 +714,7 @@ function getListadoTerpenos(){
                <input type="hidden" class="form-control" name="id'.$contador.'"  value="'.$row["id_terpeno"].'">
             </div>
             <div class="col-md-2">
-            <a class=" btn btn-danger btn-sm" href="controlador_eliminarTerpenos.php?id_terpeno='.$row["id_terpeno"] .'"><i class="fa fa-trash" ></i></a>
+            <a class=" btn btn-danger btn-sm" href="controlador_eliminarTerpenos.php?id_terpeno='.$row["id_terpeno"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')"><i class="fa fa-trash" ></i></a>
 
             </div>
         </div>
@@ -765,7 +765,7 @@ function getListadoCategorias()
             <div class="col-md-2">
             <a class=" btn btn-primary btn-sm" href="vista_editarImagenCategoria.php?id_categoria=' . $row["id"] . '">Editar Imagen</a>
             
-            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoria.php?id_categoria=' . $row["id"] . '"><i class="fa fa-trash" ></i></a>
+            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoria.php?id_categoria=' . $row["id"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')"><i class="fa fa-trash" ></i></a>
             </div>
         </div>
       ';
@@ -999,7 +999,7 @@ function getListadoCepas()
                           <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
                         </a>
                   </form>
-                  <a href="borrarCepa.php?idweed='.$row["weedId"].'" class="icon" style="display: inline-block">
+                  <a href="borrarCepa.php?idweed='.$row["weedId"]. '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')" class="icon" style="display: inline-block">
                     <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                   </a>
                 </td>
@@ -1030,7 +1030,7 @@ function getListadoCepas()
                           <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
                         </a>
                     </form>
-                      <a href="borrarCepa.php?idweed=' . $row["weedId"] . '" class="icon" style="display: inline-block">
+                      <a href="borrarCepa.php?idweed=' . $row["weedId"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')" class="icon" style="display: inline-block">
                         <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                       </a>
                   </td>
@@ -1044,7 +1044,7 @@ function getListadoCepas()
 function getListadoRecetas()
 {
   $con = conectar_bd();
-  $sql = "SELECT recetas.titulo, recetas.id AS recetaId, (SELECT fotos_recetas.nombre FROM fotos_recetas WHERE fotos_recetas.nombre LIKE '%1%'AND fotos_recetas.id_receta = recetas.id) AS foto
+  $sql = "SELECT recetas.titulo, recetas.id AS recetaId, (SELECT fotos_recetas.nombre FROM fotos_recetas WHERE fotos_recetas.nombre LIKE '%1%'AND fotos_recetas.id_receta = recetas.id LIMIT 1) AS foto
           FROM recetas, fotos_recetas
           WHERE recetas.id = fotos_recetas.id_receta
           AND recetas.estado > 0
@@ -1070,12 +1070,12 @@ function getListadoRecetas()
                   </td>
                   <td class="actions" data-th="">
                   <form id="' . $row["recetaId"] . '" action="edit_receta.php" method="get" style="display: inline-block">
-                  <input type="hidden" name="idweed" value="' . $row["recetaId"] . '">
+                  <input type="hidden" name="idreceta" value="' . $row["recetaId"] . '">
                         <a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon">
                           <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
                         </a>
                   </form>
-                  <a href="borrarCepa.php?idweed=' . $row["recetaId"] . '" class="icon" style="display: inline-block">
+                  <a href="borrarReceta.php?idreceta=' . $row["recetaId"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')" class="icon" style="display: inline-block">
                     <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                   </a>
                 </td>
@@ -1101,12 +1101,12 @@ function getListadoRecetas()
                   </td>
                   <td class="actions" data-th="">
                   <form id="' . $row["recetaId"] . '" action="edit_receta.php" method="get" style="display: inline-block">
-                  <input type="hidden" name="idweed" value="' . $row["recetaId"] . '">
+                  <input type="hidden" name="idreceta" value="' . $row["recetaId"] . '">
                         <a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon">
                           <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
                         </a>
                     </form>
-                      <a href="borrarCepa.php?idweed=' . $row["recetaId"] . '" class="icon" style="display: inline-block">
+                      <a href="borrarReceta.php?idreceta=' . $row["recetaId"] . '" onclick="return confirm('."'"."¿estas seguro?"."'".')" class="icon" style="display: inline-block">
                         <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                       </a>
                   </td>
@@ -1491,7 +1491,7 @@ function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $arch
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
     echo "entra al try<br>";
-      if (!($con->query("INSERT INTO blog (titulo,descripcion,fecha,id_categoria_blog,subtitulo,descripcion2) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo')"))) {
+      if (!($con->query("INSERT INTO blog (titulo,descripcion,fecha,id_categoria_blog,subtitulo,descripcion2, estado) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo', 1)"))) {
       throw new Exception("error al insertar el blog");
       }
       
@@ -1566,7 +1566,7 @@ function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $ar
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
     echo "entra al try<br>";
-      if (!($con->query("INSERT INTO recetas (titulo,descripcion,fecha,id_categoria_receta,subtitulo,descripcion2,ingredientes) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo','$ingredientes')"))) {
+      if (!($con->query("INSERT INTO recetas (titulo,descripcion,fecha,id_categoria_receta,subtitulo,descripcion2,ingredientes, estado) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo','$ingredientes',1)"))) {
       throw new Exception("error al insertar el blog");
       }
       
@@ -1658,12 +1658,11 @@ function getListadoBlog(){
                           <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
                         </a>
                     </form>
-                      <a href="borrarBlog.php?idweed=' . $row["blogId"] . '" class="icon" style="display: inline-block">
+                      <a href="borrarBlog.php?idweed=' . $row["blogId"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')" class="icon" style="display: inline-block">
                         <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                       </a>
                   </td>
               </tr>';
-      
     }
   }
   desconectar_bd($con);

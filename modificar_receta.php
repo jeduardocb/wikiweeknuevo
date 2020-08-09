@@ -33,7 +33,8 @@ if (isset($_SESSION["mensaje"])) {
         </tbody>
     </table>
 </div>
-
+<script>
+</script>
 <?php
 include("_footer.html");
 ?>
