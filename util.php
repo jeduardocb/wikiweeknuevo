@@ -1741,7 +1741,6 @@ modifyDb($dml);
         insertIntoDb($dml, $idBlog, $nombres_arch[$i]);
 
     }
-
     
 }
 
