@@ -50,7 +50,7 @@ include('util.php');
       <p class="text-big">Ve nuestros ultimos blogs.</p>
     </header>
     <div class="row">
-      <?php getBlogRecientes(); ?>
+      <?php getRecetasRecientes(); ?>
     </div>
   </div>
 </section>

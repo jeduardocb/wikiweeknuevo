@@ -48,14 +48,16 @@ function cuentaExistente($email)
     if ($contrasena == $contrasena_repetir) {
     $con = conectar_bd();
     //convierte la contraseña a un hash con las medidas de seguridad default actuales (esto cambia con el tiempo)
-        $contrasena = password_hash($contrasena, PASSWORD_DEFAULT);
+    $contrasena = password_hash($contrasena, PASSWORD_BCRYPT);
+    
         //SQL para insertar un usuario
         $dml = "INSERT INTO usuario (nombre, contrasena, rol, correo)
                 VALUES ('$usuario','$contrasena','admin','$email')";
         
 
         if (mysqli_query($con, $dml)) {
-            echo "New record created successfully";
+            header('Location: login.php');
+            die();
         } else {
             echo "Error: " . $dml . "<br>" . mysqli_error($conn);
         }
