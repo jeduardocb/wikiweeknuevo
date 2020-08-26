@@ -2,7 +2,6 @@
 include("_header.html");
 include("_navbar.html");
 include_once("util.php");
-session_start();
 
 if (isset($_SESSION["mensaje"])) {
     if ($_SESSION["mensaje"] == true) {
@@ -25,6 +24,7 @@ if (isset($_SESSION["mensaje"])) {
         <thead>
             <tr>
                 <th style="width:50%">Cepa</th>
+                <th>Categoria</th>
                 <th style="width:10%">Opciones</th>
             </tr>
         </thead>

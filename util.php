@@ -968,9 +968,10 @@ function editarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $r
 function getListadoCepas()
 {
   $con = conectar_bd();
-  $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, (SELECT fotos.nombre FROM fotos WHERE fotos.nombre LIKE '%1%'AND fotos.id_weed = weed.id) AS foto
-          FROM weed, fotos
+  $sql = "SELECT weed.nombre AS weedNombre, categoria.nombre, weed.id AS weedId, (SELECT fotos.nombre FROM fotos WHERE fotos.nombre LIKE '%1%'AND fotos.id_weed = weed.id LIMIT 1) AS foto
+          FROM weed, fotos, categoria
           WHERE weed.id = fotos.id_weed
+          AND weed.id_categoria = categoria.id
           AND weed.estado > 0
           group by weed.nombre";
   $result = $con->query($sql);
@@ -992,6 +993,7 @@ function getListadoCepas()
                           </div>
                       </div>
                   </td>
+                  <td>'.$row['nombre'].'</td>
                   <td class="actions" data-th="">
                   <form id="' . $row["weedId"] . '" action="editCepa.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idweed" value="' . $row["weedId"] . '">
@@ -1005,11 +1007,12 @@ function getListadoCepas()
                 </td>
               </tr>';
       }else{
-        $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, (SELECT fotos.nombre FROM fotos WHERE fotos.id_weed = weed.id LIMIT 1) AS foto
-          FROM weed, fotos
-          WHERE weed.id = fotos.id_weed
-          AND weed.estado > 0
-          group by weed.nombre";
+        $sql = "SELECT weed.nombre AS weedNombre, categoria.nombre, weed.id AS weedId, (SELECT fotos.nombre FROM fotos WHERE fotos.id_weed = weed.id LIMIT 1) AS foto
+                FROM weed, fotos, categoria
+                WHERE weed.id = fotos.id_weed
+                AND weed.id_categoria = categoria.id
+                AND weed.estado > 0
+                group by weed.nombre";
         $result = $con->query($sql);
         $idweed =  $row["weedId"];
         echo '<tr>
@@ -1023,6 +1026,7 @@ function getListadoCepas()
                           </div>
                       </div>
                   </td>
+                  <td>' . $row['nombre'] . '</td>
                   <td class="actions" data-th="">
                   <form id="' . $row["weedId"] . '" action="editCepa.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idweed" value="' . $row["weedId"] . '">
@@ -1044,9 +1048,10 @@ function getListadoCepas()
 function getListadoRecetas()
 {
   $con = conectar_bd();
-  $sql = "SELECT recetas.titulo, recetas.id AS recetaId, (SELECT fotos_recetas.nombre FROM fotos_recetas WHERE fotos_recetas.nombre LIKE '%1%'AND fotos_recetas.id_receta = recetas.id LIMIT 1) AS foto
-          FROM recetas, fotos_recetas
+  $sql = "SELECT recetas.titulo, categoria_recetas.nombre, recetas.id AS recetaId, (SELECT fotos_recetas.nombre FROM fotos_recetas WHERE fotos_recetas.nombre LIKE '%1%'AND fotos_recetas.id_receta = recetas.id LIMIT 1) AS foto
+          FROM recetas, fotos_recetas, categoria_recetas
           WHERE recetas.id = fotos_recetas.id_receta
+          AND categoria_recetas.id = recetas.id_categoria_receta
           AND recetas.estado > 0
           group by recetas.titulo";
   $result = $con->query($sql);
@@ -1068,6 +1073,7 @@ function getListadoRecetas()
                           </div>
                       </div>
                   </td>
+                  <td>'.$row['nombre'].'</td>
                   <td class="actions" data-th="">
                   <form id="' . $row["recetaId"] . '" action="edit_receta.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idreceta" value="' . $row["recetaId"] . '">
@@ -1081,11 +1087,12 @@ function getListadoRecetas()
                 </td>
               </tr>';
       } else {
-        $sql = "SELECT recetas.titulo, recetas.id AS recetaId, (SELECT fotos_recetas.nombre FROM fotos_recetas WHERE fotos_recetas.id_receta = recetas.id) AS foto
-          FROM recetas, fotos_recetas
-          WHERE recetas.id = fotos_recetas.id_receta
-          AND recetas.estado > 0
-          group by recetas.titulo";
+        $sql = "SELECT recetas.titulo, categoria_recetas.nombre, recetas.id AS recetaId, (SELECT fotos_recetas.nombre FROM fotos_recetas WHERE fotos_recetas.id_receta = recetas.id LIMIT 1) AS foto
+                FROM recetas, fotos_recetas, categoria_recetas
+                WHERE recetas.id = fotos_recetas.id_receta
+                AND categoria_recetas.id = recetas.id_categoria_receta
+                AND recetas.estado > 0
+                group by recetas.titulo";
         $result = $con->query($sql);
         $idweed =  $row["recetaId"];
         echo '<tr>
@@ -1099,6 +1106,7 @@ function getListadoRecetas()
                           </div>
                       </div>
                   </td>
+                  <td>'.$row['nombre'].'</td>
                   <td class="actions" data-th="">
                   <form id="' . $row["recetaId"] . '" action="edit_receta.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idreceta" value="' . $row["recetaId"] . '">
@@ -1629,11 +1637,12 @@ function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $ar
 }
 function getListadoBlog(){
     $con = conectar_bd();
- $sql = "SELECT blog.titulo AS tituloblog, blog.id AS blogId, (SELECT fotos_blog.nombre FROM fotos WHERE  fotos_blog.id_blog = blog.id LIMIT 1) AS foto
-          FROM blog, fotos_blog
+ $sql = "SELECT blog.titulo AS tituloblog, categoria_blog.nombre, blog.id AS blogId, (SELECT fotos_blog.nombre FROM fotos WHERE  fotos_blog.id_blog = blog.id LIMIT 1) AS foto
+          FROM blog, fotos_blog, categoria_blog
           WHERE blog.id = fotos_blog.id_blog
+          AND categoria_blog.id = blog.id_categoria_blog
           AND blog.estado > 0
-          group by blog.titulo;";
+          group by blog.titulo";
         $result = $con->query($sql);
   if ($result->num_rows > 0) {
     // output data of each row
@@ -1651,6 +1660,7 @@ function getListadoBlog(){
                           </div>
                       </div>
                   </td>
+                  <td>'.$row['nombre'].'</td>
                   <td class="actions" data-th="">
                   <form id="' . $row["blogId"] . '" action="editBlog.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idblog" value="' . $row["blogId"] . '">

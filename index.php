@@ -3,6 +3,7 @@ include("_header.html");
 include("_navbar.html");
 include_once("util.php");
 header('Content-Type: text/html; charset=utf-8');
+$onclick = 'onclick="location.href = '."'controlador_cerrarSesion.php'".'"';
 ?>
 
 <style>

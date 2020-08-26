@@ -17,13 +17,27 @@
 							<div class="input-group">
 						      <input type="text" placeholder="Search..">
 						      <span class="input-group-btn">
-						        <button class="btn btn-primary" type="button"><i class="icon-search" style="color:black;"></i></button>
+								<button class="btn btn-primary" type="button"><i class="icon-search" style="color:black;"></i></button>
+								<?php
+									session_start();
+									if(isset($_SESSION['admin'])){
+										$onclick = 'onclick="location.href = '."'controlador_cerrarSesion.php'".'"';
+										echo "<button class='btn btn-primary' $onclick type='button'><i class='fas fa-sign-out-alt fa-lg' style='color:black;'></i></button>";
+									}else{
+										$onclick = 'onclick="location.href = '."'login.php'".'"';
+										echo "<button class='btn btn-primary' $onclick type='button'><i class='fas fa-user-circle fa-lg' style='color:black;'></i></button>";
+									}
+								?>
 						      </span>
 						    </div>
 						</li>
 							</li><a href="blog/index.php">Blog</a></li>
 							<li><a href="recetas/index.php">Recetas</a></li>
-							<li><a href="dashboard.php">dashboard</a></li>
+							<?php
+								if(isset($_SESSION['admin'])){
+									echo "<li><a href='dashboard.php'>dashboard</a></li>";
+								}
+							?>
 					</ul>
 				</div>
 			</div>

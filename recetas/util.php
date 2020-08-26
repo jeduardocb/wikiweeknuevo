@@ -161,10 +161,10 @@ function getRecetas()
     }
 }
 
-function getBlogRecientes()
+function getRecetasRecientes()
 {
     $con = conectar_bd();
-    $sql = "SELECT * FROM blog, categoria_blog WHERE blog.id_categoria_blog = categoria_blog.id ORDER BY blog.id DESC LIMIT 3";
+    $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre FROM recetas, categoria_recetas WHERE recetas.id_categoria_receta = categoria_recetas.id ORDER BY recetas.id DESC LIMIT 3";
     $result = $con->query($sql);
 
     if ($result->num_rows > 0) {
@@ -177,7 +177,7 @@ function getBlogRecientes()
                     <div class="post-meta d-flex justify-content-between">
                         <div class="date"><?= $row['fecha'] ?></div>
                         <div class="category"><a href="#"><?= $row['nombre'] ?></a></div>
-                    </div><a href="post.html">
+                    </div><a href="post.php?id=<?= $row['id'] ?>">
                         <h3 class="h4"><?= $row['titulo'] ?></h3>
                     </a>
                     <p class="text-muted"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
@@ -188,4 +188,3 @@ function getBlogRecientes()
         }
     }
 }
-?>

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 function conectar_bd()
 {
     $servername = "mysql1008.mochahost.com";
@@ -45,13 +45,12 @@ function sqlqry($qry){
         $passHash = "";
     }
     echo $password;
-    $var = '.$passHash.';
+    
     //asigna los permisos del usuario a la sesión
-    if (password_verify($password, $var)) {
-        //Asigna los permisos del usuario
-        //setPermisos($email);
-        echo "si jalo";
-        //return 1;
+    if (password_verify($password, $passHash)) {
+        $_SESSION['admin'] = 1;
+        header('Location: dashboard.php');
+        die();
     } else {
         echo "no jalo";
         //return 0;
