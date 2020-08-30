@@ -334,7 +334,7 @@ function getCbd($idweed)
   if ($result->num_rows > 0) {
 
     if ($cbd["max"] != 0) {
-      echo $cbd["min"] . " ";
+      echo $cbd["min"] . " - ";
       echo $cbd["max"];
     } else {
       if ($cbd["min"] < 1) {

@@ -176,12 +176,12 @@
 
 
 		// Click tab menu
-		$('.fh5co-tab-nav a').on('click', function(event){
+		$('#detalles a').on('click', function(event){
 			
 			var $this = $(this),
 				tab = $this.data('tab');
 
-			$('.tab-content')
+			$('.tab-detalles')
 				.addClass('animated-fast fadeOutDown');
 
 			$('.fh5co-tab-nav li').removeClass('active');
@@ -192,7 +192,7 @@
 
 			$this
 				.closest('.fh5co-tabs')
-					.find('.tab-content[data-tab-content="'+tab+'"]')
+				.find('.tab-detalles[data-tab-detalles="'+tab+'"]')
 					.removeClass('animated-fast fadeOutDown')
 					.addClass('animated-fast active fadeIn');
 
