@@ -1753,5 +1753,15 @@ modifyDb($dml);
     }
     
 }
+function agregarCategoriaBlog($categoria){
+     $dml = "INSERT INTO categoria_blog (nombre) VALUES ( ?);";
+        if(insertIntoDb($dml, $categoria)){
+             $_SESSION["mensaje"]=true;
+            header('location: ./agregar_categoria_blog.php');
+        }else{
+             $_SESSION["mensaje"]=false;
+            header('location: ./agregar_categoria_blog.php');
+        }
+}
 
 ?>
