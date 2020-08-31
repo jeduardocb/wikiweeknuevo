@@ -19,7 +19,9 @@
 						      <span class="input-group-btn">
 								<button class="btn btn-primary" type="button"><i class="icon-search" style="color:black;"></i></button>
 								<?php
+								if(session_status() != 2){
 									session_start();
+								}
 									if(isset($_SESSION['admin'])){
 										$onclick = 'onclick="location.href = '."'controlador_cerrarSesion.php'".'"';
 										echo "<button class='btn btn-primary' $onclick type='button'><i class='fas fa-sign-out-alt fa-lg' style='color:black;'></i></button>";

@@ -372,7 +372,7 @@ function getCategoria($idweed)
   desconectar_bd($con);
 }
 
-function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $rendimiento, $florecimiento,$id_categoria, $nombre, $descripcion, $terpenos, $porcentajes, $nombres_arch, $archivos){
+function agregarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $rendimiento, $florecimiento, $id_categoria, $nombre, $descripcion, $terpenos, $porcentajes, $nombres_arch, $archivos, $felling_nombres, $felling_porcentajes, $ayuda_nombres, $ayuda_porcentajes, $negativo_nombres, $negativo_porcentajes){
 
     if($cbdmax == ""){
         $cbdmax=0;
@@ -473,6 +473,21 @@ function agregarCepa($cbdmin, $cbdmax,$thcmin, $thcmax,$dificultad , $altura, $r
         }
       }
     echo "bloque fotos<br>";
+    for ($i=0; $i < $felling_nombres; $i++) {
+      if (!($con->query("INSERT INTO efectos (id_weed, tipo,nombre, porcentaje) values ($id_weed, 1, $felling_nombres[$i], $felling_porcentajes[$i])"))) {
+        throw new Exception("no jala efectos");
+      }
+    }
+    for ($i = 0; $i < $ayuda_nombres; $i++) {
+      if (!($con->query("INSERT INTO efectos (id_weed, tipo,nombre, porcentaje) values ($id_weed, 2, $ayuda_nombres[$i], $ayuda_porcentajes[$i])"))) {
+        throw new Exception("no jala efectos");
+      }
+    }
+    for ($i = 0; $i < $negativo_nombres; $i++) {
+      if (!($con->query("INSERT INTO efectos (id_weed, tipo, nombre, porcentaje) values ($id_weed, 3, $negativo_nombres[$i], $negativo_porcentajes[$i])"))) {
+        throw new Exception("no jala efectos");
+      }
+    }
       echo $con->commit() . "<br>";
      echo $con->autocommit(true)."<br>";
       
