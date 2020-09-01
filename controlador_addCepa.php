@@ -27,18 +27,18 @@
     $thcmin = htmlspecialchars($_POST["thcmin"]);
     $thcmax = htmlspecialchars($_POST["thcmax"]);
     //felengs nombres
-    $fn1 = htmlspecialchars($_POST['fn1']);
-    $fn2 = htmlspecialchars($_POST['fn2']);
-    $fn3 = htmlspecialchars($_POST['fn3']);
-    $fn4 = htmlspecialchars($_POST['fn4']);
-    $fn5 = htmlspecialchars($_POST['fn5']);
+    $fn1 = htmlspecialchars($_POST['sn1']);
+    $fn2 = htmlspecialchars($_POST['sn2']);
+    $fn3 = htmlspecialchars($_POST['sn3']);
+    $fn4 = htmlspecialchars($_POST['sn4']);
+    $fn5 = htmlspecialchars($_POST['sn5']);
     $felling_nombres = array($fn1, $fn2, $fn3, $fn4, $fn5);
     //felengs porcentajes
-    $fp1 = htmlspecialchars($_POST['fp1']);
-    $fp2 = htmlspecialchars($_POST['fp2']);
-    $fp3 = htmlspecialchars($_POST['fp3']);
-    $fp4 = htmlspecialchars($_POST['fp4']);
-    $fp5 = htmlspecialchars($_POST['fp5']);
+    $fp1 = htmlspecialchars($_POST['sp1']);
+    $fp2 = htmlspecialchars($_POST['sp2']);
+    $fp3 = htmlspecialchars($_POST['sp3']);
+    $fp4 = htmlspecialchars($_POST['sp4']);
+    $fp5 = htmlspecialchars($_POST['sp5']);
     $felling_porcentajes = array($fp1, $fp2, $fp3, $fp4, $fp5);
     //ayuda con nombres
     $an1 = htmlspecialchars($_POST['an1']);

@@ -7,7 +7,6 @@ include_once("util.php");
 $idweed = htmlspecialchars($_GET['idweed']);
 ?>
 <style>
-
 	.rate-base-layer {
 		color: #aaa;
 	}
@@ -50,7 +49,6 @@ $idweed = htmlspecialchars($_GET['idweed']);
 	#rate7 .rate-base-layer span {
 		opacity: 0.5;
 	}
-
 </style>
 
 <div class="fh5co-loader"></div>
@@ -148,24 +146,20 @@ $idweed = htmlspecialchars($_GET['idweed']);
 
 					<div class="fh5co-tab-content tab-content active tab-detalles" data-tab-detalles="1">
 						<div class="col-md-10 col-md-offset-1">
-							<span class="price">SRP: $350</span>
-							<h2>Hauteville Rocking Chair</h2>
-							<p>Paragraph placeat quis fugiat provident veritatis quia iure a debitis adipisci
-								dignissimos consectetur magni quas eius nobis reprehenderit soluta eligendi quo
-								reiciendis fugit? Veritatis tenetur odio delectus quibusdam officiis est.</p>
-
-							<p>Ullam dolorum iure dolore dicta fuga ipsa velit veritatis molestias totam fugiat
-								soluta accusantium omnis quod similique placeat at. Dolorum ducimus libero fuga
-								molestiae asperiores obcaecati corporis sint illo facilis.</p>
+							<h2>Efectos</h2>
 
 							<div class="row">
-								<div class="col-md-6">
-									<h2 class="uppercase">Keep it simple</h2>
-									<p>Ullam dolorum iure dolore dicta fuga ipsa velit veritatis</p>
+								<div class="col-md-4">
+									<h2 class="uppercase">Sensaciones</h2>
+									<?php getSensaciones($idweed) ?>
 								</div>
-								<div class="col-md-6">
-									<h2 class="uppercase">Less is more</h2>
-									<p>Ullam dolorum iure dolore dicta fuga ipsa velit veritatis</p>
+								<div class="col-md-4">
+									<h2 class="uppercase">Ayuda a/con</h2>
+									<?php getAyuda($idweed) ?>
+								</div>
+								<div class="col-md-4">
+									<h2 class="uppercase">Negativos</h2>
+									<?php getNegativos($idweed) ?>
 								</div>
 							</div>
 

@@ -473,19 +473,19 @@ function agregarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $
         }
       }
     echo "bloque fotos<br>";
-    for ($i=0; $i < $felling_nombres; $i++) {
-      if (!($con->query("INSERT INTO efectos (id_weed, tipo,nombre, porcentaje) values ($id_weed, 1, $felling_nombres[$i], $felling_porcentajes[$i])"))) {
-        throw new Exception("no jala efectos");
+    for ($i=0; $i < count($felling_nombres); $i++) {
+      if (!($con->query("INSERT INTO efectos (id_weed, tipo, nombre, porcentaje) values ($id_weed, 1, '$felling_nombres[$i]', $felling_porcentajes[$i])"))) {
+        throw new Exception("no jala efectos sensaciones");
       }
     }
-    for ($i = 0; $i < $ayuda_nombres; $i++) {
-      if (!($con->query("INSERT INTO efectos (id_weed, tipo,nombre, porcentaje) values ($id_weed, 2, $ayuda_nombres[$i], $ayuda_porcentajes[$i])"))) {
-        throw new Exception("no jala efectos");
+    for ($i = 0; $i < count($ayuda_nombres); $i++) {
+      if (!($con->query("INSERT INTO efectos (id_weed, tipo, nombre, porcentaje) values ($id_weed, 2, '$ayuda_nombres[$i]', $ayuda_porcentajes[$i])"))) {
+        throw new Exception("no jala efectos ayuda");
       }
     }
-    for ($i = 0; $i < $negativo_nombres; $i++) {
-      if (!($con->query("INSERT INTO efectos (id_weed, tipo, nombre, porcentaje) values ($id_weed, 3, $negativo_nombres[$i], $negativo_porcentajes[$i])"))) {
-        throw new Exception("no jala efectos");
+    for ($i = 0; $i < count($negativo_nombres); $i++) {
+      if (!($con->query("INSERT INTO efectos (id_weed, tipo, nombre, porcentaje) values ($id_weed, 3, '$negativo_nombres[$i]', $negativo_porcentajes[$i])"))) {
+        throw new Exception("no jala efectos negativo");
       }
     }
       echo $con->commit() . "<br>";
@@ -499,7 +499,7 @@ function agregarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $
       $con->rollback();
       $_SESSION["mensaje"]=false;
       header('location: ./addCepa.php');
-      //echo 'Something fails: ',  $e->getMessage(), "\n";
+      echo 'Something fails: ',  $e->getMessage(), "\n";
     //echo "errror, falio ferga<br>";
   }
 $con->close();
@@ -851,11 +851,39 @@ function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categ
 
         <div class="form-group">
             <label>Categoria</label>
-            ' . crear_selectEdit("id", "nombre", "categoria_recetas", $categoria, $categoriaId).'
+            ' . crear_selectEdit("id", "nombre", "categoria_recetas", $categoria, $categoriaId). '
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Archivos</label>
             <input type="file" class="form-control" id="archivo[]" name="archivo[]" multiple="">
+        </div>
+        <div class="form-group">
+          <div class="main col-md-4">
+            <h2>Sensaciones</h2>
+            '. getInputSensaciones($idweed).'
+          </div>
+          <div class="col-md-4">
+            <h2>Ayuda con</h2>
+            <div class="col-md-8">
+              <h4>Nombre</h4>
+              <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="an2" id="">
+            </div>
+            <div class="col-md-4">
+              <h4>Porcentaje</h4>
+              <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="ap2" id="" min="0" max="100">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h2>Negativos</h2>
+            <div class="col-md-8">
+              <h4>Nombre</h4>
+              <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="nn2" id="">
+            </div>
+            <div class="col-md-4">
+              <h4>Porcentaje</h4>
+              <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="np2" id="" min="0" max="100">
+            </div>
+          </div>
         </div>
         <input type="submit" value="Actualizar" name="submit">
 
@@ -1777,6 +1805,85 @@ function agregarCategoriaBlog($categoria){
              $_SESSION["mensaje"]=false;
             header('location: ./agregar_categoria_blog.php');
         }
+}
+
+function getSensaciones($id_weed){
+
+  $conion_bd = conectar_bd();
+
+  $consulta2 = "SELECT nombre, porcentaje FROM efectos WHERE tipo = 1 AND id_weed =$id_weed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+    $porcenaje = $row['porcentaje'];
+    $nombre = $row['nombre'];
+    echo "
+      <h4>$nombre</h4>
+      <div class='progress'>
+        <div class='progress-bar bg-success' role='progressbar' style='width: $porcenaje%' aria-valuenow='$porcenaje' aria-valuemin='0' aria-valuemax='100'>$porcenaje%</div>
+      </div>
+    ";
+  }
+}
+
+function getAyuda($id_weed)
+{
+
+  $conion_bd = conectar_bd();
+
+  $consulta2 = "SELECT nombre, porcentaje FROM efectos WHERE tipo = 2 AND id_weed =$id_weed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+    $porcenaje = $row['porcentaje'];
+    $nombre = $row['nombre'];
+    echo "
+      <h4>$nombre </h4>
+      <div class='progress'>
+        <div class='progress-bar bg-info' role='progressbar' style='width: $porcenaje%' aria-valuenow='$porcenaje' aria-valuemin='0' aria-valuemax='100'>$porcenaje%</div>
+      </div>
+    ";
+  }
+}
+
+function getNegativos($id_weed)
+{
+
+  $conion_bd = conectar_bd();
+
+  $consulta2 = "SELECT nombre, porcentaje FROM efectos WHERE tipo = 3 AND id_weed =$id_weed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+    $porcenaje = $row['porcentaje'];
+    $nombre = $row['nombre'];
+    echo "
+      <h4>$nombre </h4>
+      <div class='progress'>
+        <div class='progress-bar bg-warning' role='progressbar' style='width: $porcenaje%' aria-valuenow='$porcenaje' aria-valuemin='0' aria-valuemax='100'>$porcenaje%</div>
+      </div>
+    ";
+  }
+}
+
+function getInputSensaciones($id_weed){
+  echo "si entra we: ".$id_weed." <-";
+  $conion_bd = conectar_bd();
+
+  $consulta2 = "SELECT nombre, porcentaje FROM efectos WHERE tipo = 1 AND id_weed =$id_weed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+    
+    $porcenaje = $row['porcentaje'];
+    $nombre = $row['nombre'];
+    echo "
+      <div class='col-md-8'>
+        <h4>Nombre</h4>
+        <input type='text' class='form-control' style='display: inline-block; height: 35px;' name='sn2' value='$nombre'>
+      </div>
+      <div class='col-md-4'>
+        <h4>Porcentaje</h4>
+        <input type='number' class='form-control' style='display: inline-block; height: 35px;' name='sp2' min='0' max='100' value='$porcenaje'>
+      </div>
+    ";
+  }
 }
 
 ?>

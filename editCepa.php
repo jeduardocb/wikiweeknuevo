@@ -2,7 +2,6 @@
 include("_header.html");
 include("_navbar.html");
 include_once("util.php");
-session_start();
 
 if (isset($_SESSION["mensaje"])) {
     if ($_SESSION["mensaje"] == true) {
@@ -31,7 +30,7 @@ if (isset($_GET["idweed"])) {
     $datos = mysqli_fetch_assoc($result);
 
     if ($result->num_rows > 0) {
-        $idweed = $datos["idweed"];
+        //$idweed = $datos["idweed"];
         $nombre = $datos["nombre"];
         $descripcion = $datos["descripcion"];
         $categoria = $datos["catNom"];

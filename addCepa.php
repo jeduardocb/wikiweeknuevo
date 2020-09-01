@@ -92,19 +92,19 @@ if (isset($_SESSION["mensaje"])) {
         <h2>Sensaciones</h2>
         <div class="col-md-8">
           <h4>Nombre</h4>
-          <input type="text" class="form-control" style="display: inline-block; height: 35px;" placeholder="Relajación" name="sn" id="">
-          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn" id="">
-          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn" id="">
-          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn" id="">
-          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" placeholder="Relajación" name="sn1" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn2" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn3" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn4" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn5" id="">
         </div>
         <div class="col-md-4">
           <h4>Porcentaje</h4>
-          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp" id="" min="0" placeholder="0" max="100">
-          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp" id="" min="0" max="100">
-          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp" id="" min="0" max="100">
-          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp" id="" min="0" max="100">
-          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp1" id="" min="0" placeholder="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp2" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp3" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp4" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp5" id="" min="0" max="100">
         </div>
       </div>
       <div class="col-md-4">
