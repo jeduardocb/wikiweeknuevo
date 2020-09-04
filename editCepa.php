@@ -30,7 +30,6 @@ if (isset($_GET["idweed"])) {
     $datos = mysqli_fetch_assoc($result);
 
     if ($result->num_rows > 0) {
-        //$idweed = $datos["idweed"];
         $nombre = $datos["nombre"];
         $descripcion = $datos["descripcion"];
         $categoria = $datos["catNom"];
@@ -45,10 +44,10 @@ if (isset($_GET["idweed"])) {
         $rendimiento = $datos["rendimiento"];
     }
 }
-
 ?>
 <div class="container">
-    <?= formEditReceta($nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento, $idweed);
+    <?= formEditCepa($nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento, $idweed);
+    
     tablaFotosEditCepa($idweed); ?>
 </div>
 

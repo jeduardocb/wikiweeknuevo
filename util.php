@@ -828,7 +828,6 @@ function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria, $catego
 
 function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idweed)
 {
-
   echo '<form id="addCepa" action="controlador_editReceta.php" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="usr">Titulo:</label>
@@ -857,36 +856,75 @@ function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categ
             <label class="col-sm-2 control-label">Archivos</label>
             <input type="file" class="form-control" id="archivo[]" name="archivo[]" multiple="">
         </div>
+        <input type="submit" value="Actualizar" name="submit">
+
+    </form>';
+}
+
+function formEditCepa($nombre, $descripcion, $categoria, $categoriaId, $minCBD, $maxCBD, $maxTHC, $minTHC, $altura, $dificultad, $florecimiento, $rendimiento, $idweed)
+{
+
+  echo '<form id="addCepa" action="controlador_editCepa.php" method="POST" enctype="multipart/form-data">
+        <div class="form-group ">
+            <label for="usr">Nombre:</label>
+            <input type="text" class="form-control " id="name" name="name" value="' . $nombre . '" required>
+            <input type="hidden" class="form-control " id="idWeed" name="idWeed" value="' . $idweed . '">
+        </div>
+        <div class="form-group ">
+            <label for="usr">Descripcion:</label>
+            <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>' . $descripcion . '</textarea>
+        </div>
+        <div class="form-group">
+            <label>Categoria</label>
+            ' . crear_selectEdit("id", "nombre", "categoria", $categoria, $categoriaId) . '
+        </div>
+        <div class="form-group">
+            <label>Terpenos</label>
+            ' . getEditTerpenos($idweed) . '
+        </div>
+        <div class="input-group">
+            <label>CBD</label>
+            <p>Mínimo:</p>
+            <input type="number" id="cbdmin" name="cbdmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" value="' . $minCBD . '" required>
+            <p>Máximo:</p>
+            <input type="number" id="cbdmax" name="cbdmax" class="form-control" placeholder="10" min="0" max="100" step="0.01" value="' . $maxCBD . '">
+        </div>
+        <div class="input-group">
+            <label>THC</label>
+            <p>Mínimo:</p>
+            <input type="number" id="thcmin" name="thcmin" class="form-control" placeholder="0" min="0" max="100" step="0.01" value="' . $minTHC . '" required>
+            <p>Máximo:</p>
+            <input type="number" id="thcmax" name="thcmax" class="form-control" placeholder="10" min="0" max="100" step="0.01" value="' . $maxTHC . '">
+        </div>
+        <div class="form-group">
+            <label>Crecimiento</label>
+            <label for="sel1">Dificultad:</label>
+            ' . crear_selectDificultad($dificultad) . '
+            <label for="sel1">Altura (pulgadas):</label>
+            ' . crear_selectAltura($altura) . '
+            <label for="sel1">Rendimiento (Oz/Ft)^2:</label>
+            ' . crear_selectRendimiento($rendimiento) . '
+            <label for="sel1">Florecimiento (En Semanas):</label>
+            ' . crear_selectFlorecimiento($florecimiento) . '
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Archivos</label>
+            <input type="file" class="form-control" id="archivo[]" name="archivo[]" multiple="">
+        </div>
         <div class="form-group">
           <div class="main col-md-4">
             <h2>Sensaciones</h2>
-            '. getInputSensaciones($idweed).'
+            ' . getInputSensaciones($idweed) . '
           </div>
           <div class="col-md-4">
             <h2>Ayuda con</h2>
-            <div class="col-md-8">
-              <h4>Nombre</h4>
-              <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="an2" id="">
-            </div>
-            <div class="col-md-4">
-              <h4>Porcentaje</h4>
-              <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="ap2" id="" min="0" max="100">
-            </div>
+            ' . getInputAyuda($idweed) . '
           </div>
           <div class="col-md-4">
             <h2>Negativos</h2>
-            <div class="col-md-8">
-              <h4>Nombre</h4>
-              <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="nn2" id="">
-            </div>
-            <div class="col-md-4">
-              <h4>Porcentaje</h4>
-              <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="np2" id="" min="0" max="100">
-            </div>
-          </div>
+            ' . getInputNegativos($idweed) . '
         </div>
         <input type="submit" value="Actualizar" name="submit">
-
     </form>';
 }
 
@@ -1341,7 +1379,7 @@ function getEditTerpenos($idweed)
   return $resultado;
 }
 
-function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $florecimiento, $rendimiento, $terpenos, $porcentajes, $nombres_arch){
+function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $florecimiento, $rendimiento, $terpenos, $porcentajes, $nombres_arch, $felling_nombres, $felling_porcentajes, $ayuda_nombres, $ayuda_porcentajes, $negativo_nombres, $negativo_porcentajes, $felling_ids, $ayuda_ids, $negativo_ids){
   $con = conectar_bd();
   $auxiliar = 0;
   $dml = "UPDATE weed
@@ -1403,13 +1441,29 @@ function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, 
     }
   }
 
-    $count = count($nombres_arch);
-    for ($i = 0; $i < $count; $i++) {
+    for ($i = 0; $i < count($nombres_arch); $i++) {
 
         $dml = "INSERT INTO fotos (id_weed, nombre) VALUES (?, ?);";
         insertIntoDb($dml, $idweed, $nombres_arch[$i]);
 
     }
+
+  for ($i = 0; $i < count($felling_nombres); $i++) {
+    if (!($con->query("UPDATE efectos SET nombre = '$felling_nombres[$i]', porcentaje = $felling_porcentajes[$i] WHERE id_weed = $idweed AND tipo = 1 AND id_efectos=$felling_ids[$i]"))) {
+      throw new Exception("no jala efectos sensaciones");
+    }
+  }
+  for ($i = 0; $i < count($ayuda_nombres); $i++) {
+    if (!($con->query("UPDATE efectos SET nombre = '$ayuda_nombres[$i]', porcentaje = $ayuda_porcentajes[$i] WHERE id_weed = $idweed AND tipo = 2 AND id_efectos=$ayuda_ids[$i]"))) {
+      throw new Exception("no jala efectos ayuda");
+    }
+  }
+  for ($i = 0; $i < count($negativo_nombres); $i++) {
+    if (!($con->query("UPDATE efectos SET nombre = '$negativo_nombres[$i]', porcentaje = $negativo_porcentajes[$i] WHERE id_weed = $idweed AND tipo = 3 AND id_efectos=$negativo_ids[$i]"))) {
+      throw new Exception("no jala efectos negativo");
+    }
+  }
+
 }
 
 function ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch)
@@ -1863,27 +1917,92 @@ function getNegativos($id_weed)
   }
 }
 
-function getInputSensaciones($id_weed){
-  echo "si entra we: ".$id_weed." <-";
+function getInputSensaciones($idweed){
   $conion_bd = conectar_bd();
-
-  $consulta2 = "SELECT nombre, porcentaje FROM efectos WHERE tipo = 1 AND id_weed =$id_weed";
+  $resultado = "";
+  $i=1;
+  $consulta2 = "SELECT nombre, porcentaje, id_efectos FROM efectos WHERE tipo = 1 AND id_weed =$idweed";
   $resultados2 = $conion_bd->query($consulta2);
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
     
     $porcenaje = $row['porcentaje'];
     $nombre = $row['nombre'];
-    echo "
+    $id_efecto = $row['id_efectos'];
+    $resultado.= "
       <div class='col-md-8'>
         <h4>Nombre</h4>
-        <input type='text' class='form-control' style='display: inline-block; height: 35px;' name='sn2' value='$nombre'>
+        <input type='text' class='form-control' style='display: inline-block; height: 35px;' name='sn$i' value='$nombre'>
+        <input type='hidden' class='form-control' id='idWeed' name='idSensaciones$i' value='$id_efecto'>
       </div>
       <div class='col-md-4'>
         <h4>Porcentaje</h4>
-        <input type='number' class='form-control' style='display: inline-block; height: 35px;' name='sp2' min='0' max='100' value='$porcenaje'>
+        <input type='number' class='form-control' style='display: inline-block; height: 35px;' name='sp$i' min='0' max='100' value='$porcenaje'>
       </div>
     ";
+    $i++;
   }
+  return $resultado;
+}
+
+function getInputAyuda($idweed){
+  $conion_bd = conectar_bd();
+  $resultado = "";
+  $i=1;
+  $consulta2 = "SELECT nombre, porcentaje, id_efectos FROM efectos WHERE tipo = 2 AND id_weed =$idweed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+
+    $porcenaje = $row['porcentaje'];
+    $nombre = $row['nombre'];
+    $id_efecto = $row['id_efectos'];
+    $resultado .= "
+      <div class='col-md-8'>
+        <h4>Nombre</h4>
+        <input type='text' class='form-control' style='display: inline-block; height: 35px;' name='an$i' value='$nombre'>
+        <input type='hidden' class='form-control' id='idWeed' name='idAyuda$i' value='$id_efecto'>
+      </div>
+      <div class='col-md-4'>
+        <h4>Porcentaje</h4>
+        <input type='number' class='form-control' style='display: inline-block; height: 35px;' name='ap$i' min='0' max='100' value='$porcenaje'>
+      </div>
+    ";
+    $i++;
+  }
+  return $resultado;
+}
+
+function getInputNegativos($idweed){
+  $conion_bd = conectar_bd();
+  $resultado = "";
+  $i=1;
+  $consulta2 = "SELECT nombre, porcentaje, id_efectos FROM efectos WHERE tipo = 3 AND id_weed =$idweed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+    
+    $porcenaje = $row['porcentaje'];
+    $nombre = $row['nombre'];
+    $id_efecto = $row['id_efectos'];
+    $resultado.= "
+      <div class='col-md-8'>
+        <h4>Nombre</h4>
+        <input type='text' class='form-control' style='display: inline-block; height: 35px;' name='nn$i' value='$nombre'>
+        <input type='hidden' class='form-control' id='idWeed' name='idNegativo$i' value='$id_efecto'>
+      </div>
+      <div class='col-md-4'>
+        <h4>Porcentaje</h4>
+        <input type='number' class='form-control' style='display: inline-block; height: 35px;' name='np$i' min='0' max='100' value='$porcenaje'>
+      </div>
+    ";
+    $i++;
+  }
+  return $resultado;
+}
+
+function countCepas(){
+  $con = conectar_bd();
+  $result = mysqli_query($con, "SELECT COUNT(*) AS contador FROM weed WHERE estado = 1");
+$row = mysqli_fetch_assoc($result);
+  echo $row['contador'];
 }
 
 ?>
