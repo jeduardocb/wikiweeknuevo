@@ -2,7 +2,6 @@
 include("_header.html");
 include("_navbar.html");
 include_once("util.php");
-session_start();
 
 if (isset($_SESSION["mensaje"])) {
   if ($_SESSION["mensaje"] == true) {
@@ -88,6 +87,65 @@ if (isset($_SESSION["mensaje"])) {
       <label class="col-sm-2 control-label">Fotografias:</label>
       <input type="file" class="form-control" id="upload" name="upload[]" multiple required>
     </div>
+    <div class="form-group">
+      <div class="main col-md-4">
+        <h2>Sensaciones</h2>
+        <div class="col-md-8">
+          <h4>Nombre</h4>
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" placeholder="Relajación" name="sn1" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn2" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn3" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn4" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="sn5" id="">
+        </div>
+        <div class="col-md-4">
+          <h4>Porcentaje</h4>
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp1" id="" min="0" placeholder="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp2" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp3" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp4" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="sp5" id="" min="0" max="100">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h2>Ayuda con</h2>
+        <div class="col-md-8">
+          <h4>Nombre</h4>
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" placeholder="Ansiedad" name="an1" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="an2" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="an3" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="an4" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="an5" id="">
+        </div>
+        <div class="col-md-4">
+          <h4>Porcentaje</h4>
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="ap1" id="" min="0" placeholder="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="ap2" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="ap3" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="ap4" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="ap5" id="" min="0" max="100">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h2>Negativos</h2>
+        <div class="col-md-8">
+          <h4>Nombre</h4>
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" placeholder="Boca seca" name="nn1" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="nn2" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="nn3" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="nn4" id="">
+          <input type="text" class="form-control" style="display: inline-block; height: 35px;" name="nn5" id="">
+        </div>
+        <div class="col-md-4">
+          <h4>Porcentaje</h4>
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="np1" id="" min="0" placeholder="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="np2" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="np3" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="np4" id="" min="0" max="100">
+          <input type="number" class="form-control" style="display: inline-block; height: 35px;" name="np5" id="" min="0" max="100">
+        </div>
+      </div>
+    </div>
     <input type="submit" value="Agregar Cepa" name="submit">
 
   </form>
@@ -97,7 +155,6 @@ if (isset($_SESSION["mensaje"])) {
 include("_footer.html");
 ?>
 <script>
-
   function terpenos() {
     let coleccionTerpenos = document.getElementsByClassName("terpenos");
     for (let i = 0; i < coleccionTerpenos.length; i++) {

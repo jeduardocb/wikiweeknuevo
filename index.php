@@ -3,7 +3,7 @@ include("_header.html");
 include("_navbar.html");
 include_once("util.php");
 header('Content-Type: text/html; charset=utf-8');
-$onclick = 'onclick="location.href = '."'controlador_cerrarSesion.php'".'"';
+$onclick = 'onclick="location.href = ' . "'controlador_cerrarSesion.php'" . '"';
 ?>
 
 <style>
@@ -181,7 +181,7 @@ $onclick = 'onclick="location.href = '."'controlador_cerrarSesion.php'".'"';
 								<i class="icon-shopping-cart"></i>
 							</span>
 
-							<span class="counter js-counter" data-from="0" data-to="450" data-speed="5000" data-refresh-interval="50">1</span>
+							<span class="counter js-counter" data-from="0" data-to="<?php countCepas() ?>" data-speed="5000" data-refresh-interval="50">1</span>
 							<span class="counter-label">Cepas</span>
 						</div>
 					</div>
@@ -199,6 +199,115 @@ $onclick = 'onclick="location.href = '."'controlador_cerrarSesion.php'".'"';
 		</div>
 	</div>
 </div>
+
+<style>
+	.modal-dialog {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+
+	.modal-content {
+		height: 100%;
+		min-height: 100%;
+		border-radius: 0;
+	}
+</style>
+
+<div class="modal fullscreen-modal fade cookieModal" id="cookieModal" tabindex="-1" role="dialog" aria-labelledby="cookieModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 id="cookieModalLabel"><img src="diseño/logo.png" width="10%"> Wikiweed</h2>
+			</div>
+			<div class="modal-body">
+				<h4>Si continúas afirmas que has leido nuestra Política de Privacidad y aceptas nuestros Términos y Condiciones.</h4>
+				<p>Al presionar aceptar estas aceptando que eres mayor de edad</p>
+				<p>
+					<a href="/privacy-statement" target="_blank">Clic aqui para ver la politica de privacidad</a>
+				</p>
+			</div>
+			<div class="modal-footer">
+				<div class="col-md-6">
+					<button id="cancelar" type="button" class="btn btn-danger btn-lg btn-block" data-dismiss="modal">Cancelar</button>
+				</div>
+				<div class="col-md-6">
+					<button id="cookieModalConsent" type="button" class="btn btn-success btn-lg btn-block" data-dismiss="modal">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <?php
 include("_footer.html");
 ?>
+<script>
+	(function() {
+		"use strict";
+
+		var cookieName = 'tplCookieConsent'; // The cookie name
+		var cookieLifetime = 1; // Cookie expiry in days
+
+		/**
+		 * Set a cookie
+		 * @param cname - cookie name
+		 * @param cvalue - cookie value
+		 * @param exdays - expiry in days
+		 */
+		var _setCookie = function(cname, cvalue, exdays) {
+			var d = new Date();
+			d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+			var expires = "expires=" + d.toUTCString();
+			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		};
+
+		/**
+		 * Get a cookie
+		 * @param cname - cookie name
+		 * @returns string
+		 */
+		var _getCookie = function(cname) {
+			var name = cname + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		};
+
+		/**
+		 * Should the cookie popup be shown?
+		 */
+		var _shouldShowPopup = function() {
+			if (_getCookie(cookieName)) {
+				return false;
+			} else {
+				return true;
+			}
+		};
+
+		// Show the cookie popup on load if not previously accepted
+		if (_shouldShowPopup()) {
+			$('#cookieModal').modal('show');
+		}
+
+		// Modal dismiss btn - consent
+		$('#cookieModalConsent').on('click', function() {
+			_setCookie(cookieName, 1, cookieLifetime);
+		});
+
+		$('#cancelar').on('click', function() {
+			// similar behavior as an HTTP redirect
+			window.location.replace("https://www.google.com/");
+		});
+
+	})();
+</script>
