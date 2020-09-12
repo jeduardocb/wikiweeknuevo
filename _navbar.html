@@ -1,48 +1,59 @@
-
-	<body>
-		
-	<div class="fh5co-loader"></div>
-	
-	<div id="page">
-	<nav class="fh5co-nav" role="navigation">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3 col-xs-2">
-                    <div id="fh5co-logo"><a href="index.php"><img src="diseño/logo.png" width="45%"><img src="diseño/PNG/Wikihigh_Letras_negro.png" width="45%"></a></div>
-				</div>
-					
-				<div class="col-md-9 col-xs-4 text-right hidden-xs menu-2">
-					<ul>
-						<li class="search">
-							<div class="input-group">
-						      <input type="text" placeholder="Search..">
-						      <span class="input-group-btn">
-								<button class="btn btn-primary" type="button"><i class="icon-search" style="color:black;"></i></button>
-								<?php
-								if(session_status() != 2){
-									session_start();
-								}
-									if(isset($_SESSION['admin'])){
-										$onclick = 'onclick="location.href = '."'controlador_cerrarSesion.php'".'"';
-										echo "<button class='btn btn-primary' $onclick type='button'><i class='fas fa-sign-out-alt fa-lg' style='color:black;'></i></button>";
-									}else{
-										$onclick = 'onclick="location.href = '."'login.php'".'"';
-										echo "<button class='btn btn-primary' $onclick type='button'><i class='fas fa-user-circle fa-lg' style='color:black;'></i></button>";
-									}
-								?>
-						      </span>
-						    </div>
-						</li>
-							<li><a href="blog/index.php">Blog</a></li>
-							<li><a href="recetas/index.php">Recetas</a></li>
-							<?php
-								if(isset($_SESSION['admin'])){
-									echo "<li><a href='dashboard.php'>dashboard</a></li>";
-								}
-							?>
-					</ul>
-				</div>
-			</div>
-			
+<body>
+	<header class="d-flex align-items-center p-2 p-md-3 border-bottom">
+		<div>
+			<p class="m-0"><img src="images2/wikihigh-the-cannabis-intelligence-logotipo.png" class="img-fluid"
+					alt="WikiHigh The Cannabis Intelligence logotipo"></p>
 		</div>
-	</nav>
+		<nav class="pl-5 pr-5 d-none d-lg-block">
+			<ul class="nav nav-secondary poppins">
+				<li class="nav-item"><a class="nav-link text-primary" href="#"><span class="lnr lnr-home"></span></a>
+				</li>
+				<li class="nav-item"><a class="nav-link text-secondary" href="#">Recetas</a></li>
+				<li class="nav-item"><a class="nav-link text-secondary" href="#">Blog</a></li>
+			</ul>
+		</nav>
+		<div class="ml-auto">
+			<form class="form-inline d-none d-lg-block">
+				<label class="sr-only" for="busqueda">Búsqueda</label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text border-0"><span class="lnr lnr-magnifier"></span></div>
+					</div>
+					<input type="text" class="form-control border-top-0 border-right-0 border-left-0" id="busqueda"
+						placeholder="Búsqueda e intro">
+				</div>
+			</form>
+		</div>
+		<!-- Menú y Búsqueda móvil -->
+		<p class="mb-0 ml-3 d-block d-lg-none"><a title="Menú" class="btn btn-outline-primary" data-toggle="collapse"
+				href="#menu" role="button" aria-expanded="false" aria-controls="menu"><span
+					class="lnr lnr-menu"></span></a></p>
+		<ul class="nav nav-secondary poppins collapse" id="menu">
+			<li class="nav-item"><a class="nav-link text-primary" href="#"><span class="lnr lnr-home"></span></a></li>
+			<li class="nav-item"><a class="nav-link text-secondary" href="#">Recetas</a></li>
+			<li class="nav-item"><a class="nav-link text-secondary" href="#">Blog</a></li>
+		</ul>
+		<div class="fixed-bottom d-block d-lg-none">
+			<form class="form-inline">
+				<label class="sr-only" for="busqueda">Búsqueda</label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text border-0 bg-primary text-white"><span
+								class="lnr lnr-magnifier"></span></div>
+					</div>
+					<input type="text" class="form-control border-right-0 border-left-0 border-bottom-0" id="busqueda"
+						placeholder="Búsqueda e intro">
+				</div>
+			</form>
+		</div>
+		<!-- Menú y Búsqueda móvil fin -->
+		<div class="border-left p-4 ml-4">
+			<p class="m-0 h3">
+				<a href="#" title="Entrar"><span class="lnr lnr-user"></span></a>
+				<a href="#" title="Salir"><span class="lnr lnr-exit"></span></a>
+				<!--
+			<a href="#" title="Dashboard" class="lead"><span class="lnr lnr-pencil"></span> Dashboard</a>
+-->
+			</p>
+		</div>
+	</header>

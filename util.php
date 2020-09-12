@@ -45,7 +45,7 @@ function getCategorias(){
 		while ($row = $result->fetch_assoc()) {
       $id = $row["id"];
 			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
-      echo '
+      /*echo '
             <div class="product-card">
               <div class="product-tumb">
                 <form id="'.$row["id"].'" action="catalogo.php" method="post">
@@ -56,7 +56,17 @@ function getCategorias(){
                           <h4><a href="javascript:{}" onclick="document.getElementById(' . "'$id'" . ').submit();">'.$row["nombre"].'</a></h4>
                         </div>
                   </form>
-              </div>';
+              </div>';*/
+      echo '
+      <div class="col-xl-4 col-lg-6 col-md-6">
+            <div class="card bg-dark text-white border-0 mt-4 mt-xl-5">
+                <img src="images/categoria/'.$row["nombre_foto"] . '" class="card-img" alt="Híbrida">
+                <div class="card-img-overlay">
+                    <h3 class="card-title"><a href="#" title="Híbrida" class="stretched-link text-white">' . $row["nombre"] . '</a></h3>
+                </div>
+            </div>
+        </div>
+      ';
 		}
 	} else {
 		echo "0 results";
@@ -667,33 +677,27 @@ function getCepasDestacadas(){
           FROM weed, categoria
           WHERE weed.id_categoria = categoria.id
           AND estado = 1
-          ORDER BY RAND ( ) LIMIT 6";
+          ORDER BY RAND ( ) LIMIT 8";
   $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
-    // output data of each row
     while ($row = $result->fetch_assoc()) {
-      echo '<div class="col-md-4 text-center animate-box">
-				      <div class="product">';
       $sql2 = "SELECT fotos.nombre AS fotoNombre FROM fotos, weed WHERE fotos.id_weed = " . $row["weedId"] . " LIMIT 1";
       $result2 = $con->query($sql2);
       if ($result2->num_rows > 0) {
         while ($row2 = $result2->fetch_assoc()) {
-          echo '<div class="product-grid" style="background-image:url(images/cepas/'.$row2["fotoNombre"].'">';
+          echo '
+          <div class="col-md-6 col-lg-3">
+              <div class="bg-white shadow text-center pt-2 pt-sm-4 pb-2 pb-sm-4 mb-4">
+                  <p><img src="images/cepas/'.$row2["fotoNombre"].'" alt="Weed" class="img-fluid"></p>
+                  <h5 class="m-0"><a href="#" title="Sativa">'.$row["catNombre"].'</a></h5>
+                  <h4><a href="#hola" title="Lemon Haze" class="text-dark">' . $row["weedNombre"] . '</a></h4>
+              </div>
+          </div>
+          ';
         }
       }
-      echo '<div class="inner">
-							<p>
-								<a href="single.php?idweed='.$row["weedId"].'" class="icon"><i class="icon-eye"></i></a>
-							</p>
-						</div>
-					</div>
-					<div class="desc">
-						<h3><a href="single.php?idweed='.$row["weedId"].'">'.$row["weedNombre"]. '</a></h3>
-						<span class="price">' . $row["catNombre"] . '</span>
-					</div>
-				</div>
-			</div>';
+      
     }
   }
   desconectar_bd($con);

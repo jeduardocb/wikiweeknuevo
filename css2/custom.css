@@ -1,0 +1,83 @@
+.poppins {font-family: 'Poppins', sans-serif; font-weight: 300}
+
+#carrusel .carousel-item {
+	background-size: auto 100%;
+	background-color: Black;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+#carrusel .slide-1 {
+	background-image: url(../images2/slide-1.jpg);
+}
+
+#carrusel .tarjeta {
+	background-color: rgba(255,255,255,0.9);
+	padding: 60px 120px;
+	margin-top: 175px;
+}
+
+#destacadas {
+	background-color: #efefef;
+}
+
+.title-subtitle {
+	border-left-width: 4px;
+	border-left-style: solid;
+}
+
+.title-subtitle h1 {
+	font-weight: 700;
+}
+
+.title-subtitle .h5 {
+	color: #666;
+}
+
+#estadisticas {
+	
+}
+
+#the-end {
+	background-image: url(../images2/wikihigh-imagotipo.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+
+/*
+ * RESPONSIVE
+*/
+
+@media (min-width: 576px) {
+	.fixed-bottom .form-inline .input-group {
+		width: 100%;
+	}
+}
+
+@media (min-width: 768px) {
+}
+
+@media (min-width: 992px) {
+}
+
+@media (min-width: 1200px) {
+	#carrusel .carousel-item {
+		background-size: cover;
+	}
+}
+
+@media (max-width: 575.98px) {
+	#carrusel .tarjeta {
+		padding: 30px;
+		margin-top: 75px;
+	}
+}
+
+@media (max-width: 767.98px) {
+}
+
+@media (max-width: 991.98px) {
+}
+
+@media (max-width: 1199.98px) {
+}
