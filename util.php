@@ -621,12 +621,28 @@ function getCepaCarrusel(){
           FROM weed, categoria
           WHERE weed.id_categoria = categoria.id
           AND estado = 1
-          ORDER BY RAND ( ) LIMIT 5";
+          ORDER BY RAND ( ) LIMIT 3";
   $result = $con->query($sql);
-
+ $contador =1;
     if ($result->num_rows > 0) {
       // output data of each row
       while ($row = $result->fetch_assoc()) {
+          echo '  <div class="carousel-item active slide-'.$contador.'">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-7">
+						<div class="tarjeta">
+							<h4><a href="#" title="'.$row["catNombre"].'">'.$row["catNombre"].'</a></h4>
+							<h1 class="font-weight-bold">'.$row["weedNombre"].'</h1>
+							<p class="text-black-50">'. cortarDescripcion($row["descripcion"], 550).'</p>
+							<p class="m-0"><a href="#" title="Ver" class="btn btn-outline-info">Ver</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>';
+        
+          /*
         echo '<li style="background-image: url(images/fondo4.jpg);">
                 <div class="overlay-gradient"></div>
                 <div class="container">
@@ -654,7 +670,7 @@ function getCepaCarrusel(){
                     </div>
                   </div>
                 </div>
-              </li>';
+              </li>';*/
       }
   }
   desconectar_bd($con);
