@@ -8,8 +8,8 @@
 			<ul class="nav nav-secondary poppins">
 				<li class="nav-item"><a class="nav-link text-primary" href="#"><span class="lnr lnr-home"></span></a>
 				</li>
-				<li class="nav-item"><a class="nav-link text-secondary" href="#">Recetas</a></li>
-				<li class="nav-item"><a class="nav-link text-secondary" href="#">Blog</a></li>
+				<li class="nav-item"><a class="nav-link text-secondary" href="./recetas/index.php">Recetas</a></li>
+				<li class="nav-item"><a class="nav-link text-secondary" href="./blog/index.php">Blog</a></li>
 			</ul>
 		</nav>
 		<div class="ml-auto">
@@ -49,8 +49,14 @@
 		<!-- Menú y Búsqueda móvil fin -->
 		<div class="border-left p-4 ml-4">
 			<p class="m-0 h3">
-				<a href="#" title="Entrar"><span class="lnr lnr-user"></span></a>
-				<a href="#" title="Salir"><span class="lnr lnr-exit"></span></a>
+				<?php
+				if(isset($_SESSION['admin'])){
+					
+					echo '<a href="controlador_cerrarSesion.php" title="Salir"><span class="lnr lnr-exit"></span></a>';
+				}else{
+					echo '<a href="login.php" title="Entrar"><span class="lnr lnr-user"></span></a>';
+				}
+				?>
 				<!--
 			<a href="#" title="Dashboard" class="lead"><span class="lnr lnr-pencil"></span> Dashboard</a>
 -->

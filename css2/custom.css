@@ -11,6 +11,14 @@
 	background-image: url(../images2/slide-1.jpg);
 }
 
+#carrusel .slide-2 {
+	background-image: url(../images/slide-1.jpg);
+}
+
+#carrusel .slide-3 {
+	background-image: url(../images/slide-2.jpg);
+}
+
 #carrusel .tarjeta {
 	background-color: rgba(255,255,255,0.9);
 	padding: 60px 120px;
@@ -34,9 +42,6 @@
 	color: #666;
 }
 
-#estadisticas {
-	
-}
 
 #the-end {
 	background-image: url(../images2/wikihigh-imagotipo.png);

@@ -3,7 +3,7 @@ include("_header.html");
 include("_navbar.html");
 include_once("util.php");
 
-$idcategoria = htmlspecialchars($_POST['idcategoria']);
+$idcategoria = htmlspecialchars($_GET['idcategoria']);
 ?>
 
 <div id="fh5co-product">
