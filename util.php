@@ -1,29 +1,34 @@
-<?php  
-	function conectar_bd(){
-    $servername = "mysql1008.mochahost.com";
-		$username = "dawbdorg_1704641";
-		$password = "1704641";
-		$dbname = "dawbdorg_A01704641";
-		$con = mysqli_connect($servername,$username,$password,$dbname);
-      
-		if(!$con){
-			die("conexion fallida" .mysqli_connect_error());
-		}
-		return $con;
-	}
-function desconectar_bd($mysql){
-		mysqli_close($mysql);
-	}
-function limpia_entrada($variable) {
-    return $variable = htmlspecialchars($variable);
+<?php
+function conectar_bd()
+{
+  $servername = "mysql1008.mochahost.com";
+  $username = "dawbdorg_1704641";
+  $password = "1704641";
+  $dbname = "dawbdorg_A01704641";
+  $con = mysqli_connect($servername, $username, $password, $dbname);
+
+  if (!$con) {
+    die("conexion fallida" . mysqli_connect_error());
+  }
+  return $con;
 }
-function limpia_entradas($arr){
-    foreach($arr as &$key){
-        $key = limpia_entrada($key);
-    }
-    return $arr;
+function desconectar_bd($mysql)
+{
+  mysqli_close($mysql);
 }
-function modifyDb($dml){
+function limpia_entrada($variable)
+{
+  return $variable = htmlspecialchars($variable);
+}
+function limpia_entradas($arr)
+{
+  foreach ($arr as &$key) {
+    $key = limpia_entrada($key);
+  }
+  return $arr;
+}
+function modifyDb($dml)
+{
   $conDb = conectar_bd();
 
   $conDb->query($dml);
@@ -33,19 +38,20 @@ function modifyDb($dml){
   return $res;
 }
 
-function getCategorias(){
+function getCategorias()
+{
 
-	 $con = conectar_bd();
+  $con = conectar_bd();
 
-	$sql = "SELECT * FROM categoria";
-	$result = $con->query($sql);
+  $sql = "SELECT * FROM categoria";
+  $result = $con->query($sql);
 
-	if ($result->num_rows > 0) {
-		// output data of each row
-		while ($row = $result->fetch_assoc()) {
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
       $id = $row["id"];
-			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
-      echo '
+      //echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
+      /*echo '
             <div class="product-card">
               <div class="product-tumb">
                 <form id="'.$row["id"].'" action="catalogo.php" method="post">
@@ -56,50 +62,61 @@ function getCategorias(){
                           <h4><a href="javascript:{}" onclick="document.getElementById(' . "'$id'" . ').submit();">'.$row["nombre"].'</a></h4>
                         </div>
                   </form>
-              </div>';
-		}
-	} else {
-		echo "0 results";
-	}
+              </div>';*/
+      echo '
+      <div class="col-xl-4 col-lg-6 col-md-6">
+            <div class="card bg-dark text-white border-0 mt-4 mt-xl-5">
+                <img src="images/categoria/' . $row["nombre_foto"] . '" class="card-img" alt="Híbrida">
+                <div class="card-img-overlay">
+                    <h3 class="card-title"><a href="catalogo.php?idcategoria='. $row["id"].'" title="'.$row["nombre"].'" class="stretched-link text-white">' . $row["nombre"] . '</a></h3>
+                </div>
+            </div>
+        </div>
+      ';
+    }
+  } else {
+    echo "0 results";
+  }
 
-	desconectar_bd($con);
+  desconectar_bd($con);
 }
 
-function getCepas($idcategoria){
-	$con = conectar_bd();
+function getCepas($idcategoria)
+{
+  $con = conectar_bd();
 
-	$sql = "SELECT categoria.id AS catid, weed.id AS wid, weed.descripcion, weed.nombre
+  $sql = "SELECT categoria.id AS catid, weed.id AS wid, weed.descripcion, weed.nombre
           FROM weed
           INNER JOIN categoria
           ON weed.id_categoria = categoria.id
           AND categoria.id = $idcategoria";
-	$result = $con->query($sql);
-    $nombre="";
-    $bandera=true;
-	if ($result->num_rows > 0) {
-		// output data of each row
-		while ($row = $result->fetch_assoc()) {
-			$idweed = $row["wid"];
-            $idnumerico=intval($idweed);
-            $sql1 = "select nombre from fotos where id_weed=$idnumerico";
-            $result1 = $con->query($sql1);
-            while (($row1 = $result1->fetch_assoc())&& $bandera) {
-                $nombre=$row1["nombre"];
-               // print_r(strlen($nombre));
-                for($i=0;$i<strlen($nombre);$i++){
-                    if($nombre[$i]=="1"){
-                        $bandera=false;
-                    }
-                }
-            }
-             $bandera=true;    
-			//echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
-			echo '<div class="col-md-4 text-center animate-box">
+  $result = $con->query($sql);
+  $nombre = "";
+  $bandera = true;
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      $idweed = $row["wid"];
+      $idnumerico = intval($idweed);
+      $sql1 = "select nombre from fotos where id_weed=$idnumerico";
+      $result1 = $con->query($sql1);
+      while (($row1 = $result1->fetch_assoc()) && $bandera) {
+        $nombre = $row1["nombre"];
+        // print_r(strlen($nombre));
+        for ($i = 0; $i < strlen($nombre); $i++) {
+          if ($nombre[$i] == "1") {
+            $bandera = false;
+          }
+        }
+      }
+      $bandera = true;
+      //echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
+      echo '<div class="col-md-4 text-center animate-box">
 					<div class="product">
-					<form id="'.$row["wid"].'" action="single.php" method="get">
+					<form id="' . $row["wid"] . '" action="single.php" method="get">
 						<input type="hidden" name="idweed" value="' . $row["wid"] . '">
 						
-							<div class="product-grid" style="background-image:url(images/cepas/'.$nombre. '">
+							<div class="product-grid" style="background-image:url(images/cepas/' . $nombre . '">
 								<div class="inner">
 									<p>
 										<a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon"><i class="icon-eye"></i></a>
@@ -107,110 +124,111 @@ function getCepas($idcategoria){
 								</div>
 							</div>
 							<div class="desc">
-								<h3><a id="nombre" href="javascript:{}" onclick="document.getElementById('. "'$idweed'".').submit();">'.$row["nombre"]. '</a></h3>
+								<h3><a id="nombre" href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();">' . $row["nombre"] . '</a></h3>
 							</div>
 						</form>
              		</div>
             	</div>';
+    }
+  } else {
+    echo "0 results";
+  }
 
-		}
-	} else {
-		echo "0 results";
-	}
-
-	desconectar_bd($con);
+  desconectar_bd($con);
 }
-     //Crea un select con los datos de una consulta
-  //@param $id: Campo en una tabla que contiene el id
-  //@param $columna_descripcion: Columna de una tabla con una descripción
-  //@param $tabla: La tabla a consultar en la bd
-  function crear_select($id, $columna_descripcion, $tabla) {
-    $conion_bd = conectar_bd();  
-      
-      
-    $resultado = '<select class="form-control" name="'.$tabla.'" id="'.$tabla.'"><option value="" disabled selected>Selecciona una opción</option>';
-    
-            
-    $consulta = "SELECT $id  , $columna_descripcion  FROM $tabla";
-    $resultados = $conion_bd->query($consulta);
-    while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
+//Crea un select con los datos de una consulta
+//@param $id: Campo en una tabla que contiene el id
+//@param $columna_descripcion: Columna de una tabla con una descripción
+//@param $tabla: La tabla a consultar en la bd
+function crear_select($id, $columna_descripcion, $tabla)
+{
+  $conion_bd = conectar_bd();
 
-      $resultado .= '<option value="'.$row["$id"].'">'.$row["$columna_descripcion"].'</option>';
-       
-    }
-        
-    desconectar_bd($conion_bd);
-    $resultado .=  '</select>';
-    return $resultado;
+
+  $resultado = '<select class="form-control" name="' . $tabla . '" id="' . $tabla . '"><option value="" disabled selected>Selecciona una opción</option>';
+
+
+  $consulta = "SELECT $id  , $columna_descripcion  FROM $tabla";
+  $resultados = $conion_bd->query($consulta);
+  while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
+
+    $resultado .= '<option value="' . $row["$id"] . '">' . $row["$columna_descripcion"] . '</option>';
   }
-   
-  function getTerpenos() {
-    $conion_bd = conectar_bd();  
-      
-      
-    $resultado = '';
-    
-            
-    $consulta = "select nombre,id_terpeno from terpenos";
-    $resultados = $conion_bd->query($consulta);
-    while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
-        $resultado .= '<div class="checkbox" id="checkterpenos">
+
+  desconectar_bd($conion_bd);
+  $resultado .=  '</select>';
+  return $resultado;
+}
+
+function getTerpenos()
+{
+  $conion_bd = conectar_bd();
+
+
+  $resultado = '';
+
+
+  $consulta = "select nombre,id_terpeno from terpenos";
+  $resultados = $conion_bd->query($consulta);
+  while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
+    $resultado .= '<div class="checkbox" id="checkterpenos">
       <label>
-        <input class="terpenos" type="checkbox" name="terpenos[]" idt="'.$row["id_terpeno"].'"  value="'.$row["id_terpeno"].'">' .$row["nombre"]. '
+        <input class="terpenos" type="checkbox" name="terpenos[]" idt="' . $row["id_terpeno"] . '"  value="' . $row["id_terpeno"] . '">' . $row["nombre"] . '
       </label>
-      <input type="number" name="porcentajes[]" class="form-control" id="'.$row["id_terpeno"].'" placeholder="5" min="1" max="100">
+      <input type="number" name="porcentajes[]" class="form-control" id="' . $row["id_terpeno"] . '" placeholder="5" min="1" max="100">
     </div>';
-     
-       
-    }
-        
-    desconectar_bd($conion_bd);
-    return $resultado;
   }
 
-function insertIntoDb($dml, ...$args){
-    $conDb =  conectar_bd();
-    $types='';
-    //Verifica los tipos de variable de los argumentos y termina el proceso si no son int, double, string o BLOB
-    foreach ($args as $arg){
-        $types.=substr(gettype($arg),0,1);
-        if(preg_match('/[^idsb]/', $types)){
-            die("Invalid argument, only Int, double, string and BLOB accepted");
-        }
+  desconectar_bd($conion_bd);
+  return $resultado;
+}
+
+function insertIntoDb($dml, ...$args)
+{
+  $conDb =  conectar_bd();
+  $types = '';
+  //Verifica los tipos de variable de los argumentos y termina el proceso si no son int, double, string o BLOB
+  foreach ($args as $arg) {
+    $types .= substr(gettype($arg), 0, 1);
+    if (preg_match('/[^idsb]/', $types)) {
+      die("Invalid argument, only Int, double, string and BLOB accepted");
     }
-    if ( !($statement = $conDb->prepare($dml)) ) {
-        die("Error: (" . $conDb->errno . ") " . $conDb->error);
-        return 0;
-    }
-    //Unir los parámetros de la función con los parámetros de la consulta
-    //El primer argumento de bind_param es el formato de cada parámetro
-    if (!$statement->bind_param($types, ...$args)) {
-        die("Error en vinculación: (" . $statement->errno . ") " . $statement->error);
-        return 0;
-    }
-    //Executar la consulta
-    if (!$statement->execute()) {
-        die("Error en ejecución: (" . $statement->errno . ") " . $statement->error);
-        return 0;
-    }
-    $id = $conDb->insert_id;
-    desconectar_bd($conDb);
-    return $id;
+  }
+  if (!($statement = $conDb->prepare($dml))) {
+    die("Error: (" . $conDb->errno . ") " . $conDb->error);
+    return 0;
+  }
+  //Unir los parámetros de la función con los parámetros de la consulta
+  //El primer argumento de bind_param es el formato de cada parámetro
+  if (!$statement->bind_param($types, ...$args)) {
+    die("Error en vinculación: (" . $statement->errno . ") " . $statement->error);
+    return 0;
+  }
+  //Executar la consulta
+  if (!$statement->execute()) {
+    die("Error en ejecución: (" . $statement->errno . ") " . $statement->error);
+    return 0;
+  }
+  $id = $conDb->insert_id;
+  desconectar_bd($conDb);
+  return $id;
 }
 //Función que conecta a la bd, realiza un query y vuelve a cerrar la bd. Recibe el SQL del query y regresa un objeto mysqli result
-function sqlqry($qry){
-    $con = conectar_bd();
-    if(!$con){
-        return false;
-    }
-    $result = mysqli_query($con, $qry);
-    desconectar_bd($con);
-    return $result;
+function sqlqry($qry)
+{
+  $con = conectar_bd();
+  if (!$con) {
+    return false;
+  }
+  $result = mysqli_query($con, $qry);
+  desconectar_bd($con);
+  return $result;
 }
 //funcion para agregar nuevos terpenos que no existen
-function agregarTerpeno($terpeno){
-    $dml = 'insert into terpenos (nombre) values (?);';
-    return insertIntoDb($dml,$terpeno);
+function agregarTerpeno($terpeno)
+{
+  $dml = 'insert into terpenos (nombre) values (?);';
+  return insertIntoDb($dml, $terpeno);
 }
 function getProgressBar($idweed)
 {
@@ -235,25 +253,23 @@ function getProgressBar($idweed)
                     ' . $row["nombre"] . '
                   </div>
                 </div>';
-                
-      }elseif ($contador == 1) {
+      } elseif ($contador == 1) {
         echo '<div class="progress">
                   <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="' . $row["porcentaje"] . '"
                   aria-valuemin="0" aria-valuemax="100" style="width:' . $row["porcentaje"] . '%">
                     ' . $row["nombre"] . '
                   </div>
                 </div>';
-        } elseif ($contador == 2) {
+      } elseif ($contador == 2) {
         echo '<div class="progress">
                   <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="' . $row["porcentaje"] . '"
                   aria-valuemin="0" aria-valuemax="100" style="width:' . $row["porcentaje"] . '%">
                     ' . $row["nombre"] . '
                   </div>
                 </div>';
-          }
+      }
       $contador++;
     }
-
   } else {
     echo "0 results";
   }
@@ -339,10 +355,9 @@ function getCbd($idweed)
     } else {
       if ($cbd["min"] < 1) {
         echo "<1";
-      }else{
+      } else {
         echo $cbd["min"];
       }
-      
     }
   }
 
@@ -372,42 +387,43 @@ function getCategoria($idweed)
   desconectar_bd($con);
 }
 
-function agregarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $rendimiento, $florecimiento, $id_categoria, $nombre, $descripcion, $terpenos, $porcentajes, $nombres_arch, $archivos, $felling_nombres, $felling_porcentajes, $ayuda_nombres, $ayuda_porcentajes, $negativo_nombres, $negativo_porcentajes){
+function agregarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $rendimiento, $florecimiento, $id_categoria, $nombre, $descripcion, $terpenos, $porcentajes, $nombres_arch, $archivos, $felling_nombres, $felling_porcentajes, $ayuda_nombres, $ayuda_porcentajes, $negativo_nombres, $negativo_porcentajes)
+{
 
-    if($cbdmax == ""){
-        $cbdmax=0;
-    }
-    if($thcmax==""){
-        $thcmax=0;
-    }
-     $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
+  if ($cbdmax == "") {
+    $cbdmax = 0;
+  }
+  if ($thcmax == "") {
+    $thcmax = 0;
+  }
+  $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
   if ($con->connect_errno) {
     printf("Conexión fallida: %s\n", $con->connect_error);
     exit();
   }
   $auxiliar = 0;
   $count = count($porcentajes);
-    
+
   try {
     $con->autocommit(false);
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
     echo "entra al try<br>";
-      if (!($con->query("INSERT INTO cbd (min,max) VALUES($cbdmin,$cbdmax)"))) {
+    if (!($con->query("INSERT INTO cbd (min,max) VALUES($cbdmin,$cbdmax)"))) {
       throw new Exception("no jala cbd");
-      }
-      
-      echo "bloque cbd<br>";
-      if (!(mysqli_fetch_assoc($con->query("SELECT id_cbd FROM cbd ORDER BY id_cbd DESC LIMIT 1")))) {
-        throw new Exception("no jala id_cbd");
-      }else{
-        $id_cbd = mysqli_fetch_assoc($con->query("SELECT id_cbd FROM cbd ORDER BY id_cbd DESC LIMIT 1"));
-        $id_cbd = $id_cbd["id_cbd"];
-      }
-      
-      if (!($con->query("INSERT INTO thc (min,max) VALUES($thcmin,$thcmax)"))) {
-        throw new Exception("no jala thc");
-      }
+    }
+
+    echo "bloque cbd<br>";
+    if (!(mysqli_fetch_assoc($con->query("SELECT id_cbd FROM cbd ORDER BY id_cbd DESC LIMIT 1")))) {
+      throw new Exception("no jala id_cbd");
+    } else {
+      $id_cbd = mysqli_fetch_assoc($con->query("SELECT id_cbd FROM cbd ORDER BY id_cbd DESC LIMIT 1"));
+      $id_cbd = $id_cbd["id_cbd"];
+    }
+
+    if (!($con->query("INSERT INTO thc (min,max) VALUES($thcmin,$thcmax)"))) {
+      throw new Exception("no jala thc");
+    }
 
     if (!(mysqli_fetch_assoc($con->query("SELECT id_thc FROM thc ORDER BY id_thc DESC LIMIT 1")))) {
       throw new Exception("no jala id_thc");
@@ -444,36 +460,36 @@ function agregarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $
 
     echo "bloque weed<br>";
 
-      for ($i = 0; $i < $count; $i++) {
-        if ($porcentajes[$i] != '') {
-            $ter = $terpenos[$auxiliar];
-            $por = $porcentajes[$i];
-            if (!($con->query("INSERT INTO weed_terpenos (id_weed, id_terpeno, porcentaje) values ($id_weed, $ter, $por)"))) {
-              throw new Exception("no jala weed_terpenos");
-            }
-            $auxiliar++;
+    for ($i = 0; $i < $count; $i++) {
+      if ($porcentajes[$i] != '') {
+        $ter = $terpenos[$auxiliar];
+        $por = $porcentajes[$i];
+        if (!($con->query("INSERT INTO weed_terpenos (id_weed, id_terpeno, porcentaje) values ($id_weed, $ter, $por)"))) {
+          throw new Exception("no jala weed_terpenos");
         }
+        $auxiliar++;
       }
+    }
 
     echo "bloque weed_terpenos<br>";
-      for ($i=0; $i < count($nombres_arch); $i++) {
-        $newFilePath = "images/cepas/" . $nombres_arch[$i];
-        // Check if file already exists
-        if (file_exists($newFilePath)) {
-          echo "Sorry, file already exists.";
-          throw new Exception("no jala ya existe la foto");
-        }
-        echo $archivos['upload']['name'][$i];
-        if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
-          if (!($con->query("INSERT INTO fotos (id_weed, nombre) values ($id_weed, '$nombres_arch[$i]')"))) {
-            throw new Exception("no jala nombre foto bd");
-          }
-        }else{
-          throw new Exception("no jala subir fotos");
-        }
+    for ($i = 0; $i < count($nombres_arch); $i++) {
+      $newFilePath = "images/cepas/" . $nombres_arch[$i];
+      // Check if file already exists
+      if (file_exists($newFilePath)) {
+        echo "Sorry, file already exists.";
+        throw new Exception("no jala ya existe la foto");
       }
+      echo $archivos['upload']['name'][$i];
+      if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
+        if (!($con->query("INSERT INTO fotos (id_weed, nombre) values ($id_weed, '$nombres_arch[$i]')"))) {
+          throw new Exception("no jala nombre foto bd");
+        }
+      } else {
+        throw new Exception("no jala subir fotos");
+      }
+    }
     echo "bloque fotos<br>";
-    for ($i=0; $i < count($felling_nombres); $i++) {
+    for ($i = 0; $i < count($felling_nombres); $i++) {
       if (!($con->query("INSERT INTO efectos (id_weed, tipo, nombre, porcentaje) values ($id_weed, 1, '$felling_nombres[$i]', $felling_porcentajes[$i])"))) {
         throw new Exception("no jala efectos sensaciones");
       }
@@ -488,69 +504,66 @@ function agregarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $
         throw new Exception("no jala efectos negativo");
       }
     }
-      echo $con->commit() . "<br>";
-     echo $con->autocommit(true)."<br>";
-      
-      
-      $_SESSION["mensaje"]=true;
-      header('location: ./addCepa.php');
+    echo $con->commit() . "<br>";
+    echo $con->autocommit(true) . "<br>";
+
+
+    $_SESSION["mensaje"] = true;
+    header('location: ./addCepa.php');
     echo "fin commit<br>";
-    } catch (Exception $e) {
-      $con->rollback();
-      $_SESSION["mensaje"]=false;
-      header('location: ./addCepa.php');
-      echo 'Something fails: ',  $e->getMessage(), "\n";
+  } catch (Exception $e) {
+    $con->rollback();
+    $_SESSION["mensaje"] = false;
+    header('location: ./addCepa.php');
+    echo 'Something fails: ',  $e->getMessage(), "\n";
     //echo "errror, falio ferga<br>";
   }
-$con->close();
+  $con->close();
 }
 
 function getImagenesWeed($idweed)
 {
 
-    $con = conectar_bd();
-    $bandera = true;
-    $contador = 0;
-    $sql = "SELECT nombre FROM fotos where id_weed=$idweed";
-    $result = $con->query($sql);
-    $cadena1 = '<div class="preview-pic tab-content">';
-    $cadena2 = '<ul class="preview-thumbnail nav nav-tabs" style="margin-left:15px;">';
+  $con = conectar_bd();
+  $bandera = true;
+  $contador = 0;
+  $sql = "SELECT nombre FROM fotos where id_weed=$idweed";
+  $result = $con->query($sql);
+  $cadena1 = '<div class="preview-pic tab-content">';
+  $cadena2 = '<ul class="preview-thumbnail nav nav-tabs" style="margin-left:15px;">';
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-        if($bandera){
-            $cadena1.= ' <div class="tab-pane active" id="pic-'.$contador.'"><img src="images/cepas/' . $row["nombre"] . '" width="440" height="440" />
+      if ($bandera) {
+        $cadena1 .= ' <div class="tab-pane active" id="pic-' . $contador . '"><img src="images/cepas/' . $row["nombre"] . '" width="440" height="440" />
 								</div>';
-        }else{
-            $cadena1.= '<div class="tab-pane" id="pic-'.$contador.'"><img src="images/cepas/' . $row["nombre"] . '"  width="440" height="440"/></div>';
-        }
-        if($bandera){
-            $cadena2.= ' <li class="active">
-									<a data-target="#pic-'.$contador.'" data-toggle="tab">
+      } else {
+        $cadena1 .= '<div class="tab-pane" id="pic-' . $contador . '"><img src="images/cepas/' . $row["nombre"] . '"  width="440" height="440"/></div>';
+      }
+      if ($bandera) {
+        $cadena2 .= ' <li class="active">
+									<a data-target="#pic-' . $contador . '" data-toggle="tab">
 										<img img src="images/cepas/' . $row["nombre"] . '" width="122" height="122 " />
 									</a>
 								</li>';
-            $bandera=false;
-        }else{
-            $cadena2.= '<li><a data-target="#pic-'.$contador.'" data-toggle="tab"><img src="images/cepas/' . $row["nombre"] . '" width="122" height="122" /></a>
+        $bandera = false;
+      } else {
+        $cadena2 .= '<li><a data-target="#pic-' . $contador . '" data-toggle="tab"><img src="images/cepas/' . $row["nombre"] . '" width="122" height="122" /></a>
 								</li>';
-        }
-        $contador++;
-        	
-
-  } 
-
- 
-  }else{
-      echo "No hay imagenes";
+      }
+      $contador++;
+    }
+  } else {
+    echo "No hay imagenes";
   }
-    $cadena1.='</div>';
-    $cadena2.='</ul>';
-    return $cadena1.$cadena2;
+  $cadena1 .= '</div>';
+  $cadena2 .= '</ul>';
+  return $cadena1 . $cadena2;
 
- desconectar_bd($con);
+  desconectar_bd($con);
 }
-function agregarCategoria($categoria,$nombre_foto,$archivo,$target_file,$descripcion){
+function agregarCategoria($categoria, $nombre_foto, $archivo, $target_file, $descripcion)
+{
   $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
   if ($con->connect_errno) {
     printf("Conexión fallida: %s\n", $con->connect_error);
@@ -561,35 +574,34 @@ function agregarCategoria($categoria,$nombre_foto,$archivo,$target_file,$descrip
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
     echo "entra al try<br>";
-      if (!($con->query("INSERT INTO categoria (nombre,nombre_foto,descripcion) VALUES ('$categoria' ,'$nombre_foto' ,'$descripcion')"))) {
-        throw new Exception("No se pudo insertar la categoria");
-      }
-     
-      
+    if (!($con->query("INSERT INTO categoria (nombre,nombre_foto,descripcion) VALUES ('$categoria' ,'$nombre_foto' ,'$descripcion')"))) {
+      throw new Exception("No se pudo insertar la categoria");
+    }
 
-      if (move_uploaded_file($archivo["upload"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $archivo["upload"]["name"]). " has been uploaded.";
-      } else {
-          throw new Exception("Sorry, there was an error uploading your file.");
-      }
-    
-      
-      
-     $con->commit() . "<br>";
-      $con->autocommit(true)."<br>";
-      
-      $con->close();
-      $_SESSION["mensaje"]=true;
-      header('location: ./addCategoria.php');
-      echo "fin commit<br>";
-    } catch (Exception $e) {
-      $con->rollback();
-      $_SESSION["mensaje"]=false;
-      header('location: ./addCategoria.php');
-      echo 'Something fails: ',  $e->getMessage(), "\n";
+
+
+    if (move_uploaded_file($archivo["upload"]["tmp_name"], $target_file)) {
+      echo "The file " . basename($archivo["upload"]["name"]) . " has been uploaded.";
+    } else {
+      throw new Exception("Sorry, there was an error uploading your file.");
+    }
+
+
+
+    $con->commit() . "<br>";
+    $con->autocommit(true) . "<br>";
+
+    $con->close();
+    $_SESSION["mensaje"] = true;
+    header('location: ./addCategoria.php');
+    echo "fin commit<br>";
+  } catch (Exception $e) {
+    $con->rollback();
+    $_SESSION["mensaje"] = false;
+    header('location: ./addCategoria.php');
+    echo 'Something fails: ',  $e->getMessage(), "\n";
     //echo "errror, falio ferga<br>";
   }
-
 }
 
 function cortarDescripcion($text, $maxchar, $end = '...')
@@ -614,8 +626,10 @@ function cortarDescripcion($text, $maxchar, $end = '...')
   return $output;
 }
 
-function getCepaCarrusel(){
-
+function getCepaCarrusel()
+{
+  $contador = 1;
+  $active = "active";
   $con = conectar_bd();
   $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, weed.descripcion, categoria.nombre AS catNombre
           FROM weed, categoria
@@ -672,65 +686,62 @@ function getCepaCarrusel(){
                 </div>
               </li>';*/
       }
+
   }
   desconectar_bd($con);
 }
 
-function getCepasDestacadas(){
+function getCepasDestacadas()
+{
 
   $con = conectar_bd();
   $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, weed.descripcion, categoria.nombre AS catNombre
           FROM weed, categoria
           WHERE weed.id_categoria = categoria.id
           AND estado = 1
-          ORDER BY RAND ( ) LIMIT 6";
+          ORDER BY RAND ( ) LIMIT 8";
   $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
-    // output data of each row
     while ($row = $result->fetch_assoc()) {
-      echo '<div class="col-md-4 text-center animate-box">
-				      <div class="product">';
       $sql2 = "SELECT fotos.nombre AS fotoNombre FROM fotos, weed WHERE fotos.id_weed = " . $row["weedId"] . " LIMIT 1";
       $result2 = $con->query($sql2);
       if ($result2->num_rows > 0) {
         while ($row2 = $result2->fetch_assoc()) {
-          echo '<div class="product-grid" style="background-image:url(images/cepas/'.$row2["fotoNombre"].'">';
+          echo '
+          <div class="col-md-6 col-lg-3">
+              <div class="bg-white shadow text-center pt-2 pt-sm-4 pb-2 pb-sm-4 mb-4">
+                  <p><img src="images/cepas/' . $row2["fotoNombre"] . '" alt="Weed" class="img-fluid"></p>
+                  <h5 class="m-0"><a href="#" title="Sativa">' . $row["catNombre"] . '</a></h5>
+                  <h4><a href="#hola" title="Lemon Haze" class="text-dark">' . $row["weedNombre"] . '</a></h4>
+              </div>
+          </div>
+          ';
         }
       }
-      echo '<div class="inner">
-							<p>
-								<a href="single.php?idweed='.$row["weedId"].'" class="icon"><i class="icon-eye"></i></a>
-							</p>
-						</div>
-					</div>
-					<div class="desc">
-						<h3><a href="single.php?idweed='.$row["weedId"].'">'.$row["weedNombre"]. '</a></h3>
-						<span class="price">' . $row["catNombre"] . '</span>
-					</div>
-				</div>
-			</div>';
     }
   }
   desconectar_bd($con);
 }
 
-function getNombreCategoria($idcategoria){
+function getNombreCategoria($idcategoria)
+{
   $con = conectar_bd();
   $sql = "SELECT * FROM categoria WHERE categoria.id = $idcategoria";
   $result = $con->query($sql);
   $categoria = mysqli_fetch_assoc($result);
 
   if ($result->num_rows > 0) {
-    echo 
-    "<h2>". $categoria["nombre"]."</h2>
-                <p>" . $categoria["descripcion"]."</p>";
+    echo
+      "<h2>" . $categoria["nombre"] . "</h2>
+                <p>" . $categoria["descripcion"] . "</p>";
   }
 
   desconectar_bd($con);
 }
 
-function getListadoTerpenos(){
+function getListadoTerpenos()
+{
   $contador = 0;
   $con = conectar_bd();
   $sql = "SELECT  * from terpenos";
@@ -741,32 +752,34 @@ function getListadoTerpenos(){
       echo '<div class="row">
 
             <div class="col-md-10">
-                <input type="text" class="form-control" name="'.$contador.'"  value="'.$row["nombre"].'">
-               <input type="hidden" class="form-control" name="id'.$contador.'"  value="'.$row["id_terpeno"].'">
+                <input type="text" class="form-control" name="' . $contador . '"  value="' . $row["nombre"] . '">
+               <input type="hidden" class="form-control" name="id' . $contador . '"  value="' . $row["id_terpeno"] . '">
             </div>
             <div class="col-md-2">
-            <a class=" btn btn-danger btn-sm" href="controlador_eliminarTerpenos.php?id_terpeno='.$row["id_terpeno"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')"><i class="fa fa-trash" ></i></a>
+            <a class=" btn btn-danger btn-sm" href="controlador_eliminarTerpenos.php?id_terpeno=' . $row["id_terpeno"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')"><i class="fa fa-trash" ></i></a>
 
             </div>
         </div>
       ';
-        $contador++;
+      $contador++;
     }
-  }else{
-      echo '0 results';
+  } else {
+    echo '0 results';
   }
   desconectar_bd($con);
 }
 
-function editarTerpenos($nombre,$id){
- $dml = "UPDATE terpenos
+function editarTerpenos($nombre, $id)
+{
+  $dml = "UPDATE terpenos
 SET nombre = '$nombre'
 WHERE id_terpeno = $id;";
-    return modifyDb($dml);
+  return modifyDb($dml);
 }
-function eliminarTerpeno($id){
- $dml = "delete from terpenos WHERE id_terpeno = $id;";
-    return modifyDb($dml);
+function eliminarTerpeno($id)
+{
+  $dml = "delete from terpenos WHERE id_terpeno = $id;";
+  return modifyDb($dml);
 }
 
 function getListadoCategorias()
@@ -790,7 +803,7 @@ function getListadoCategorias()
                
             </div>
             <div class="col-md-2">
-                <img src="images/categoria/'.$row["nombre_foto"].'" width="100px">
+                <img src="images/categoria/' . $row["nombre_foto"] . '" width="100px">
                
             </div>
             <div class="col-md-2">
@@ -807,7 +820,8 @@ function getListadoCategorias()
   }
   desconectar_bd($con);
 }
-function editarCategoria($id, $nombre, $descripcion){
+function editarCategoria($id, $nombre, $descripcion)
+{
   $dml = "UPDATE categoria
 SET nombre='$nombre',descripcion='$descripcion'
 WHERE id = $id;";
@@ -825,7 +839,7 @@ function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria, $catego
   $conion_bd = conectar_bd();
 
 
-  $resultado = '<select class="form-control" name="' . $tabla . '" id="'. $tabla .'"><option value="'.$categoriaId.'" selected>'. $categoria .'</option>';
+  $resultado = '<select class="form-control" name="' . $tabla . '" id="' . $tabla . '"><option value="' . $categoriaId . '" selected>' . $categoria . '</option>';
 
 
   $consulta = "SELECT $id  , $columna_descripcion  FROM $tabla";
@@ -847,12 +861,12 @@ function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categ
   echo '<form id="addCepa" action="controlador_editReceta.php" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="usr">Titulo:</label>
-            <input type="text" class="form-control " id="name" name="titulo" value="'.$nombre.'" required>
-            <input type="hidden" class="form-control " id="idWeed" name="idReceta" value="'.$idweed.'">
+            <input type="text" class="form-control " id="name" name="titulo" value="' . $nombre . '" required>
+            <input type="hidden" class="form-control " id="idWeed" name="idReceta" value="' . $idweed . '">
         </div>
         <div class="form-group">
             <label for="usr">Descripcion:</label>
-            <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>'.$descripcion. '</textarea>
+            <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>' . $descripcion . '</textarea>
         </div>
         <div class="form-group">
             <label for="usr">Subtitulo:</label>
@@ -866,7 +880,7 @@ function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categ
 
         <div class="form-group">
             <label>Categoria</label>
-            ' . crear_selectEdit("id", "nombre", "categoria_recetas", $categoria, $categoriaId). '
+            ' . crear_selectEdit("id", "nombre", "categoria_recetas", $categoria, $categoriaId) . '
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Archivos</label>
@@ -1090,7 +1104,7 @@ function getListadoCepas()
                           </div>
                       </div>
                   </td>
-                  <td>'.$row['nombre'].'</td>
+                  <td>' . $row['nombre'] . '</td>
                   <td class="actions" data-th="">
                   <form id="' . $row["weedId"] . '" action="editCepa.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idweed" value="' . $row["weedId"] . '">
@@ -1098,12 +1112,12 @@ function getListadoCepas()
                           <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
                         </a>
                   </form>
-                  <a href="borrarCepa.php?idweed='.$row["weedId"]. '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')" class="icon" style="display: inline-block">
+                  <a href="borrarCepa.php?idweed=' . $row["weedId"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')" class="icon" style="display: inline-block">
                     <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                   </a>
                 </td>
               </tr>';
-      }else{
+      } else {
         $sql = "SELECT weed.nombre AS weedNombre, categoria.nombre, weed.id AS weedId, (SELECT fotos.nombre FROM fotos WHERE fotos.id_weed = weed.id LIMIT 1) AS foto
                 FROM weed, fotos, categoria
                 WHERE weed.id = fotos.id_weed
@@ -1170,7 +1184,7 @@ function getListadoRecetas()
                           </div>
                       </div>
                   </td>
-                  <td>'.$row['nombre'].'</td>
+                  <td>' . $row['nombre'] . '</td>
                   <td class="actions" data-th="">
                   <form id="' . $row["recetaId"] . '" action="edit_receta.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idreceta" value="' . $row["recetaId"] . '">
@@ -1203,7 +1217,7 @@ function getListadoRecetas()
                           </div>
                       </div>
                   </td>
-                  <td>'.$row['nombre'].'</td>
+                  <td>' . $row['nombre'] . '</td>
                   <td class="actions" data-th="">
                   <form id="' . $row["recetaId"] . '" action="edit_receta.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idreceta" value="' . $row["recetaId"] . '">
@@ -1211,7 +1225,7 @@ function getListadoRecetas()
                           <button class="btn btn-info btn-sm"><i class="fas fa-wrench"></i></button>
                         </a>
                     </form>
-                      <a href="borrarReceta.php?idreceta=' . $row["recetaId"] . '" onclick="return confirm('."'"."¿estas seguro?"."'".')" class="icon" style="display: inline-block">
+                      <a href="borrarReceta.php?idreceta=' . $row["recetaId"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')" class="icon" style="display: inline-block">
                         <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                       </a>
                   </td>
@@ -1222,32 +1236,33 @@ function getListadoRecetas()
   desconectar_bd($con);
 }
 
-function crear_selectDificultad($dificultad){
+function crear_selectDificultad($dificultad)
+{
 
-    if ($dificultad == "facil") {
+  if ($dificultad == "facil") {
 
-      $resultado = '<select class="form-control" id="dificultad" name="dificultad" required>
+    $resultado = '<select class="form-control" id="dificultad" name="dificultad" required>
         <option value="facil" selected>Facil</option>
         <option value="moderado">Moderado</option>
         <option value="dificil">Dificil</option>
       </select>';
-    }
+  }
 
-    if ($dificultad == "moderado") {
+  if ($dificultad == "moderado") {
 
     $resultado = '<select class="form-control" id="dificultad" name="dificultad" required>
         <option value="facil" >Facil</option>
         <option value="moderado" selected>Moderado</option>
         <option value="dificil">Dificil</option>
       </select>';
-    }
-    if ($dificultad == "dificil") {
+  }
+  if ($dificultad == "dificil") {
     $resultado = '<select class="form-control" id="dificultad" name="dificultad" required>
         <option value="facil" >Facil</option>
         <option value="moderado">Moderado</option>
         <option value="dificil" selected>Dificil</option>
       </select>';
-    }
+  }
 
 
   return $resultado;
@@ -1307,7 +1322,7 @@ function crear_selectRendimiento($rendimiento)
   }
   if ($rendimiento == "3 - 6") {
     $resultado =
-    '<select class="form-control" id="rendimiento" name="rendimiento" required>
+      '<select class="form-control" id="rendimiento" name="rendimiento" required>
                   <option value="0.5 - 1">0.5 - 1</option>
                   <option value="1 - 3">1 - 3</option>
                   <option value="3 - 6" selected>3 - 6</option>
@@ -1338,7 +1353,7 @@ function crear_selectFlorecimiento($florecimiento)
                 </select>';
   }
   if ($florecimiento == "> 12") {
-    $resultado ='<select class="form-control" id="florecimiento" name="florecimiento" required>
+    $resultado = '<select class="form-control" id="florecimiento" name="florecimiento" required>
                     <option value="7 - 9">7 - 9</option>
                     <option value="10 - 12">10 - 12</option>
                     <option value="> 12" selected>> 12</option>
@@ -1356,16 +1371,16 @@ function getEditTerpenos($idweed)
 
   $resultado = '';
 
-  $bandera=0;
+  $bandera = 0;
   $consulta2 = "SELECT id_terpeno, nombre FROM terpenos";
   $resultados2 = $conion_bd->query($consulta2);
   while ($row2 = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
-  
-  $consulta = "SELECT weed_terpenos.id_terpeno,weed_terpenos.porcentaje,terpenos.nombre
+
+    $consulta = "SELECT weed_terpenos.id_terpeno,weed_terpenos.porcentaje,terpenos.nombre
               FROM weed_terpenos,terpenos 
               WHERE id_weed =$idweed AND weed_terpenos.id_terpeno=terpenos.id_terpeno;";
-  $resultados = $conion_bd->query($consulta);
-  while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
+    $resultados = $conion_bd->query($consulta);
+    while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
 
       if ($row2["id_terpeno"] == $row["id_terpeno"]) {
 
@@ -1373,13 +1388,12 @@ function getEditTerpenos($idweed)
           <label>
             <input class="terpenos" type="checkbox" name="terpenos[]" idt="' . $row["id_terpeno"] . '"  value="' . $row["id_terpeno"] . '" checked>' . $row["nombre"] . '
           </label>
-          <input type="number" name="porcentajes[]" class="form-control" id="' . $row["id_terpeno"] . '" value="'.$row["porcentaje"].'" placeholder="5" min="1" max="100">
+          <input type="number" name="porcentajes[]" class="form-control" id="' . $row["id_terpeno"] . '" value="' . $row["porcentaje"] . '" placeholder="5" min="1" max="100">
         </div>';
-        $bandera=1;
+        $bandera = 1;
       }
-    
     }
-    if($bandera==0){
+    if ($bandera == 0) {
       $resultado .= '<div class="checkbox" id="checkterpenos">
           <label>
             <input class="terpenos" type="checkbox" name="terpenos[]" idt="' . $row2["id_terpeno"] . '"  value="' . $row2["id_terpeno"] . '">' . $row2["nombre"] . '
@@ -1387,15 +1401,15 @@ function getEditTerpenos($idweed)
           <input type="number" name="porcentajes[]" class="form-control" id="' . $row2["id_terpeno"] . '" placeholder="5" min="1" max="100">
         </div>';
     }
-    $bandera=0;
-
+    $bandera = 0;
   }
 
   desconectar_bd($conion_bd);
   return $resultado;
 }
 
-function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $florecimiento, $rendimiento, $terpenos, $porcentajes, $nombres_arch, $felling_nombres, $felling_porcentajes, $ayuda_nombres, $ayuda_porcentajes, $negativo_nombres, $negativo_porcentajes, $felling_ids, $ayuda_ids, $negativo_ids){
+function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $florecimiento, $rendimiento, $terpenos, $porcentajes, $nombres_arch, $felling_nombres, $felling_porcentajes, $ayuda_nombres, $ayuda_porcentajes, $negativo_nombres, $negativo_porcentajes, $felling_ids, $ayuda_ids, $negativo_ids)
+{
   $con = conectar_bd();
   $auxiliar = 0;
   $dml = "UPDATE weed
@@ -1439,10 +1453,10 @@ function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, 
   $dml = "DELETE FROM weed_terpenos
           WHERE id_weed = $idweed";
 
-          //////////////////////////////////// VERIFICAR IF
+  //////////////////////////////////// VERIFICAR IF
 
   if (modifyDb($dml) != 0) {
-    
+
     $count = count($porcentajes);
     for ($i = 0; $i < $count; $i++) {
 
@@ -1453,16 +1467,14 @@ function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, 
         insertIntoDb($dml, $idweed, $terpenos[$auxiliar], $porcentajes[$i]);
         $auxiliar++;
       }
-
     }
   }
 
-    for ($i = 0; $i < count($nombres_arch); $i++) {
+  for ($i = 0; $i < count($nombres_arch); $i++) {
 
-        $dml = "INSERT INTO fotos (id_weed, nombre) VALUES (?, ?);";
-        insertIntoDb($dml, $idweed, $nombres_arch[$i]);
-
-    }
+    $dml = "INSERT INTO fotos (id_weed, nombre) VALUES (?, ?);";
+    insertIntoDb($dml, $idweed, $nombres_arch[$i]);
+  }
 
   for ($i = 0; $i < count($felling_nombres); $i++) {
     if (!($con->query("UPDATE efectos SET nombre = '$felling_nombres[$i]', porcentaje = $felling_porcentajes[$i] WHERE id_weed = $idweed AND tipo = 1 AND id_efectos=$felling_ids[$i]"))) {
@@ -1479,7 +1491,6 @@ function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, 
       throw new Exception("no jala efectos negativo");
     }
   }
-
 }
 
 function ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch)
@@ -1498,7 +1509,8 @@ function ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descrip
   }
 }
 
-function tablaFotosEditCepa($idweed){
+function tablaFotosEditCepa($idweed)
+{
 
   $con = conectar_bd();
   $sql = "SELECT *
@@ -1513,7 +1525,7 @@ function tablaFotosEditCepa($idweed){
       if ($row["nombre"] != null) {
         $idFoto =  $row["id"];
 
-  echo '<table class="table">
+        echo '<table class="table">
           <thead>
               <th>foto</th>
               <th>icono</th>
@@ -1593,176 +1605,179 @@ function tablaFotosEditReceta($idweed)
   }
 }
 
-function editarImagenCategoria($categoria,$nombre){
-   $dml="UPDATE categoria SET nombre_foto='$nombre' WHERE id=$categoria;";
-    modifyDb($dml);
-        
+function editarImagenCategoria($categoria, $nombre)
+{
+  $dml = "UPDATE categoria SET nombre_foto='$nombre' WHERE id=$categoria;";
+  modifyDb($dml);
 }
 
-function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos,$subtitulo,$descripcionsubtitulo){
-    $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
+function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos, $subtitulo, $descripcionsubtitulo)
+{
+  $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
   if ($con->connect_errno) {
     printf("Conexión fallida: %s\n", $con->connect_error);
     exit();
   }
 
-    
+
   try {
     $con->autocommit(false);
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
     echo "entra al try<br>";
-      if (!($con->query("INSERT INTO blog (titulo,descripcion,fecha,id_categoria_blog,subtitulo,descripcion2, estado) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo', 1)"))) {
+    if (!($con->query("INSERT INTO blog (titulo,descripcion,fecha,id_categoria_blog,subtitulo,descripcion2, estado) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo', 1)"))) {
       throw new Exception("error al insertar el blog");
-      }
-      
-      echo "bloque fotos<br>";
-      if (!(mysqli_fetch_assoc($con->query("SELECT id FROM blog ORDER BY id DESC LIMIT 1")))) {
-        throw new Exception("error al sacar el select de id blog");
-      }else{
-        $id_blog = mysqli_fetch_assoc($con->query("SELECT id FROM blog ORDER BY id DESC LIMIT 1"));
-        $id_blog = $id_blog["id"];
-      }
-      
-    
-    
+    }
 
-  
-    echo "bloque de fotos<br>";
-      for ($i=0; $i < count($nombres_arch); $i++) {
-        $newFilePath = "images/blog/" . $nombres_arch[$i];
-        // Check if file already exists
-        if (file_exists($newFilePath)) {
-          echo "Sorry, file already exists.";
-          throw new Exception("La foto ya existe");
-        }
-       echo $archivos['upload']['name'][$i];
-        if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
-          if (!($con->query("INSERT INTO fotos_blog (id_blog,nombre) values ($id_blog, '$nombres_arch[$i]')"))) {
-               echo "INSERT INTO fotos_blog (id_blog,nombre) values ($id_blog, '$nombres_arch[$i]')";
-            throw new Exception("error al hacer el insert");
-          }
-        }else{
-          throw new Exception("error al cargar las fotos");
-        }
-      }
-      //generar error
-      //throw new Exception("error al cargar las fotos");
     echo "bloque fotos<br>";
-      echo $con->commit() . "<br>";
-     echo $con->autocommit(true)."<br>";
-      
-     
-      $_SESSION["mensaje"]=true;
-      header('location: ./agregar_blog.php');
-    echo "fin commit<br>";
-    } catch (Exception $e) {
-      $con->rollback();
+    if (!(mysqli_fetch_assoc($con->query("SELECT id FROM blog ORDER BY id DESC LIMIT 1")))) {
+      throw new Exception("error al sacar el select de id blog");
+    } else {
+      $id_blog = mysqli_fetch_assoc($con->query("SELECT id FROM blog ORDER BY id DESC LIMIT 1"));
+      $id_blog = $id_blog["id"];
+    }
+
+
+
+
+
+    echo "bloque de fotos<br>";
     for ($i = 0; $i < count($nombres_arch); $i++) {
       $newFilePath = "images/blog/" . $nombres_arch[$i];
       // Check if file already exists
       if (file_exists($newFilePath)) {
-         unlink($newFilePath);
+        echo "Sorry, file already exists.";
+        throw new Exception("La foto ya existe");
+      }
+      echo $archivos['upload']['name'][$i];
+      if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
+        if (!($con->query("INSERT INTO fotos_blog (id_blog,nombre) values ($id_blog, '$nombres_arch[$i]')"))) {
+          echo "INSERT INTO fotos_blog (id_blog,nombre) values ($id_blog, '$nombres_arch[$i]')";
+          throw new Exception("error al hacer el insert");
+        }
+      } else {
+        throw new Exception("error al cargar las fotos");
       }
     }
-      $_SESSION["mensaje"]=false;
-      header('location: ./agregar_blog.php');
-      echo 'Something fails: ',  $e->getMessage(), "\n";
+    //generar error
+    //throw new Exception("error al cargar las fotos");
+    echo "bloque fotos<br>";
+    echo $con->commit() . "<br>";
+    echo $con->autocommit(true) . "<br>";
+
+
+    $_SESSION["mensaje"] = true;
+    header('location: ./agregar_blog.php');
+    echo "fin commit<br>";
+  } catch (Exception $e) {
+    $con->rollback();
+    for ($i = 0; $i < count($nombres_arch); $i++) {
+      $newFilePath = "images/blog/" . $nombres_arch[$i];
+      // Check if file already exists
+      if (file_exists($newFilePath)) {
+        unlink($newFilePath);
+      }
+    }
+    $_SESSION["mensaje"] = false;
+    header('location: ./agregar_blog.php');
+    echo 'Something fails: ',  $e->getMessage(), "\n";
     //echo "errror, falio ferga<br>";
   }
 
-     $con->close();
+  $con->close();
 }
 
-function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos,$subtitulo,$descripcionsubtitulo,$ingredientes){
-      $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
+function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos, $subtitulo, $descripcionsubtitulo, $ingredientes)
+{
+  $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
   if ($con->connect_errno) {
     printf("Conexión fallida: %s\n", $con->connect_error);
     exit();
   }
 
-    
+
   try {
     $con->autocommit(false);
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
     echo "entra al try<br>";
-      if (!($con->query("INSERT INTO recetas (titulo,descripcion,fecha,id_categoria_receta,subtitulo,descripcion2,ingredientes, estado) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo','$ingredientes',1)"))) {
+    if (!($con->query("INSERT INTO recetas (titulo,descripcion,fecha,id_categoria_receta,subtitulo,descripcion2,ingredientes, estado) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo','$ingredientes',1)"))) {
       throw new Exception("error al insertar el blog");
-      }
-      
-      echo "bloque fotos<br>";
-      if (!(mysqli_fetch_assoc($con->query("SELECT id FROM recetas ORDER BY id DESC LIMIT 1")))) {
-        throw new Exception("error al sacar el select de id blog");
-      }else{
-        $id_receta = mysqli_fetch_assoc($con->query("SELECT id FROM recetas ORDER BY id DESC LIMIT 1"));
-        $id_receta = $id_receta["id"];
-      }
-      
-    
-    
+    }
 
-  
-    echo "bloque de fotos<br>";
-      for ($i=0; $i < count($nombres_arch); $i++) {
-        $newFilePath = "images/recetas/" . $nombres_arch[$i];
-        // Check if file already exists
-        if (file_exists($newFilePath)) {
-          echo "Sorry, file already exists.";
-          throw new Exception("La foto ya existe");
-        }
-       echo $archivos['upload']['name'][$i];
-        if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
-          if (!($con->query("INSERT INTO fotos_recetas (id_receta,nombre) values ($id_receta, '$nombres_arch[$i]')"))) {
-               echo "INSERT INTO fotos_recetas (id_receta,nombre) values ($id_receta, '$nombres_arch[$i]')";
-            throw new Exception("error al hacer el insert");
-          }
-        }else{
-          throw new Exception("error al cargar las fotos");
-        }
-      }
-      //generar error
-      //throw new Exception("error al cargar las fotos");
     echo "bloque fotos<br>";
-      echo $con->commit() . "<br>";
-     echo $con->autocommit(true)."<br>";
-      
-     
-      $_SESSION["mensaje"]=true;
-      header('location: ./agregar_receta.php');
-    echo "fin commit<br>";
-    } catch (Exception $e) {
-      $con->rollback();
+    if (!(mysqli_fetch_assoc($con->query("SELECT id FROM recetas ORDER BY id DESC LIMIT 1")))) {
+      throw new Exception("error al sacar el select de id blog");
+    } else {
+      $id_receta = mysqli_fetch_assoc($con->query("SELECT id FROM recetas ORDER BY id DESC LIMIT 1"));
+      $id_receta = $id_receta["id"];
+    }
+
+
+
+
+
+    echo "bloque de fotos<br>";
     for ($i = 0; $i < count($nombres_arch); $i++) {
       $newFilePath = "images/recetas/" . $nombres_arch[$i];
       // Check if file already exists
       if (file_exists($newFilePath)) {
-         unlink($newFilePath);
+        echo "Sorry, file already exists.";
+        throw new Exception("La foto ya existe");
+      }
+      echo $archivos['upload']['name'][$i];
+      if (move_uploaded_file($archivos['upload']['tmp_name'][$i], $newFilePath)) {
+        if (!($con->query("INSERT INTO fotos_recetas (id_receta,nombre) values ($id_receta, '$nombres_arch[$i]')"))) {
+          echo "INSERT INTO fotos_recetas (id_receta,nombre) values ($id_receta, '$nombres_arch[$i]')";
+          throw new Exception("error al hacer el insert");
+        }
+      } else {
+        throw new Exception("error al cargar las fotos");
       }
     }
-      $_SESSION["mensaje"]=false;
-      header('location: ./agregar_receta.php');
-      echo 'Something fails: ',  $e->getMessage(), "\n";
+    //generar error
+    //throw new Exception("error al cargar las fotos");
+    echo "bloque fotos<br>";
+    echo $con->commit() . "<br>";
+    echo $con->autocommit(true) . "<br>";
+
+
+    $_SESSION["mensaje"] = true;
+    header('location: ./agregar_receta.php');
+    echo "fin commit<br>";
+  } catch (Exception $e) {
+    $con->rollback();
+    for ($i = 0; $i < count($nombres_arch); $i++) {
+      $newFilePath = "images/recetas/" . $nombres_arch[$i];
+      // Check if file already exists
+      if (file_exists($newFilePath)) {
+        unlink($newFilePath);
+      }
+    }
+    $_SESSION["mensaje"] = false;
+    header('location: ./agregar_receta.php');
+    echo 'Something fails: ',  $e->getMessage(), "\n";
     //echo "errror, falio ferga<br>";
   }
 
-     $con->close();
+  $con->close();
 }
-function getListadoBlog(){
-    $con = conectar_bd();
- $sql = "SELECT blog.titulo AS tituloblog, categoria_blog.nombre, blog.id AS blogId, (SELECT fotos_blog.nombre FROM fotos WHERE  fotos_blog.id_blog = blog.id LIMIT 1) AS foto
+function getListadoBlog()
+{
+  $con = conectar_bd();
+  $sql = "SELECT blog.titulo AS tituloblog, categoria_blog.nombre, blog.id AS blogId, (SELECT fotos_blog.nombre FROM fotos WHERE  fotos_blog.id_blog = blog.id LIMIT 1) AS foto
           FROM blog, fotos_blog, categoria_blog
           WHERE blog.id = fotos_blog.id_blog
           AND categoria_blog.id = blog.id_categoria_blog
           AND blog.estado > 0
           group by blog.titulo";
-        $result = $con->query($sql);
+  $result = $con->query($sql);
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-        $blogId =  $row["blogId"];
-        
-        echo '<tr>
+      $blogId =  $row["blogId"];
+
+      echo '<tr>
                   <td data-th="Product">
                       <div class="row">
                           <div class="col-sm-6">
@@ -1773,7 +1788,7 @@ function getListadoBlog(){
                           </div>
                       </div>
                   </td>
-                  <td>'.$row['nombre'].'</td>
+                  <td>' . $row['nombre'] . '</td>
                   <td class="actions" data-th="">
                   <form id="' . $row["blogId"] . '" action="editBlog.php" method="get" style="display: inline-block">
                   <input type="hidden" name="idblog" value="' . $row["blogId"] . '">
@@ -1789,32 +1804,31 @@ function getListadoBlog(){
     }
   }
   desconectar_bd($con);
-
-
 }
-function formEditBlog($idblog,$nombre, $descripcion,$id_categoria_blog, $subtitulo,$descripcion2,$categoria){
-    echo '<form id="addCepa" action="controlador_editBlog.php" method="POST" enctype="multipart/form-data">
+function formEditBlog($idblog, $nombre, $descripcion, $id_categoria_blog, $subtitulo, $descripcion2, $categoria)
+{
+  echo '<form id="addCepa" action="controlador_editBlog.php" method="POST" enctype="multipart/form-data">
      <div class="form-group">
       <label>Categoria:</label>
-       '.crear_selectCategoria("id", "nombre", "categoria_blog",$categoria,$id_categoria_blog) .'  
+       ' . crear_selectCategoria("id", "nombre", "categoria_blog", $categoria, $id_categoria_blog) . '  
     </div>
         <div class="form-group ">
             <label for="usr">Titulo:</label>
-            <input type="text" class="form-control " id="titulo" name="titulo" value="'.$nombre.'" required>
-            <input type="hidden" class="form-control " id="idBlog" name="idBlog" value="'.$idblog.'">
+            <input type="text" class="form-control " id="titulo" name="titulo" value="' . $nombre . '" required>
+            <input type="hidden" class="form-control " id="idBlog" name="idBlog" value="' . $idblog . '">
         </div>
         
     <div class="form-group ">
       <label for="usr">Descripcion:</label>
-      <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>'.$descripcion .'</textarea>
+      <textarea type="textarea" class="form-control " id="descripcion" name="descripcion" required>' . $descripcion . '</textarea>
     </div>
       <div class="form-group ">
       <label for="usr">Subtitulo:</label>
-      <input type="text" class="form-control " value="'.$subtitulo.'" id="subtitulo" name="subtitulo" required>
+      <input type="text" class="form-control " value="' . $subtitulo . '" id="subtitulo" name="subtitulo" required>
     </div>
     <div class="form-group ">
       <label for="usr">Descripcion del Subtitulo:</label>
-      <textarea type="textarea" class="form-control " id="descripcionsubtitulo" name="descripcionsubtitulo"  required>'.$descripcion2.'</textarea>
+      <textarea type="textarea" class="form-control " id="descripcionsubtitulo" name="descripcionsubtitulo"  required>' . $descripcion2 . '</textarea>
     </div>
         
         <div class="form-group">
@@ -1825,11 +1839,12 @@ function formEditBlog($idblog,$nombre, $descripcion,$id_categoria_blog, $subtitu
 
     </form>';
 }
-function crear_selectCategoria($id, $columna_descripcion, $tabla, $categoria, $categoriaId) {
-    $conion_bd = conectar_bd();
+function crear_selectCategoria($id, $columna_descripcion, $tabla, $categoria, $categoriaId)
+{
+  $conion_bd = conectar_bd();
 
 
-  $resultado = '<select class="form-control" name="' . $tabla . '" id="'. $tabla .'"><option value="'.$categoriaId.'" selected>'. $categoria .'</option>';
+  $resultado = '<select class="form-control" name="' . $tabla . '" id="' . $tabla . '"><option value="' . $categoriaId . '" selected>' . $categoria . '</option>';
 
 
   $consulta = "SELECT $id  , $columna_descripcion  FROM $tabla";
@@ -1845,39 +1860,40 @@ function crear_selectCategoria($id, $columna_descripcion, $tabla, $categoria, $c
   $resultado .=  '</select>';
   return $resultado;
 }
-function  ActualizarBlog($id_categoria,$titulo,$idBlog,$descripcion,$subtitulo,$descripcionsubtitulo,$nombres_arch){
-    $con = conectar_bd();
-$auxiliar = 0;
-$dml = "UPDATE blog
+function  ActualizarBlog($id_categoria, $titulo, $idBlog, $descripcion, $subtitulo, $descripcionsubtitulo, $nombres_arch)
+{
+  $con = conectar_bd();
+  $auxiliar = 0;
+  $dml = "UPDATE blog
 SET titulo = '$titulo', descripcion = '$descripcion', id_categoria_blog = '$id_categoria', subtitulo ='$subtitulo'  , descripcion2='$descripcionsubtitulo'
 WHERE id = $idBlog;";
-modifyDb($dml);
+  modifyDb($dml);
 
-  
 
-          //////////////////////////////////// VERIFICAR IF
 
-    $count = count($nombres_arch);
-    for ($i = 0; $i < $count; $i++) {
+  //////////////////////////////////// VERIFICAR IF
 
-        $dml = "INSERT INTO fotos_blog (id_blog, nombre) VALUES (?, ?);";
-        insertIntoDb($dml, $idBlog, $nombres_arch[$i]);
+  $count = count($nombres_arch);
+  for ($i = 0; $i < $count; $i++) {
 
-    }
-    
+    $dml = "INSERT INTO fotos_blog (id_blog, nombre) VALUES (?, ?);";
+    insertIntoDb($dml, $idBlog, $nombres_arch[$i]);
+  }
 }
-function agregarCategoriaBlog($categoria){
-     $dml = "INSERT INTO categoria_blog (nombre) VALUES ( ?);";
-        if(insertIntoDb($dml, $categoria)){
-             $_SESSION["mensaje"]=true;
-            header('location: ./agregar_categoria_blog.php');
-        }else{
-             $_SESSION["mensaje"]=false;
-            header('location: ./agregar_categoria_blog.php');
-        }
+function agregarCategoriaBlog($categoria)
+{
+  $dml = "INSERT INTO categoria_blog (nombre) VALUES ( ?);";
+  if (insertIntoDb($dml, $categoria)) {
+    $_SESSION["mensaje"] = true;
+    header('location: ./agregar_categoria_blog.php');
+  } else {
+    $_SESSION["mensaje"] = false;
+    header('location: ./agregar_categoria_blog.php');
+  }
 }
 
-function getSensaciones($id_weed){
+function getSensaciones($id_weed)
+{
 
   $conion_bd = conectar_bd();
 
@@ -1933,18 +1949,19 @@ function getNegativos($id_weed)
   }
 }
 
-function getInputSensaciones($idweed){
+function getInputSensaciones($idweed)
+{
   $conion_bd = conectar_bd();
   $resultado = "";
-  $i=1;
+  $i = 1;
   $consulta2 = "SELECT nombre, porcentaje, id_efectos FROM efectos WHERE tipo = 1 AND id_weed =$idweed";
   $resultados2 = $conion_bd->query($consulta2);
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
-    
+
     $porcenaje = $row['porcentaje'];
     $nombre = $row['nombre'];
     $id_efecto = $row['id_efectos'];
-    $resultado.= "
+    $resultado .= "
       <div class='col-md-8'>
         <h4>Nombre</h4>
         <input type='text' class='form-control' style='display: inline-block; height: 35px;' name='sn$i' value='$nombre'>
@@ -1960,10 +1977,11 @@ function getInputSensaciones($idweed){
   return $resultado;
 }
 
-function getInputAyuda($idweed){
+function getInputAyuda($idweed)
+{
   $conion_bd = conectar_bd();
   $resultado = "";
-  $i=1;
+  $i = 1;
   $consulta2 = "SELECT nombre, porcentaje, id_efectos FROM efectos WHERE tipo = 2 AND id_weed =$idweed";
   $resultados2 = $conion_bd->query($consulta2);
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
@@ -1987,18 +2005,19 @@ function getInputAyuda($idweed){
   return $resultado;
 }
 
-function getInputNegativos($idweed){
+function getInputNegativos($idweed)
+{
   $conion_bd = conectar_bd();
   $resultado = "";
-  $i=1;
+  $i = 1;
   $consulta2 = "SELECT nombre, porcentaje, id_efectos FROM efectos WHERE tipo = 3 AND id_weed =$idweed";
   $resultados2 = $conion_bd->query($consulta2);
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
-    
+
     $porcenaje = $row['porcentaje'];
     $nombre = $row['nombre'];
     $id_efecto = $row['id_efectos'];
-    $resultado.= "
+    $resultado .= "
       <div class='col-md-8'>
         <h4>Nombre</h4>
         <input type='text' class='form-control' style='display: inline-block; height: 35px;' name='nn$i' value='$nombre'>
@@ -2014,11 +2033,70 @@ function getInputNegativos($idweed){
   return $resultado;
 }
 
-function countCepas(){
+function countCepas()
+{
   $con = conectar_bd();
   $result = mysqli_query($con, "SELECT COUNT(*) AS contador FROM weed WHERE estado = 1");
-$row = mysqli_fetch_assoc($result);
+  $row = mysqli_fetch_assoc($result);
   echo $row['contador'];
+}
+
+function getBlogRecientes()
+{
+  $con = conectar_bd();
+  $sql = "SELECT blog.id, blog.fecha, categoria_blog.nombre, blog.titulo, blog.descripcion FROM blog, categoria_blog WHERE blog.id_categoria_blog = categoria_blog.id ORDER BY blog.id DESC LIMIT 3";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+    ?>
+
+      <div class="col-xl-4 col-md-6 col-sm-6">
+        <article class="card mb-3">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <img src="images2/noticia-1.jpg" class="card-img d-none d-sm-block" alt="<?= $row['nombre'] ?>">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h4 class="card-title"><a href="./blog/post.php?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link"><?= $row['titulo'] ?></a></h4>
+                <p class="card-text"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
+                <p class="card-text"><small class="text-muted"><?= $row['fecha'] ?></small></p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+    <?php
+    }
+  }
+}
+
+function getRecetasRecientes()
+{
+  $con = conectar_bd();
+  $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre FROM recetas, categoria_recetas WHERE recetas.id_categoria_receta = categoria_recetas.id ORDER BY recetas.id DESC LIMIT 3";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+    ?>
+
+      <article class="card">
+        <img src="images2/receta-1.jpg" class="card-img-top" alt="Receta 1">
+        <div class="card-body">
+          <h4 class="card-title"><a href="./recetas/post?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link text-primary"><?= $row['titulo'] ?></a></h4>
+          <p class="card-text"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
+          <p class="card-text"><small class="text-muted">Tiempo de preparación: <b><?= $row['fecha'] ?></b></small></p>
+        </div>
+      </article>
+
+<?php
+    }
+  }
 }
 
 ?>
