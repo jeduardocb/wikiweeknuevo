@@ -157,8 +157,6 @@ $onclick = 'onclick="location.href = ' . "'controlador_cerrarSesion.php'" . '"';
 </div>
 
 
-
-
 <div id="fh5co-counter" class="fh5co-bg fh5co-counter" style="background-image:url(images/fondo3.jpg);">
 	<div class="container">
 		<div class="row">
@@ -243,6 +241,3 @@ $onclick = 'onclick="location.href = ' . "'controlador_cerrarSesion.php'" . '"';
 <?php
 include("_footer.html");
 ?>
-<script>
-	
-</script>

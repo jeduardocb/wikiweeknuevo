@@ -71,7 +71,6 @@ function getBlogs()
         // output data of each row
         while ($row = $result->fetch_assoc()) {
 
-
             $idBlog = $row['id'];
             $sql_imagenes = "SELECT * FROM fotos_blog
             WHERE fotos_blog.id_blog = $idBlog

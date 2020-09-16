@@ -50,6 +50,7 @@
 
     // Show the cookie popup on load if not previously accepted
     if (_shouldShowPopup()) {
+        $('#cookieModal').modal({ backdrop: 'static', keyboard: false })
         $('#cookieModal').modal('show');
     }
 

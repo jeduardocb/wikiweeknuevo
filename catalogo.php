@@ -6,68 +6,54 @@ include_once("util.php");
 $idcategoria = htmlspecialchars($_GET['idcategoria']);
 ?>
 
-<div id="fh5co-product">
+<!-- Destacadas -->
+<section id="categoria" class="mt-4 mt-md-5 mb-4 mb-md-5">
     <div class="container">
-        <div class="row animate-box">
-            <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-                <?= getNombreCategoria($idcategoria) ?>
+        <div class="row">
+            <div class="col">
+                <div class="title-subtitle pl-4 mb-4 border-info text-center">
+                    <h1><?= getNombreCategoria($idcategoria) ?></h1>
+                </div>
+            </div>
         </div>
         <div class="row">
             <?= getCepas($idcategoria); ?>
         </div>
     </div>
-</div>
-<div id="fh5co-counter" class="fh5co-bg fh5co-counter" style="background-image:url(images/img_bg_5.jpg);">
+</section>
+<!-- Destacadas fin -->
+<!-- Estadísticas -->
+<section id="estadisticas" class="mt-4 mt-xl-5 bg-warning pt-4 pt-xl-5 pb-4 pb-xl-5">
     <div class="container">
         <div class="row">
-            <div class="display-t">
-                <div class="display-tc">
-                    <div class="col-md-3 col-sm-6 animate-box">
-                        <div class="feature-center">
-                            <span class="icon">
-                                <i class="icon-eye"></i>
-                            </span>
-
-                            <span class="counter js-counter" data-from="0" data-to="22070" data-speed="5000" data-refresh-interval="50">1</span>
-                            <span class="counter-label">Creativity Fuel</span>
-
-                        </div>
+            <div class="col-md-4">
+                <div class="media text-white pt-4 pt-xl-0">
+                    <span class="lnr lnr-eye display-3 mr-3"></span>
+                    <div class="media-body">
+                        <h1 class="mt-0"><?php countCepas() ?> <small class="d-block font-weight-bold h4">Visitas</small></h1>
                     </div>
-                    <div class="col-md-3 col-sm-6 animate-box">
-                        <div class="feature-center">
-                            <span class="icon">
-                                <i class="icon-shopping-cart"></i>
-                            </span>
-
-                            <span class="counter js-counter" data-from="0" data-to="450" data-speed="5000" data-refresh-interval="50">1</span>
-                            <span class="counter-label">Happy Clients</span>
-                        </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="media text-white pt-4 pt-xl-0">
+                    <span class="lnr lnr-book display-3 mr-3"></span>
+                    <div class="media-body">
+                        <h1 class="mt-0">450 <small class="d-block font-weight-bold h4">Cepas</small></h1>
                     </div>
-                    <div class="col-md-3 col-sm-6 animate-box">
-                        <div class="feature-center">
-                            <span class="icon">
-                                <i class="icon-shop"></i>
-                            </span>
-                            <span class="counter js-counter" data-from="0" data-to="700" data-speed="5000" data-refresh-interval="50">1</span>
-                            <span class="counter-label">All Products</span>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 animate-box">
-                        <div class="feature-center">
-                            <span class="icon">
-                                <i class="icon-clock"></i>
-                            </span>
-
-                            <span class="counter js-counter" data-from="0" data-to="5605" data-speed="5000" data-refresh-interval="50">1</span>
-                            <span class="counter-label">Hours Spent</span>
-
-                        </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="media text-white pt-4 pt-xl-0">
+                    <span class="lnr lnr-database display-3 mr-3"></span>
+                    <div class="media-body">
+                        <h1 class="mt-0">700 <small class="d-block font-weight-bold h4">Categorías</small></h1>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+<!-- Estadísticas fin -->
 
 <?php
 include("_footer.html");
