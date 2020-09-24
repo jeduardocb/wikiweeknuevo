@@ -2099,4 +2099,93 @@ function getRecetasRecientes()
   }
 }
 
-?>
+function agregarCategoriaReceta($categoria){
+  $dml = "INSERT INTO categoria_recetas (nombre) VALUES (?);";
+  if (insertIntoDb($dml, $categoria)) {
+    $_SESSION["mensaje"] = true;
+    header('location: ./agregar_categoria_receta.php');
+  } else {
+    $_SESSION["mensaje"] = false;
+    header('location: ./agregar_categoria_receta.php');
+  }
+}
+function getListadoCategoriasRecetas()
+{
+  $con = conectar_bd();
+  $sql = "SELECT  * from categoria_recetas";
+  $result = $con->query($sql);
+  $contador = 0;
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      echo '<div class="row">
+
+            <div class="col-md-2">
+                <input type="text" class="form-control" name="'.$contador.'"  value="' . $row["nombre"] . '">
+               <input type="hidden" class="form-control" name="id'.$contador.'"  value="' . $row["id"] . '">
+            </div>
+            
+            <div class="col-md-2">
+            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoriaRecetas.php?id_categoria=' . $row["id"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')"><i class="fa fa-trash" ></i></a>
+            </div>
+        </div>
+      ';
+      $contador = $contador++;
+    }
+  } else {
+    echo '0 results';
+  }
+  desconectar_bd($con);
+}
+function editarCategoriaRecetas($id, $nombre)
+{
+  $dml = "UPDATE categoria_recetas
+SET nombre='$nombre'
+WHERE id = $id;";
+  return modifyDb($dml);
+}
+function eliminarCategoriaRecetas($id)
+{
+  $dml = "delete from categoria_recetas WHERE id = $id;";
+  return modifyDb($dml);
+}
+function getListadoCategoriasBlog()
+{
+  $con = conectar_bd();
+  $sql = "SELECT  * from categoria_blog";
+  $result = $con->query($sql);
+  $contador = 0;
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      echo '<div class="row">
+
+            <div class="col-md-2">
+                <input type="text" class="form-control" name="'.$contador.'"  value="' . $row["nombre"] . '">
+               <input type="hidden" class="form-control" name="id'.$contador.'"  value="' . $row["id"] . '">
+            </div>
+            
+            <div class="col-md-2">
+            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoriaBlog.php?id_categoria=' . $row["id"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')"><i class="fa fa-trash" ></i></a>
+            </div>
+        </div>
+      ';
+      $contador = $contador++;
+    }
+  } else {
+    echo '0 results';
+  }
+  desconectar_bd($con);
+}
+function editarCategoriaBlog($id, $nombre)
+{
+  $dml = "UPDATE categoria_blog
+SET nombre='$nombre'
+WHERE id = $id;";
+  return modifyDb($dml);
+}
+function eliminarCategoriaBlog($id)
+{
+  $dml = "delete from categoria_blog WHERE id = $id;";
+  return modifyDb($dml);
+}
