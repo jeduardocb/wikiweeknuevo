@@ -2027,7 +2027,7 @@ function getBlogRecientes()
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h4 class="card-title"><a href="./blog/post.php?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link"><?= $row['titulo'] ?></a></h4>
+                <h4 class="card-title"><a href="blog/post.php?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link"><?= $row['titulo'] ?></a></h4>
                 <p class="card-text"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
                 <p class="card-text"><small class="text-muted"><?= $row['fecha'] ?></small></p>
               </div>
@@ -2064,7 +2064,7 @@ function getRecetasRecientes()
       <article class="card">
         <img src="images/recetas/<?= $img; ?>" class="card-img-top" alt="Receta 1">
         <div class="card-body">
-          <h4 class="card-title"><a href="./recetas/post?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link text-primary"><?= $row['titulo'] ?></a></h4>
+          <h4 class="card-title"><a href="recetas/post?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link text-primary"><?= $row['titulo'] ?></a></h4>
           <p class="card-text"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
           <p class="card-text"><small class="text-muted">Tiempo de preparación: <b><?= $row['fecha'] ?></b></small></p>
         </div>
