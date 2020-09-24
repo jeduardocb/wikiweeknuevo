@@ -68,7 +68,7 @@ function getCategorias()
             <div class="card bg-dark text-white border-0 mt-4 mt-xl-5">
                 <img src="images/categoria/' . $row["nombre_foto"] . '" class="card-img" alt="Híbrida">
                 <div class="card-img-overlay">
-                    <h3 class="card-title"><a href="catalogo.php?idcategoria='. $row["id"].'" title="'.$row["nombre"].'" class="stretched-link text-white">' . $row["nombre"] . '</a></h3>
+                    <h3 class="card-title"><a href="catalogo.php?idcategoria=' . $row["id"] . '" title="' . $row["nombre"] . '" class="stretched-link text-white">' . $row["nombre"] . '</a></h3>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@ function getCepas($idcategoria)
 {
   $con = conectar_bd();
 
-  $sql = "SELECT categoria.id AS catid, weed.id AS wid, weed.descripcion, weed.nombre
+  $sql = "SELECT categoria.id AS catid, weed.id AS wid, weed.descripcion, weed.nombre AS weedNombre
           FROM weed
           INNER JOIN categoria
           ON weed.id_categoria = categoria.id
@@ -98,7 +98,7 @@ function getCepas($idcategoria)
     while ($row = $result->fetch_assoc()) {
       $idweed = $row["wid"];
       $idnumerico = intval($idweed);
-      $sql1 = "select nombre from fotos where id_weed=$idnumerico";
+      $sql1 = "SELECT nombre FROM fotos WHERE id_weed=$idnumerico";
       $result1 = $con->query($sql1);
       while (($row1 = $result1->fetch_assoc()) && $bandera) {
         $nombre = $row1["nombre"];
@@ -110,25 +110,16 @@ function getCepas($idcategoria)
         }
       }
       $bandera = true;
-      //echo "id: " . $row["id"] . " - Name: " . $row["nombre"]."<br>";
-      echo '<div class="col-md-4 text-center animate-box">
-					<div class="product">
-					<form id="' . $row["wid"] . '" action="single.php" method="get">
-						<input type="hidden" name="idweed" value="' . $row["wid"] . '">
-						
-							<div class="product-grid" style="background-image:url(images/cepas/' . $nombre . '">
-								<div class="inner">
-									<p>
-										<a href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();" class="icon"><i class="icon-eye"></i></a>
-									</p>
-								</div>
-							</div>
-							<div class="desc">
-								<h3><a id="nombre" href="javascript:{}" onclick="document.getElementById(' . "'$idweed'" . ').submit();">' . $row["nombre"] . '</a></h3>
-							</div>
-						</form>
-             		</div>
-            	</div>';
+
+      echo '
+          <div class="col-md-6 col-lg-3">
+              <div class="bg-white shadow text-center pt-2 pt-sm-4 pb-2 pb-sm-4 mb-4">
+                  <p><img src="images/cepas/' . $nombre . '" alt="Weed" class="img-fluid"></p>
+                  
+                  <h4><a href="single.php?idweed=' . $idweed . '" title="' . $row['weedNombre'] . '" class="text-dark">' . $row['weedNombre'] . '</a></h4>
+              </div>
+          </div>
+          ';
     }
   } else {
     echo "0 results";
@@ -637,56 +628,29 @@ function getCepaCarrusel()
           AND estado = 1
           ORDER BY RAND ( ) LIMIT 3";
   $result = $con->query($sql);
- $contador =1;
-    if ($result->num_rows > 0) {
-      // output data of each row
-      while ($row = $result->fetch_assoc()) {
-          echo '  <div class="carousel-item active slide-'.$contador.'">
-			<div class="container">
-				<div class="row">
-					<div class="col-xl-7">
-						<div class="tarjeta">
-							<h4><a href="#" title="'.$row["catNombre"].'">'.$row["catNombre"].'</a></h4>
-							<h1 class="font-weight-bold">'.$row["weedNombre"].'</h1>
-							<p class="text-black-50">'. cortarDescripcion($row["descripcion"], 550).'</p>
-							<p class="m-0"><a href="#" title="Ver" class="btn btn-outline-info">Ver</a></p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>';
-        
-          /*
-        echo '<li style="background-image: url(images/fondo4.jpg);">
-                <div class="overlay-gradient"></div>
-                <div class="container">
-                  <div class="col-md-6 col-md-offset-3 col-md-pull-3 js-fullheight slider-text">
-                    <div class="slider-text-inner">
-                      <div class="desc">
-                        <span class="price">'.$row["catNombre"].'</span>
-                        <h2 class="text-center">'.$row["weedNombre"]. '</h2>
-                        <p class="text-justify">'. cortarDescripcion($row["descripcion"], 550). '</p>
-                        <div class="row">';
-                          $sql2 = "SELECT fotos.nombre AS fotoNombre FROM fotos, weed WHERE fotos.id_weed = ". $row["weedId"] ." LIMIT 2";
-                          $result2 = $con->query($sql2);
-                          if ($result2->num_rows > 0) {
-                            while ($row2 = $result2->fetch_assoc()) {
-                              echo '<div class="col-md-4 text-center">
-                                      <img src="images/cepas/'.$row2["fotoNombre"].'"/>
-                                    </div>';
-                            }
-                          }
-                    echo '<div class="col-md-4 text-center" style="display: inline-block; vertical-align: middle; float: none;">
-                            <p><a href="single.php?idweed='. $row["weedId"]. ' " class="btn btn-primary btn-outline btn-lg">ver</a></p>                        
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>';*/
-      }
 
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      if ($contador > 1) {
+        $active = "";
+      }
+      echo '<div class="carousel-item ' . $active . ' slide-' . $contador . '">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-7">
+              <div class="tarjeta">
+                <h4><a href="#" title="Híbrida">' . $row["catNombre"] . '</a></h4>
+                <h1 class="font-weight-bold">' . $row["weedNombre"] . '</h1>
+                <p class="text-black-50">' . cortarDescripcion($row["descripcion"], 550) . '</p>
+                <p class="m-0"><a href="single.php?idweed=' . $row["weedId"] . '" title="Ver" class="btn btn-outline-info">Ver</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>';
+      $contador++;
+    }
   }
   desconectar_bd($con);
 }
@@ -695,7 +659,7 @@ function getCepasDestacadas()
 {
 
   $con = conectar_bd();
-  $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, weed.descripcion, categoria.nombre AS catNombre
+  $sql = "SELECT weed.nombre AS weedNombre, weed.id AS weedId, weed.descripcion, categoria.nombre AS catNombre, categoria.id AS catId
           FROM weed, categoria
           WHERE weed.id_categoria = categoria.id
           AND estado = 1
@@ -712,8 +676,8 @@ function getCepasDestacadas()
           <div class="col-md-6 col-lg-3">
               <div class="bg-white shadow text-center pt-2 pt-sm-4 pb-2 pb-sm-4 mb-4">
                   <p><img src="images/cepas/' . $row2["fotoNombre"] . '" alt="Weed" class="img-fluid"></p>
-                  <h5 class="m-0"><a href="#" title="Sativa">' . $row["catNombre"] . '</a></h5>
-                  <h4><a href="#hola" title="Lemon Haze" class="text-dark">' . $row["weedNombre"] . '</a></h4>
+                  <h5 class="m-0"><a href="catalogo.php?idcategoria=' . $row["catId"] . '" title="' . $row["catNombre"] . '">' . $row["catNombre"] . '</a></h5>
+                  <h4><a href="single.php?idweed=' . $row['weedId'] . '" title="Lemon Haze" class="text-dark">' . $row["weedNombre"] . '</a></h4>
               </div>
           </div>
           ';
@@ -750,14 +714,12 @@ function getListadoTerpenos()
     // output data of each row
     while ($row = $result->fetch_assoc()) {
       echo '<div class="row">
-
             <div class="col-md-10">
                 <input type="text" class="form-control" name="' . $contador . '"  value="' . $row["nombre"] . '">
                <input type="hidden" class="form-control" name="id' . $contador . '"  value="' . $row["id_terpeno"] . '">
             </div>
             <div class="col-md-2">
             <a class=" btn btn-danger btn-sm" href="controlador_eliminarTerpenos.php?id_terpeno=' . $row["id_terpeno"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')"><i class="fa fa-trash" ></i></a>
-
             </div>
         </div>
       ';
@@ -793,7 +755,6 @@ function getListadoCategorias()
     // output data of each row
     while ($row = $result->fetch_assoc()) {
       echo '<div class="row">
-
             <div class="col-md-2">
                 <input type="text" class="form-control" name="' . $contador . '"  value="' . $row["nombre"] . '">
                <input type="hidden" class="form-control" name="id' . $contador . '"  value="' . $row["id"] . '">
@@ -877,7 +838,6 @@ function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categ
             <label for="usr">Descripcion del subtitulo:</label>
             <textarea type="textarea" class="form-control " id="descripcion2" name="descripcion2" required>' . $descripcion2 . '</textarea>
         </div>
-
         <div class="form-group">
             <label>Categoria</label>
             ' . crear_selectEdit("id", "nombre", "categoria_recetas", $categoria, $categoriaId) . '
@@ -887,7 +847,6 @@ function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categ
             <input type="file" class="form-control" id="archivo[]" name="archivo[]" multiple="">
         </div>
         <input type="submit" value="Actualizar" name="submit">
-
     </form>';
 }
 
@@ -1836,7 +1795,6 @@ function formEditBlog($idblog, $nombre, $descripcion, $id_categoria_blog, $subti
             <input type="file" class="form-control" id="archivo[]" name="archivo[]" multiple="">
         </div>
         <input type="submit" value="Actualizar" name="submit">
-
     </form>';
 }
 function crear_selectCategoria($id, $columna_descripcion, $tabla, $categoria, $categoriaId)
@@ -2050,13 +2008,22 @@ function getBlogRecientes()
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-    ?>
+      $idBlog = $row['id'];
+      $sql_imagenes = "SELECT * FROM fotos_blog
+            WHERE fotos_blog.id_blog = $idBlog
+            LIMIT 1";
+      $result_imagenes = $con->query($sql_imagenes);
+      $imagen = mysqli_fetch_assoc($result_imagenes);
+      if ($result_imagenes->num_rows > 0) {
+        $img = $imagen['nombre'];
+      }
+?>
 
       <div class="col-xl-4 col-md-6 col-sm-6">
         <article class="card mb-3">
           <div class="row no-gutters">
             <div class="col-md-4">
-              <img src="images2/noticia-1.jpg" class="card-img d-none d-sm-block" alt="<?= $row['nombre'] ?>">
+              <img src="images/blog/<?= $img; ?>" class="card-img d-none d-sm-block" alt="<?= $row['nombre'] ?>">
             </div>
             <div class="col-md-8">
               <div class="card-body">
@@ -2083,10 +2050,19 @@ function getRecetasRecientes()
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
+      $idReceta = $row['id'];
+      $sql_imagenes = "SELECT * FROM fotos_recetas
+            WHERE fotos_recetas.id_receta = $idReceta
+            LIMIT 1";
+      $result_imagenes = $con->query($sql_imagenes);
+      $imagen = mysqli_fetch_assoc($result_imagenes);
+      if ($result_imagenes->num_rows > 0) {
+        $img = $imagen['nombre'];
+      }
     ?>
 
       <article class="card">
-        <img src="images2/receta-1.jpg" class="card-img-top" alt="Receta 1">
+        <img src="images/recetas/<?= $img; ?>" class="card-img-top" alt="Receta 1">
         <div class="card-body">
           <h4 class="card-title"><a href="./recetas/post?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link text-primary"><?= $row['titulo'] ?></a></h4>
           <p class="card-text"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
@@ -2099,7 +2075,9 @@ function getRecetasRecientes()
   }
 }
 
-function agregarCategoriaReceta($categoria){
+
+function agregarCategoriaReceta($categoria)
+{
   $dml = "INSERT INTO categoria_recetas (nombre) VALUES (?);";
   if (insertIntoDb($dml, $categoria)) {
     $_SESSION["mensaje"] = true;
@@ -2121,8 +2099,8 @@ function getListadoCategoriasRecetas()
       echo '<div class="row">
 
             <div class="col-md-2">
-                <input type="text" class="form-control" name="'.$contador.'"  value="' . $row["nombre"] . '">
-               <input type="hidden" class="form-control" name="id'.$contador.'"  value="' . $row["id"] . '">
+                <input type="text" class="form-control" name="' . $contador . '"  value="' . $row["nombre"] . '">
+               <input type="hidden" class="form-control" name="id' . $contador . '"  value="' . $row["id"] . '">
             </div>
             
             <div class="col-md-2">
@@ -2161,8 +2139,8 @@ function getListadoCategoriasBlog()
       echo '<div class="row">
 
             <div class="col-md-2">
-                <input type="text" class="form-control" name="'.$contador.'"  value="' . $row["nombre"] . '">
-               <input type="hidden" class="form-control" name="id'.$contador.'"  value="' . $row["id"] . '">
+                <input type="text" class="form-control" name="' . $contador . '"  value="' . $row["nombre"] . '">
+               <input type="hidden" class="form-control" name="id' . $contador . '"  value="' . $row["id"] . '">
             </div>
             
             <div class="col-md-2">
@@ -2189,3 +2167,5 @@ function eliminarCategoriaBlog($id)
   $dml = "delete from categoria_blog WHERE id = $id;";
   return modifyDb($dml);
 }
+
+?>

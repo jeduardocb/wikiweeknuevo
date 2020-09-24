@@ -110,5 +110,29 @@ include_once("util.php");
 </section>
 <!-- Estadísticas fin -->
 
-<?php include_once('_footer.html') ?>
+<div class="modal fullscreen-modal fade cookieModal" id="cookieModal" tabindex="-1" role="dialog" aria-labelledby="cookieModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="cookieModalLabel"><img src="diseño/logo.png" width="10%"> Wikiweed</h2>
+            </div>
+            <div class="modal-body">
+                <h4>Con este canal no queremos incitar al consumo, los vídeos están dedicados a las personas que ya fuman o cultivan y son meramente de carácter informativo, no recomendado para menores de 18 años, hay que ser responsable de la libertad de expresión.</h4>
+                <p>Al presionar aceptar estas aceptando que eres mayor de edad</p>
+                <p>
+                    <a href="/privacy-statement" target="_blank">Clic aqui para ver la politica de privacidad</a>
+                </p>
+            </div>
+            <div class="modal-footer" style="flex-wrap: inherit;">
+                <div class="col-md-6">
+                    <button id="cancelar" type="button" class="btn btn-danger btn-lg btn-block" data-dismiss="modal">Cancelar</button>
+                </div>
+                <div class="col-md-6">
+                    <button id="cookieModalConsent" type="button" class="btn btn-success btn-lg btn-block" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<?php include_once('_footer.html') ?>

@@ -123,7 +123,6 @@ function getRecetas()
         // output data of each row
         while ($row = $result->fetch_assoc()) {
 
-
             $idReceta = $row['id'];
             $sql_imagenes = "SELECT * FROM fotos_recetas
             WHERE fotos_recetas.id_receta = $idReceta
