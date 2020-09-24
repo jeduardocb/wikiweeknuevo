@@ -2057,14 +2057,14 @@ function getRecetasRecientes()
     // output data of each row
     while ($row = $result->fetch_assoc()) {
       $idReceta = $row['id'];
-            $sql_imagenes = "SELECT * FROM fotos_recetas
+      $sql_imagenes = "SELECT * FROM fotos_recetas
             WHERE fotos_recetas.id_receta = $idReceta
             LIMIT 1";
-            $result_imagenes = $con->query($sql_imagenes);
-            $imagen = mysqli_fetch_assoc($result_imagenes);
-            if ($result_imagenes->num_rows > 0) {
-                $img = $imagen['nombre'];
-            }
+      $result_imagenes = $con->query($sql_imagenes);
+      $imagen = mysqli_fetch_assoc($result_imagenes);
+      if ($result_imagenes->num_rows > 0) {
+        $img = $imagen['nombre'];
+      }
     ?>
 
       <article class="card">
