@@ -21,7 +21,7 @@ include_once("util.php");
     <hr>
     <a href="agregar_receta.php"> <button type="button" class="btn btn-info">Agregar Receta</button></a>
     <a href="modificar_receta.php"> <button type="button" class="btn btn-info">Modificar Recetas</button></a>
-    <a href="modificar_blog.php"> <button type="button" class="btn btn-info">Agregar Categoria Recetas</button></a>
+    <a href="agregar_categoria_recetas.php"> <button type="button" class="btn btn-info">Agregar Categoria Recetas</button></a>
 </div>
 
 <?php

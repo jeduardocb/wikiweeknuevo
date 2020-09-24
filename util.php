@@ -637,27 +637,56 @@ function getCepaCarrusel()
           AND estado = 1
           ORDER BY RAND ( ) LIMIT 3";
   $result = $con->query($sql);
+ $contador =1;
+    if ($result->num_rows > 0) {
+      // output data of each row
+      while ($row = $result->fetch_assoc()) {
+          echo '  <div class="carousel-item active slide-'.$contador.'">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-7">
+						<div class="tarjeta">
+							<h4><a href="#" title="'.$row["catNombre"].'">'.$row["catNombre"].'</a></h4>
+							<h1 class="font-weight-bold">'.$row["weedNombre"].'</h1>
+							<p class="text-black-50">'. cortarDescripcion($row["descripcion"], 550).'</p>
+							<p class="m-0"><a href="#" title="Ver" class="btn btn-outline-info">Ver</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>';
+        
+          /*
+        echo '<li style="background-image: url(images/fondo4.jpg);">
+                <div class="overlay-gradient"></div>
+                <div class="container">
+                  <div class="col-md-6 col-md-offset-3 col-md-pull-3 js-fullheight slider-text">
+                    <div class="slider-text-inner">
+                      <div class="desc">
+                        <span class="price">'.$row["catNombre"].'</span>
+                        <h2 class="text-center">'.$row["weedNombre"]. '</h2>
+                        <p class="text-justify">'. cortarDescripcion($row["descripcion"], 550). '</p>
+                        <div class="row">';
+                          $sql2 = "SELECT fotos.nombre AS fotoNombre FROM fotos, weed WHERE fotos.id_weed = ". $row["weedId"] ." LIMIT 2";
+                          $result2 = $con->query($sql2);
+                          if ($result2->num_rows > 0) {
+                            while ($row2 = $result2->fetch_assoc()) {
+                              echo '<div class="col-md-4 text-center">
+                                      <img src="images/cepas/'.$row2["fotoNombre"].'"/>
+                                    </div>';
+                            }
+                          }
+                    echo '<div class="col-md-4 text-center" style="display: inline-block; vertical-align: middle; float: none;">
+                            <p><a href="single.php?idweed='. $row["weedId"]. ' " class="btn btn-primary btn-outline btn-lg">ver</a></p>                        
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>';*/
+      }
 
-  if ($result->num_rows > 0) {
-    // output data of each row
-    while ($row = $result->fetch_assoc()) {
-      if($contador > 1){$active = "";}
-      echo '<div class="carousel-item '.$active.' slide-'.$contador.'">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-7">
-              <div class="tarjeta">
-                <h4><a href="#" title="Híbrida">'. $row["catNombre"] .'</a></h4>
-                <h1 class="font-weight-bold">' . $row["weedNombre"] . '</h1>
-                <p class="text-black-50">' . cortarDescripcion($row["descripcion"], 550) . '</p>
-                <p class="m-0"><a href="single.php?idweed='.$row["weedId"].'" title="Ver" class="btn btn-outline-info">Ver</a></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>';
-      $contador++;
-    }
   }
   desconectar_bd($con);
 }
@@ -2070,4 +2099,93 @@ function getRecetasRecientes()
   }
 }
 
-?>
+function agregarCategoriaReceta($categoria){
+  $dml = "INSERT INTO categoria_recetas (nombre) VALUES (?);";
+  if (insertIntoDb($dml, $categoria)) {
+    $_SESSION["mensaje"] = true;
+    header('location: ./agregar_categoria_receta.php');
+  } else {
+    $_SESSION["mensaje"] = false;
+    header('location: ./agregar_categoria_receta.php');
+  }
+}
+function getListadoCategoriasRecetas()
+{
+  $con = conectar_bd();
+  $sql = "SELECT  * from categoria_recetas";
+  $result = $con->query($sql);
+  $contador = 0;
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      echo '<div class="row">
+
+            <div class="col-md-2">
+                <input type="text" class="form-control" name="'.$contador.'"  value="' . $row["nombre"] . '">
+               <input type="hidden" class="form-control" name="id'.$contador.'"  value="' . $row["id"] . '">
+            </div>
+            
+            <div class="col-md-2">
+            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoriaRecetas.php?id_categoria=' . $row["id"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')"><i class="fa fa-trash" ></i></a>
+            </div>
+        </div>
+      ';
+      $contador = $contador++;
+    }
+  } else {
+    echo '0 results';
+  }
+  desconectar_bd($con);
+}
+function editarCategoriaRecetas($id, $nombre)
+{
+  $dml = "UPDATE categoria_recetas
+SET nombre='$nombre'
+WHERE id = $id;";
+  return modifyDb($dml);
+}
+function eliminarCategoriaRecetas($id)
+{
+  $dml = "delete from categoria_recetas WHERE id = $id;";
+  return modifyDb($dml);
+}
+function getListadoCategoriasBlog()
+{
+  $con = conectar_bd();
+  $sql = "SELECT  * from categoria_blog";
+  $result = $con->query($sql);
+  $contador = 0;
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      echo '<div class="row">
+
+            <div class="col-md-2">
+                <input type="text" class="form-control" name="'.$contador.'"  value="' . $row["nombre"] . '">
+               <input type="hidden" class="form-control" name="id'.$contador.'"  value="' . $row["id"] . '">
+            </div>
+            
+            <div class="col-md-2">
+            <a class=" btn btn-danger btn-sm" href="controlador_editarCategoriaBlog.php?id_categoria=' . $row["id"] . '" onclick="return confirm(' . "'" . "¿estas seguro?" . "'" . ')"><i class="fa fa-trash" ></i></a>
+            </div>
+        </div>
+      ';
+      $contador = $contador++;
+    }
+  } else {
+    echo '0 results';
+  }
+  desconectar_bd($con);
+}
+function editarCategoriaBlog($id, $nombre)
+{
+  $dml = "UPDATE categoria_blog
+SET nombre='$nombre'
+WHERE id = $id;";
+  return modifyDb($dml);
+}
+function eliminarCategoriaBlog($id)
+{
+  $dml = "delete from categoria_blog WHERE id = $id;";
+  return modifyDb($dml);
+}
