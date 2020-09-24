@@ -19,16 +19,16 @@
 
 <div class="container">
     <div class="alert alert-success text-center" id="mensaje" hidden></div>
-    <form action="controlador_addCategoria_blog.php" method="post" enctype="multipart/form-data">
+    <form action="controlador_addCategoria_recetas.php" method="post" enctype="multipart/form-data">
       <div class="form-group">
         <label for="exampleInputEmail1">Nombre de la Nueva Categoria:</label>
-        <input type="text" class="form-control" name="nuevaCategoria" id="nuevaCategoria"  placeholder="Salud" required>
+        <input type="text" class="form-control" name="nuevaCategoria" id="nuevaCategoria"  placeholder="Bebida" required>
       </div>
       
       <input type="submit" value="Agregar Categoria" name="submit">
     </form>
-    <form action="controlador_editarCategoriaBlog.php" method="post"> 
-        <?= getListadoCategoriasBlog(); ?>
+    <form action="controlador_editarCategoriaRecetas.php" method="post"> 
+        <?= getListadoCategoriasRecetas(); ?>
         <input type="submit" value="Editar Categorias" name="submit">
     </form>
 
