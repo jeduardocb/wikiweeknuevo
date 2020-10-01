@@ -1,4 +1,7 @@
 .poppins {font-family: 'Poppins', sans-serif; font-weight: 300}
+.text-purple {color:#590080}
+.bg-purple {background-color:#590080}
+.border-purple {border-color:#590080 !important}
 
 #carrusel .carousel-item {
 	background-size: auto 100%;
@@ -53,6 +56,49 @@
 	background-position: left center;
 }
 
+#galeria .carousel-indicators {
+	position: unset;
+	margin: 0;
+}
+
+#galeria .carousel-indicators li {
+	width: 120px;
+	height: 120px;
+	box-sizing: border-box;
+}
+
+.rombo {
+	padding: 2rem 0;
+}
+
+.rombo span {
+	padding: 2rem;
+	background-image: url(../images2/rombo.png);
+	background-position: center center;
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+}
+
+#informacion ul {
+	background-color: rgba(0,0,0,0.035);
+}
+
+body.cepas table img {
+	background-image: url(../images2/verde.gif);
+	background-repeat: no-repeat;
+	background-position: center bottom;
+}
+
+.cepas #crecimiento .d-flex {
+	margin-bottom: 2rem;
+}
+
+.cepas #crecimiento .flex-fill {
+	padding: 1rem;
+	font-weight: bold;
+	max-width: 33.33333%;
+}
+
 /*
  * RESPONSIVE
 */
@@ -64,6 +110,11 @@
 }
 
 @media (min-width: 768px) {
+	body.cepas #galeria {
+		top: 0;
+		bottom: 0;
+		height: 0;
+	}
 }
 
 @media (min-width: 992px) {

@@ -359,15 +359,11 @@ function getCategoria($idweed)
 {
   $con = conectar_bd();
 
-
   $sql = "SELECT categoria.nombre, weed.id
   FROM categoria
   INNER JOIN weed
-  ON categoria.id = weed.id
+  ON categoria.id = weed.id_categoria
   WHERE weed.id=$idweed";
-  $result = $con->query($sql);
-  $categoria = mysqli_fetch_assoc($result);
-
   $result = $con->query($sql);
   $categoria = mysqli_fetch_assoc($result);
 
@@ -2064,7 +2060,7 @@ function getRecetasRecientes()
       <article class="card">
         <img src="images/recetas/<?= $img; ?>" class="card-img-top" alt="Receta 1">
         <div class="card-body">
-          <h4 class="card-title"><a href="recetas/post?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link text-primary"><?= $row['titulo'] ?></a></h4>
+          <h4 class="card-title"><a href="recetas/post.php?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link text-primary"><?= $row['titulo'] ?></a></h4>
           <p class="card-text"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
           <p class="card-text"><small class="text-muted">Tiempo de preparación: <b><?= $row['fecha'] ?></b></small></p>
         </div>
