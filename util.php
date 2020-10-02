@@ -221,52 +221,6 @@ function agregarTerpeno($terpeno)
   $dml = 'insert into terpenos (nombre) values (?);';
   return insertIntoDb($dml, $terpeno);
 }
-function getProgressBar($idweed)
-{
-  $con = conectar_bd();
-  $contador = 0;
-
-  $sql = "SELECT terpenos.id_terpeno, terpenos.nombre, weed_terpenos.porcentaje
-  FROM terpenos
-  INNER JOIN weed_terpenos
-  ON terpenos.id_terpeno = weed_terpenos.id_terpeno WHERE weed_terpenos.id_weed = $idweed
-  ORDER BY porcentaje DESC";
-  $result = $con->query($sql);
-
-  if ($result->num_rows > 0) {
-    // output data of each row
-    while ($row = $result->fetch_assoc()) {
-
-      if ($contador == 0) {
-        echo '<div class="progress">
-                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="' . $row["porcentaje"] . '"
-                  aria-valuemin="0" aria-valuemax="100" style="width:' . $row["porcentaje"] . '%">
-                    ' . $row["nombre"] . '
-                  </div>
-                </div>';
-      } elseif ($contador == 1) {
-        echo '<div class="progress">
-                  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="' . $row["porcentaje"] . '"
-                  aria-valuemin="0" aria-valuemax="100" style="width:' . $row["porcentaje"] . '%">
-                    ' . $row["nombre"] . '
-                  </div>
-                </div>';
-      } elseif ($contador == 2) {
-        echo '<div class="progress">
-                  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="' . $row["porcentaje"] . '"
-                  aria-valuemin="0" aria-valuemax="100" style="width:' . $row["porcentaje"] . '%">
-                    ' . $row["nombre"] . '
-                  </div>
-                </div>';
-      }
-      $contador++;
-    }
-  } else {
-    echo "0 results";
-  }
-
-  desconectar_bd($con);
-}
 
 function getNombreWeed($idweed)
 {
@@ -368,7 +322,7 @@ function getCategoria($idweed)
   $categoria = mysqli_fetch_assoc($result);
 
   if ($result->num_rows > 0) {
-    echo $categoria["nombre"];
+    return $categoria["nombre"];
   }
 
   desconectar_bd($con);
@@ -1856,12 +1810,13 @@ function getSensaciones($id_weed)
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
     $porcenaje = $row['porcentaje'];
     $nombre = $row['nombre'];
-    echo "
-      <h4>$nombre</h4>
-      <div class='progress'>
-        <div class='progress-bar bg-success' role='progressbar' style='width: $porcenaje%' aria-valuenow='$porcenaje' aria-valuemin='0' aria-valuemax='100'>$porcenaje%</div>
-      </div>
-    ";
+    echo '
+      <tr>
+        <th scope="row" class="align-middle">'.$nombre.'</th>
+        <td class="align-middle text-right">'. $porcenaje.'%</td>
+        <td class="align-middle"><img src="images2/hoja-blanca.png" style="background-size: 100% '.$porcenaje.'%"></td>
+      </tr>
+    ';
   }
 }
 
@@ -1875,12 +1830,13 @@ function getAyuda($id_weed)
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
     $porcenaje = $row['porcentaje'];
     $nombre = $row['nombre'];
-    echo "
-      <h4>$nombre </h4>
-      <div class='progress'>
-        <div class='progress-bar bg-info' role='progressbar' style='width: $porcenaje%' aria-valuenow='$porcenaje' aria-valuemin='0' aria-valuemax='100'>$porcenaje%</div>
-      </div>
-    ";
+    echo '
+      <tr>
+        <th scope="row" class="align-middle">'. $nombre.'</th>
+        <td class="align-middle text-right">'.$porcenaje.'%</td>
+        <td class="align-middle"><img src="images2/hoja.png" style="background-size: 100% '.$porcenaje.'%"></td>
+      </tr>
+    ';
   }
 }
 
@@ -1894,12 +1850,13 @@ function getNegativos($id_weed)
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
     $porcenaje = $row['porcentaje'];
     $nombre = $row['nombre'];
-    echo "
-      <h4>$nombre </h4>
-      <div class='progress'>
-        <div class='progress-bar bg-warning' role='progressbar' style='width: $porcenaje%' aria-valuenow='$porcenaje' aria-valuemin='0' aria-valuemax='100'>$porcenaje%</div>
-      </div>
-    ";
+    echo '
+      <tr>
+        <th scope="row" class="align-middle">'.$nombre.'</th>
+        <td class="align-middle text-right">'.$porcenaje.'%</td>
+        <td class="align-middle"><img src="images2/hoja.png" style="background-size: 100% '.$porcenaje.'%"></td>
+      </tr>
+    ';
   }
 }
 
@@ -2162,6 +2119,210 @@ function eliminarCategoriaBlog($id)
 {
   $dml = "delete from categoria_blog WHERE id = $id;";
   return modifyDb($dml);
+}
+
+function getDificultad($idweed)
+{
+
+  $conion_bd = conectar_bd();
+
+  $consulta2 = "SELECT crecimiento.dificultad FROM weed LEFT JOIN crecimiento
+  ON weed.id_crecimiento = crecimiento.id_crecimiento WHERE weed.id = $idweed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+    $dificultad = $row['dificultad'];
+    if($dificultad == "facil"){
+      echo '
+        <div class="flex-fill border border-warning bg-white">Fácil</div>
+        <div class="flex-fill">Moderado</div>
+        <div class="flex-fill">Difícil</div>
+      ';
+    }elseif($dificultad == "moderado"){
+      echo '
+        <div class="flex-fill">Fácil</div>
+        <div class="flex-fill border border-warning bg-white">Moderado</div>
+        <div class="flex-fill">Difícil</div>
+      ';
+    }else{
+      echo '
+        <div class="flex-fill">Fácil</div>
+        <div class="flex-fill">Moderado</div>
+        <div class="flex-fill border border-warning bg-white">Difícil</div>
+      ';
+    }
+  }
+}
+
+function getAtura($idweed)
+{
+
+  $conion_bd = conectar_bd();
+
+  $consulta2 = "SELECT crecimiento.altura FROM weed LEFT JOIN crecimiento
+  ON weed.id_crecimiento = crecimiento.id_crecimiento WHERE weed.id = $idweed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+    $altura = $row['altura'];
+    if($altura == "< 30"){
+      echo '
+        <div class="flex-fill border border-success bg-white">&lt; 30 in</div>
+        <div class="flex-fill">30" hasta 78"</div>
+        <div class="flex-fill">&gt; 78"</div>
+      ';
+    }elseif($altura == "30 - 78"){
+      echo '
+        <div class="flex-fill">&lt; 30 in</div>
+        <div class="flex-fill border border-success bg-white">30" hasta 78"</div>
+        <div class="flex-fill">&gt; 78"</div>
+      ';
+    }else{
+      echo '
+        <div class="flex-fill">&lt; 30 in</div>
+        <div class="flex-fill">30" hasta 78"</div>
+        <div class="flex-fill border border-success bg-white">&gt; 78"</div>
+      ';
+    }
+  }
+}
+
+function getRendimiento($idweed)
+{
+
+  $conion_bd = conectar_bd();
+
+  $consulta2 = "SELECT crecimiento.rendimiento FROM weed LEFT JOIN crecimiento
+  ON weed.id_crecimiento = crecimiento.id_crecimiento WHERE weed.id = $idweed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+    $rendiento = $row['rendimiento'];
+    if($rendiento == "0.5 - 1"){
+      echo '
+        <div class="flex-fill border border-danger bg-white">0.5 - 1</div>
+        <div class="flex-fill">1 - 3</div>
+        <div class="flex-fill">3 - 6</div>
+      ';
+    }elseif($rendiento == "1 - 3"){
+      echo '
+        <div class="flex-fill">0.5 - 1</div>
+        <div class="flex-fill border border-danger bg-white">1 - 3</div>
+        <div class="flex-fill">3 - 6</div>
+      ';
+    }else{
+      echo '
+        <div class="flex-fill">0.5 - 1</div>
+        <div class="flex-fill">1 - 3</div>
+        <div class="flex-fill border border-danger bg-white">3 - 6</div>
+      ';
+    }
+  }
+}
+
+function getFlorecimiento($idweed)
+{
+
+  $conion_bd = conectar_bd();
+
+  $consulta2 = "SELECT crecimiento.florecimiento FROM weed LEFT JOIN crecimiento
+  ON weed.id_crecimiento = crecimiento.id_crecimiento WHERE weed.id = $idweed";
+  $resultados2 = $conion_bd->query($consulta2);
+  while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
+    $florecimiento = $row['florecimiento'];
+    if ($florecimiento == "10 - 12") {
+      echo '
+        <div class="flex-fill">7 - 9</div>
+        <div class="flex-fill border border-primary bg-white">10 - 12</div>
+        <div class="flex-fill">&gt; 12</div>
+      ';
+    } elseif ($florecimiento == "7 - 9") {
+      echo '
+        <div class="flex-fill border border-primary bg-white">7 - 9</div>
+        <div class="flex-fill">10 - 12</div>
+        <div class="flex-fill">&gt; 12</div>
+      ';
+    } else {
+      echo '
+        <div class="flex-fill">7 - 9</div>
+        <div class="flex-fill">10 - 12</div>
+        <div class="flex-fill border border-primary bg-white">&gt; 12</div>
+      ';
+    }
+  }
+}
+
+function getFenotipo($idweed)
+{
+  $categoria = getCategoria($idweed);
+    if ($categoria == "Híbrida") {
+      echo '
+        <div class="flex-fill">Indica</div>
+        <div class="flex-fill">Sativa</div>
+        <div class="flex-fill border border-dark bg-white">Híbrida</div>
+      ';
+    } elseif ($categoria == "Sativa") {
+      echo '
+        <div class="flex-fill">Indica</div>
+        <div class="flex-fill border border-dark bg-white">Sativa</div>
+        <div class="flex-fill">Híbrida</div>
+      ';
+    } else {
+      echo '
+        <div class="flex-fill border border-dark bg-white">Indica</div>
+        <div class="flex-fill ">Sativa</div>
+        <div class="flex-fill">Híbrida</div>
+      ';
+    }
+}
+
+function getTerpenosNombre($idweed){
+
+  $con = conectar_bd();
+  $contador = 0;
+
+  $sql = "SELECT terpenos.id_terpeno, terpenos.nombre
+  FROM terpenos
+  INNER JOIN weed_terpenos
+  ON terpenos.id_terpeno = weed_terpenos.id_terpeno WHERE weed_terpenos.id_weed = $idweed
+  ORDER BY porcentaje DESC";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+          if($contador < 2){
+            echo "'".$row["nombre"]."'".",";
+          }else{
+            echo "'" . $row["nombre"] . "'";
+          }
+
+      
+    }
+  }
+  desconectar_bd($con);
+}
+
+function getTerpenosPorcentajes($idweed){
+
+  $con = conectar_bd();
+  $contador = 0;
+
+  $sql = "SELECT terpenos.id_terpeno, weed_terpenos.porcentaje
+  FROM terpenos
+  INNER JOIN weed_terpenos
+  ON terpenos.id_terpeno = weed_terpenos.id_terpeno WHERE weed_terpenos.id_weed = $idweed
+  ORDER BY porcentaje DESC";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      if ($contador < 2) {
+        echo $row["porcentaje"] . ",";
+      } else {
+        echo $row["porcentaje"] . "'";
+      }
+    }
+  }
+  desconectar_bd($con);
 }
 
 ?>
