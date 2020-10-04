@@ -135,4 +135,4 @@ include_once("util.php");
     </div>
 </div>
 
-<?php include_once('_footer.html') ?>
+<?php include_once('_footer.html'); ?>

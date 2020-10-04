@@ -1,286 +1,265 @@
 <?php
 include("_header.html");
 include("_navbar.html");
-//include_once("cepa_controller.php");
 include_once("util.php");
+session_start();
 
 $idweed = htmlspecialchars($_GET['idweed']);
 ?>
-<style>
-	.rate-base-layer {
-		color: #aaa;
-	}
 
-	.rate-hover-layer {
-		color: orange;
-	}
-
-	.rate2 {
-		font-size: 35px;
-	}
-
-	.rate2 .rate-hover-layer {
-		color: pink;
-	}
-
-	.rate2 .rate-select-layer {
-		color: red;
-	}
-
-	.im {
-		background-image: url('./images/heart.gif');
-		background-size: 32px 32px;
-		background-repeat: no-repeat;
-		width: 32px;
-		height: 32px;
-		display: inline-block;
-	}
-
-	.im2 {
-		background-image: url('./images/emoji5.png');
-		background-size: 64px 64px;
-		background-repeat: no-repeat;
-		width: 64px;
-		height: 64px;
-		display: inline-block;
-	}
-
-	#rate5 .rate-base-layer span,
-	#rate7 .rate-base-layer span {
-		opacity: 0.5;
-	}
-</style>
-
-<div class="fh5co-loader"></div>
-
-<div id="fh5co-product">
-	<div class="container tarjeta-cepa">
-		<div class="card">
-			<div class="container-fliud">
-				<div class="wrapper row">
-					<div class="preview col-md-6 text-center">
-						<?= getImagenesWeed($idweed) ?>
-					</div>
-					<div class="details col-md-6">
-						<div class="row">
-							<div class="col-md-6">
-								<a class="categoria" href=""><?= getCategoria($idweed) ?> </a>
-							</div>
-							<div class="col-md-6 text-right">
-								<div class="rating">
-									<div class="stars">
-										<span class="review-no">4.4 </span><span class="fa fa-star checked" style="color: #069173;"></span><span class="review-no"> 41 reviews </span>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<hr>
-						<h1 class="product-title text-center"><?php getNombreWeed($idweed); ?></h1>
-
-						<p class="product-description text-justify"><?php getDescripcionWeed($idweed); ?></p>
-						<div class="row">
-							<div class="col-md-12 text-center">
-								<hr>
-								<h3 style="color: #295229;">Cannabinoides</h3>
-							</div>
-
-							<div class="col-md-6">
-								<h4>
-									<i class="fa fa-cannabis verde-icono">
-									</i> THC: <span class="verde-icono">
-										<?php getThc($idweed); ?>%
-									</span>
-								</h4>
-							</div>
-							<div class="col-md-6 text-right">
-								<h4>
-									<i class="fas fa-seedling verde-icono"></i>
-									CBD:<span class="verde-icono">
-										<?php getCbd($idweed); ?>%
-									</span>
-								</h4>
-							</div>
-						</div>
-
-						<?= getProgressBar($idweed); ?>
-						<div class="row reviews">
-							<div class="col-md-12 review-title">
-								<h4>Calculado por 41 reseñas: </h4>
-							</div>
-							<div class="col-md-6 text-left">
-								Calmante
-							</div>
-							<div class="col-md-6 text-right">
-								Energizante
-							</div>
-							<div class="col-md-12">
-								<div class="progress">
-									<div class="progress-bar progress-bar-striped progress-bar-animated progress-calmante" role="progressbar" style="width:70%">
-										Calmante
-									</div>
-									<div class="progress-bar progress-bar-striped progress-bar-animated progress-energizante" role="progressbar" style="width:30%">
-										Energizante
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+<section class="container main pt-3 pb-3 pt-md-5 pb-md-5">
+	<div class="row">
+		<div class="col-md-5 order-2 order-md-1">
+			<div id="galeria" class="carousel slide" data-touch="true">
+				<div class="carousel-inner">
+					<?php getImagenesWeed($idweed); ?>
+				</div>
+				<ol class="carousel-indicators">
+					<?php getImagenesIndicadoresWeed($idweed); ?>
+				</ol>
+			</div>
+		</div>
+		<div class="col-md-7 ml-auto order-1 order-md-2 pl-lg-5">
+			<p class="lead text-muted mt-md-3"><a href="#" title="Categoría" class="text-purple"><?= getCategoria($idweed) ?></a></p>
+			<h1 class="mb-3"><?php getNombreWeed($idweed); ?></h1>
+		</div>
+		<div class="col-md-7 ml-auto order-3 pl-lg-5">
+			<p class="text-black-50 mb-md-5 p-4 bg-light"><?php getDescripcionWeed($idweed); ?></p>
+		</div>
+		<div class="col-md-7 ml-auto order-4 pl-lg-5">
+			<div class="row justify-content-center">
+				<div class="col-8 col-md-5">
+					<canvas id="pay" width="400" height="400"></canvas>
+					<script>
+						var ctx = document.getElementById('pay').getContext('2d');
+						var myChart = new Chart(ctx, {
+							type: 'pie',
+							data: {
+								labels: [<?php getTerpenosNombre($idweed); ?>],
+								datasets: [{
+									label: 'Propiedades',
+									data: [<?php getTerpenosPorcentajes($idweed); ?>],
+									backgroundColor: [
+										'rgba(89,0,128,0.8)',
+										'rgba(89,0,128,0.9)',
+										'rgba(89,0,128,1)'
+									],
+									hoverBackgroundColor: '#000'
+								}]
+							},
+							options: {
+								legend: {
+									display: false
+								},
+								tooltips: {
+									enabled: false
+								},
+								plugins: {
+									labels: [{
+											render: 'label',
+											position: 'outside',
+											arc: true,
+											fontSize: 16
+										},
+										{
+											render: 'percentage',
+											fontSize: 16,
+											fontColor: '#fff'
+										}
+									]
+								}
+							}
+						});
+					</script>
+				</div>
+				<div class="col-12 col-md-7 text-center">
+					<p class="h4 rombo pl-3"><b><?php getThc($idweed); ?>%</b> <span class="bg-primary text-white">THC</span></p>
+					<p class="h4 rombo pl-3"><span class="bg-success text-white">CBD</span> <?php getCbd($idweed); ?>%</b></p>
 				</div>
 			</div>
 		</div>
 	</div>
-	<br>
+</section>
+
+<section id="informacion" class="bg-light pb-3 pb-md-5">
 	<div class="container">
 		<div class="row">
-			<!--product detail-->
-			<div class="fh5co-tabs animate-box">
-				<ul id="detalles" class="fh5co-tab-nav">
-					<li class="active"><a href="#" data-tab="1"><span class="icon visible-xs"><i class="icon-file"></i></span><span class="hidden-xs">Detalles</span></a></li>
-					<li><a href="#" data-tab="2"><span class="icon visible-xs"><i class="icon-bar-graph"></i></span><span class="hidden-xs">Specification</span></a></li>
-					<li><a href="#" data-tab="3"><span class="icon visible-xs"><i class="icon-star"></i></span><span class="hidden-xs">Reviews</span></a></li>
+			<div class="col">
+				<ul class="nav nav-pills nav-fill lead" id="pestanas" role="tablist">
+					<li class="nav-item" role="presentation">
+						<a class="nav-link active" id="pSensaciones" data-toggle="tab" href="#sensaciones" role="tab" aria-controls="sensaciones" aria-selected="true"><span class="lnr lnr-smile"></span> Sensaciones</a>
+					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="pReviews" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false"><span class="lnr lnr-star"></span> Reviews</a>
+					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="pCrecimiento" data-toggle="tab" href="#crecimiento" role="tab" aria-controls="crecimiento" aria-selected="false"><span class="lnr lnr-leaf"></span> Crecimiento</a>
+					</li>
 				</ul>
-
-				<!-- Tabs -->
-				<div class="fh5co-tab-content-wrap">
-
-					<div class="fh5co-tab-content tab-content active tab-detalles" data-tab-detalles="1">
-						<div class="col-md-10 col-md-offset-1">
-							<h2>Efectos</h2>
-
-							<div class="row">
-								<div class="col-md-4">
-									<h2 class="uppercase">Sensaciones</h2>
-									<?php getSensaciones($idweed) ?>
-								</div>
-								<div class="col-md-4">
-									<h2 class="uppercase">Ayuda a/con</h2>
-									<?php getAyuda($idweed) ?>
-								</div>
-								<div class="col-md-4">
-									<h2 class="uppercase">Negativos</h2>
-									<?php getNegativos($idweed) ?>
-								</div>
+				<div class="tab-content" id="pestanas">
+					<div class="tab-pane fade show active" id="sensaciones" role="tabpanel" aria-labelledby="pSensaciones">
+						<h3 class="mt-5 mb-5 text-center">Efectos</h3>
+						<div class="row">
+							<div class="col-12 col-md-6 col-lg-4">
+								<table class="table bg-white shadow">
+									<thead>
+										<tr>
+											<th scope="col" colspan="3" class="h5 bg-success text-white">Sensaciones</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+											getSensaciones($idweed);
+										?>
+									</tbody>
+								</table>
 							</div>
-
+							<div class="col-12 col-md-6 col-lg-4">
+								<table class="table">
+									<thead class="bg-warning text-white">
+										<tr>
+											<th scope="col" colspan="3" class="h5">Ayuda con</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+											getAyuda($idweed);
+										?>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-12 col-md-6 col-lg-4">
+								<table class="table">
+									<thead class="thead-light">
+										<tr>
+											<th scope="col" colspan="3" class="h5">Negativo</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+											getNegativos($idweed);
+										?>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
-
-					<div class="fh5co-tab-content tab-content tab-detalles" data-tab-detalles="2">
-						<div class="col-md-10 col-md-offset-1">
-							<h3>Product Specification</h3>
-							<ul>
-								<li>Paragraph placeat quis fugiat provident veritatis quia iure a debitis
-									adipisci dignissimos consectetur magni quas eius</li>
-								<li>adipisci dignissimos consectetur magni quas eius nobis reprehenderit soluta
-									eligendi</li>
-								<li>Veritatis tenetur odio delectus quibusdam officiis est.</li>
-								<li>Magni quas eius nobis reprehenderit soluta eligendi quo reiciendis fugit?
-									Veritatis tenetur odio delectus quibusdam officiis est.</li>
-							</ul>
-							<ul>
-								<li>Paragraph placeat quis fugiat provident veritatis quia iure a debitis
-									adipisci dignissimos consectetur magni quas eius</li>
-								<li>adipisci dignissimos consectetur magni quas eius nobis reprehenderit soluta
-									eligendi</li>
-								<li>Veritatis tenetur odio delectus quibusdam officiis est.</li>
-								<li>Magni quas eius nobis reprehenderit soluta eligendi quo reiciendis fugit?
-									Veritatis tenetur odio delectus quibusdam officiis est.</li>
-							</ul>
+					<div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="pReviews">
+						<h3 class="mt-5 mb-5 text-center">Reviews</h3>
+						<div class="card mb-3">
+							<div class="card-body">
+								<p class="lead">María Conchita Teresa Rosalinda</p>
+								<p>Suspendisse ullamcorper eu odio vitae dapibus. Sed pellentesque, mi quis rutrum laoreet, tortor est luctus lectus, non scelerisque leo nisi suscipit nisi. Nam sollicitudin feugiat dictum. Curabitur quis dui hendrerit, ultrices justo quis, consequat mi. Suspendisse quis lorem pretium, sodales purus ut, cursus elit. Donec consectetur pulvinar commodo.</p>
+								<p class="lead m-0"><span class="align-middle font-weight-bold">3.5</span> <img src="images2/estrella.png"><img src="images2/estrella.png"><img src="images2/estrella.png"><img src="images2/estrella-50.png"><img src="images2/estrella-0.png"></p>
+							</div>
 						</div>
-					</div>
+						<div class="card mb-3">
+							<div class="card-body">
+								<p class="lead">Kim Jong-un</p>
+								<p>Suspendisse ullamcorper eu odio vitae dapibus. Sed pellentesque, mi quis rutrum laoreet, tortor est luctus lectus, non scelerisque leo nisi suscipit nisi. Nam sollicitudin feugiat dictum. Curabitur quis dui hendrerit, ultrices justo quis, consequat mi. Suspendisse quis lorem pretium, sodales purus ut, cursus elit. Donec consectetur pulvinar commodo.</p>
+								<p class="lead m-0"><span class="align-middle font-weight-bold">5</span> <img src="images2/estrella.png"><img src="images2/estrella.png"><img src="images2/estrella.png"><img src="images2/estrella.png"><img src="images2/estrella.png"></p>
+							</div>
+						</div>
+						<div class="card mb-3">
+							<div class="card-header">
+								<h5 class="m-0">Ingresa tu Review</h5>
+							</div>
+							<div class="card-body">
+								<form method="POST">
+									<div class="row">
+										<div class="col-12 col-sm-6">
+											<input type="text" class="form-control" placeholder="Nombre" required>
+										</div>
+										<div class="col-12 col-sm-4">
+											<input type="range" id="estrellas" class="stars" min="0" max="5" step="0.5" required>
+											Calificación: <span id="valor" class="text-muted font-weight-bold"></span>
 
-					<div class="fh5co-tab-content tab-content tab-detalles" data-tab-detalles="3">
-						<div class="col-md-10 col-md-offset-1">
-							<div class="col-md-12">
-								<h1>¿Quieres agregar una reseña?</h1>
-								<form class="form-inline" method="POST" action="reseñaController.php">
-									<div class="form-group">
-										<div class="rate"></div>
+										</div>
+										<div class="col-12 pt-3">
+											<textarea class="form-control" rows="4" placeholder="Mensaje" required></textarea>
+											<br>
+
+											<button type="submit" class="btn btn-success btn-lg rounded-pill"><span class="lnr lnr-checkmark-circle"></span> Enviar</button>
+											<br>
+										</div>
 									</div>
-									<div class="form-group">
-										<label for="email">Comentario:</label><br>
-										<textarea name="reseña" class="form-control" rows="5" id="comment" style="width: 1024px; margin-bottom: 15px;"></textarea>
-										<br>
-									</div>
-									<br><button type="submit" class="btn btn-default">Submit</button>
 								</form>
 							</div>
-							<h3>Happy Buyers</h3>
-							<div class="feed">
-								<div>
-									<blockquote>
-										<p>Paragraph placeat quis fugiat provident veritatis quia iure a debitis
-											adipisci dignissimos consectetur magni quas eius nobis reprehenderit
-											soluta eligendi quo reiciendis fugit? Veritatis tenetur odio
-											delectus quibusdam officiis est.</p>
-									</blockquote>
-									<h3>&mdash; Louie Knight</h3>
-									<span class="rate">
-										<i class="icon-star2"></i>
-										<i class="icon-star2"></i>
-										<i class="icon-star2"></i>
-										<i class="icon-star2"></i>
-										<i class="icon-star2"></i>
-									</span>
-								</div>
-								<div>
-									<blockquote>
-										<p>Paragraph placeat quis fugiat provident veritatis quia iure a debitis
-											adipisci dignissimos consectetur magni quas eius nobis reprehenderit
-											soluta eligendi quo reiciendis fugit? Veritatis tenetur odio
-											delectus quibusdam officiis est.</p>
-									</blockquote>
-									<h3>&mdash; Joefrey Gwapo</h3>
-									<span class="rate">
-										<i class="icon-star2"></i>
-										<i class="icon-star2"></i>
-										<i class="icon-star2"></i>
-										<i class="icon-star2"></i>
-										<i class="icon-star2"></i>
-									</span>
-								</div>
-							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="crecimiento" role="tabpanel" aria-labelledby="pCrecimiento">
+						<h3 class="mt-5 text-center">Crecimiento</h3>
+						<p class="text-center text-muted mb-5">Patrocinado por: <img src="images2/wikihigh-the-cannabis-intelligence-logotipo.png" class="img-fluid" alt="WikiHigh The Cannabis Intelligence logotipo"></p>
+						<h4>Fenotipo</h4>
+						<div class="d-flex text-center h6">
+							<?php
+								getFenotipo($idweed);
+							?>
+						</div>
+						<h4>Dificultad</h4>
+						<div class="d-flex text-center h6 text-warning">
+							'<?php
+								getDificultad($idweed);
+							?>
+						</div>
+						<h4>Altura</h4>
+						<div class="d-flex text-center h6 text-success">
+							<?php
+								getAtura($idweed);
+							?>
+						</div>
+						<h4>Cosecha (Oz/Ft)<sup>2</sup></h4>
+						<div class="d-flex text-center h6 text-danger">
+							<?php
+								getRendimiento($idweed);
+							?>
+						</div>
+						<h4>Florecimiento (semanas)</h4>
+						<div class="d-flex text-center h6 text-primary">
+							<?php
+								getFlorecimiento($idweed);
+							?>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
+
+<!-- Estadísticas -->
+<section id="estadisticas" class="bg-warning pt-4 pt-xl-5 pb-4 pb-xl-5">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="media text-white pt-4 pt-xl-0">
+					<span class="lnr lnr-eye display-3 mr-3"></span>
+					<div class="media-body">
+						<h1 class="mt-0">22070 <small class="d-block font-weight-bold h4">Visitas</small></h1>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="media text-white pt-4 pt-xl-0">
+					<span class="lnr lnr-book display-3 mr-3"></span>
+					<div class="media-body">
+						<h1 class="mt-0">450 <small class="d-block font-weight-bold h4">Cepas</small></h1>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="media text-white pt-4 pt-xl-0">
+					<span class="lnr lnr-database display-3 mr-3"></span>
+					<div class="media-body">
+						<h1 class="mt-0">700 <small class="d-block font-weight-bold h4">Categorías</small></h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Estadísticas fin -->
 
 <?php
-include("_footer.html");
+include_once('_footer.html');
 ?>
-<script src="js/rater.min.js"></script>
-<script>
-	$(document).ready(function() {
-		var options = {
-			max_value: 5,
-			step_size: 0.5,
-			selected_symbol_type: 'hearts',
-			url: 'http://localhost/test.php',
-			initial_value: 3,
-			update_input_field_name: $("#input2"),
-		}
-		$(".rate").rate();
-
-		$(".rate2").rate(options);
-
-		$(".rate2").on("change", function(ev, data) {
-			console.log(data.from, data.to);
-		});
-
-		$(".rate2").on("updateError", function(ev, jxhr, msg, err) {
-			console.log("This is a custom error event");
-		});
-
-		$(".rate2").rate("setAdditionalData", {
-			id: 42
-		});
-		$(".rate2").on("updateSuccess", function(ev, data) {
-			console.log(data);
-		});
-
-	});
-</script>

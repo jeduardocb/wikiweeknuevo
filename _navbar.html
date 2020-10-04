@@ -1,4 +1,10 @@
-
+	<?php
+		if(isset($_GET['idweed'])){
+			echo '<body class="cepas">';
+		}else{
+			echo '<body>';
+		}
+	?>
 	<body>
 	<header class="d-flex align-items-center p-2 p-md-3 border-bottom">
 		<div>
@@ -7,10 +13,15 @@
 		</div>
 		<nav class="pl-5 pr-5 d-none d-lg-block">
 			<ul class="nav nav-secondary poppins">
-				<li class="nav-item"><a class="nav-link text-primary" href="#"><span class="lnr lnr-home"></span></a>
+				<li class="nav-item"><a class="nav-link text-primary" href="index.php"><span class="lnr lnr-home"></span></a>
 				</li>
 				<li class="nav-item"><a class="nav-link text-secondary" href="./recetas/index.php">Recetas</a></li>
 				<li class="nav-item"><a class="nav-link text-secondary" href="./blog/index.php">Blog</a></li>
+				<?php
+					if(isset($_SESSION['admin'])){
+						echo '<li class="nav-item"><a class="nav-link text-secondary" href="dashboard.php">dashboard</a></li>';
+					}
+				?>
 			</ul>
 		</nav>
 		<div class="ml-auto">
@@ -30,9 +41,14 @@
 				href="#menu" role="button" aria-expanded="false" aria-controls="menu"><span
 					class="lnr lnr-menu"></span></a></p>
 		<ul class="nav nav-secondary poppins collapse" id="menu">
-			<li class="nav-item"><a class="nav-link text-primary" href="#"><span class="lnr lnr-home"></span></a></li>
-			<li class="nav-item"><a class="nav-link text-secondary" href="#">Recetas</a></li>
-			<li class="nav-item"><a class="nav-link text-secondary" href="#">Blog</a></li>
+			<li class="nav-item"><a class="nav-link text-primary" href="index.php"><span class="lnr lnr-home"></span></a></li>
+			<li class="nav-item"><a class="nav-link text-secondary" href="recetas/index.php">Recetas</a></li>
+			<li class="nav-item"><a class="nav-link text-secondary" href="blog/index.php">Blog</a></li>
+			<?php
+			if(isset($_SESSION['admin'])){
+				echo '<li class="nav-item"><a class="nav-link text-secondary" href="dashboard.php">dashboard</a></li>';
+			}
+			?>
 		</ul>
 		<div class="fixed-bottom d-block d-lg-none">
 			<form class="form-inline">

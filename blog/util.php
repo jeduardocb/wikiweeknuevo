@@ -111,7 +111,7 @@ function getBlogs()
 function getBlogRecientes()
 {
     $con = conectar_bd();
-    $sql = "SELECT blog.id, blog.fecha, categoria_blog.nombre, blog.titulo, blog.descripcion FROM blog, categoria_blog WHERE blog.id_categoria_blog = categoria_blog.id ORDER BY blog.id DESC LIMIT 3";
+    $sql = "SELECT blog.id, blog.fecha, categoria_blog.nombre, blog.titulo, blog.descripcion FROM blog, categoria_blog WHERE blog.id_categoria_blog = categoria_blog.id AND blog.estado = 1 ORDER BY blog.id DESC LIMIT 3";
     $result = $con->query($sql);
 
     if ($result->num_rows > 0) {
