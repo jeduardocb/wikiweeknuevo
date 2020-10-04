@@ -89,6 +89,7 @@ function getCepas($idcategoria)
           FROM weed
           INNER JOIN categoria
           ON weed.id_categoria = categoria.id
+          AND weed.estado = 1
           AND categoria.id = $idcategoria";
   $result = $con->query($sql);
   $nombre = "";
@@ -464,45 +465,65 @@ function agregarCepa($cbdmin, $cbdmax, $thcmin, $thcmax, $dificultad, $altura, $
 
 function getImagenesWeed($idweed)
 {
-
   $con = conectar_bd();
   $bandera = true;
   $contador = 0;
   $sql = "SELECT nombre FROM fotos where id_weed=$idweed";
   $result = $con->query($sql);
-  $cadena1 = '<div class="preview-pic tab-content">';
-  $cadena2 = '<ul class="preview-thumbnail nav nav-tabs" style="margin-left:15px;">';
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-      if ($bandera) {
-        $cadena1 .= ' <div class="tab-pane active" id="pic-' . $contador . '"><img src="images/cepas/' . $row["nombre"] . '" width="440" height="440" />
-								</div>';
-      } else {
-        $cadena1 .= '<div class="tab-pane" id="pic-' . $contador . '"><img src="images/cepas/' . $row["nombre"] . '"  width="440" height="440"/></div>';
-      }
-      if ($bandera) {
-        $cadena2 .= ' <li class="active">
-									<a data-target="#pic-' . $contador . '" data-toggle="tab">
-										<img img src="images/cepas/' . $row["nombre"] . '" width="122" height="122 " />
-									</a>
-								</li>';
-        $bandera = false;
-      } else {
-        $cadena2 .= '<li><a data-target="#pic-' . $contador . '" data-toggle="tab"><img src="images/cepas/' . $row["nombre"] . '" width="122" height="122" /></a>
-								</li>';
+      if($contador == 0){
+        echo '
+          <div class="carousel-item active">
+						<img src="images/cepas/'.$row['nombre'].'" class="d-block w-100" alt="Cepa 1">
+					</div>
+        ';
+      }else{
+        echo '
+          <div class="carousel-item">
+						<img src="images/cepas/'.$row['nombre'].'" class="d-block w-100" alt="Cepa 1">
+					</div>
+        ';
       }
       $contador++;
     }
   } else {
     echo "No hay imagenes";
   }
-  $cadena1 .= '</div>';
-  $cadena2 .= '</ul>';
-  return $cadena1 . $cadena2;
 
   desconectar_bd($con);
 }
+
+function getImagenesIndicadoresWeed($idweed)
+{
+  $con = conectar_bd();
+  $bandera = true;
+  $contador = 0;
+  $sql = "SELECT nombre FROM fotos where id_weed=$idweed";
+  $result = $con->query($sql);
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      if($contador == 0){
+        echo '
+          <li data-target="#galeria" data-slide-to="$contador" class="active" style="background-image:url(images/cepas/'.$row['nombre'].'); background-size:124px;"></li>
+        ';
+      }else{
+        echo '
+          <li data-target="#galeria" data-slide-to="$contador" style="background-image:url(images/cepas/'.$row['nombre'].'); background-size:124px;"></li>
+        ';
+      }
+      $contador++;
+    }
+  } else {
+    echo "No hay imagenes";
+  }
+
+  desconectar_bd($con);
+}
+
+
 function agregarCategoria($categoria, $nombre_foto, $archivo, $target_file, $descripcion)
 {
   $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
@@ -1009,7 +1030,7 @@ function getListadoCepas()
                               <h4 class="nomargin">' . $row['weedNombre'] . '</h4>
                           </div>
                           <div class="col-sm-6 hidden-xs">
-                            <img src="images/cepas/' . $row["foto"] . '" style="with: 20px;" class="img-responsive" />
+                            <img src="images/cepas/' . $row["foto"] . '" style="height: 250px;" class="img-responsive" />
                           </div>
                       </div>
                   </td>
@@ -1089,7 +1110,7 @@ function getListadoRecetas()
                               <h4 class="nomargin">' . $row['titulo'] . '</h4>
                           </div>
                           <div class="col-sm-6 hidden-xs">
-                            <img src="images/recetas/' . $row["foto"] . '" style="with: 20px;" class="img-responsive" />
+                            <img src="images/recetas/' . $row["foto"] . '" style="height: 250px;" class="img-responsive" />
                           </div>
                       </div>
                   </td>
@@ -1693,7 +1714,7 @@ function getListadoBlog()
                               <h4 class="nomargin">' . $row['tituloblog'] . '</h4>
                           </div>
                           <div class="col-sm-6 hidden-xs">
-                            <img src="images/cepas/' . $row["foto"] . '" style="with: 20px;" class="img-responsive" />
+                            <img src="images/cepas/' . $row["foto"] . '" style="height: 250px;" class="img-responsive" />
                           </div>
                       </div>
                   </td>
@@ -1955,7 +1976,7 @@ function countCepas()
 function getBlogRecientes()
 {
   $con = conectar_bd();
-  $sql = "SELECT blog.id, blog.fecha, categoria_blog.nombre, blog.titulo, blog.descripcion FROM blog, categoria_blog WHERE blog.id_categoria_blog = categoria_blog.id ORDER BY blog.id DESC LIMIT 3";
+  $sql = "SELECT blog.id, blog.fecha, categoria_blog.nombre, blog.titulo, blog.descripcion FROM blog, categoria_blog WHERE blog.id_categoria_blog = categoria_blog.id AND blog.estado = 1 ORDER BY blog.id DESC LIMIT 3";
   $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
@@ -1997,7 +2018,7 @@ function getBlogRecientes()
 function getRecetasRecientes()
 {
   $con = conectar_bd();
-  $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre FROM recetas, categoria_recetas WHERE recetas.id_categoria_receta = categoria_recetas.id ORDER BY recetas.id DESC LIMIT 3";
+  $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre FROM recetas, categoria_recetas WHERE recetas.id_categoria_receta = categoria_recetas.id AND recetas.estado = 1 ORDER BY recetas.id DESC LIMIT 3";
   $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
@@ -2293,8 +2314,7 @@ function getTerpenosNombre($idweed){
           }else{
             echo "'" . $row["nombre"] . "'";
           }
-
-      
+        $contador++;
     }
   }
   desconectar_bd($con);
@@ -2318,8 +2338,9 @@ function getTerpenosPorcentajes($idweed){
       if ($contador < 2) {
         echo $row["porcentaje"] . ",";
       } else {
-        echo $row["porcentaje"] . "'";
+        echo $row["porcentaje"];
       }
+      $contador++;
     }
   }
   desconectar_bd($con);

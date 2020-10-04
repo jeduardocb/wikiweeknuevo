@@ -12,24 +12,10 @@ $idweed = htmlspecialchars($_GET['idweed']);
 		<div class="col-md-5 order-2 order-md-1">
 			<div id="galeria" class="carousel slide" data-touch="true">
 				<div class="carousel-inner">
-					<div class="carousel-item active">
-						<img src="images2/cepa-1.jpg" class="d-block w-100" alt="Cepa 1">
-					</div>
-					<div class="carousel-item">
-						<img src="images2/cepa-1b.jpg" class="d-block w-100" alt="Cepa 1">
-					</div>
-					<div class="carousel-item">
-						<img src="images2/cepa-1.jpg" class="d-block w-100" alt="Cepa 1">
-					</div>
-					<div class="carousel-item">
-						<img src="images2/cepa-1b.jpg" class="d-block w-100" alt="Cepa 1">
-					</div>
+					<?php getImagenesWeed($idweed); ?>
 				</div>
 				<ol class="carousel-indicators">
-					<li data-target="#galeria" data-slide-to="0" class="active" style="background-image:url(images2/cepa-1_thumbnail.jpg"></li>
-					<li data-target="#galeria" data-slide-to="1" style="background-image:url(images2/cepa-1b_thumbnail.jpg"></li>
-					<li data-target="#galeria" data-slide-to="2" style="background-image:url(images2/cepa-1_thumbnail.jpg"></li>
-					<li data-target="#galeria" data-slide-to="3" style="background-image:url(images2/cepa-1b_thumbnail.jpg"></li>
+					<?php getImagenesIndicadoresWeed($idweed); ?>
 				</ol>
 			</div>
 		</div>

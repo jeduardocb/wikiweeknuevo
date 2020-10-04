@@ -163,7 +163,7 @@ function getRecetas()
 function getRecetasRecientes()
 {
     $con = conectar_bd();
-    $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre FROM recetas, categoria_recetas WHERE recetas.id_categoria_receta = categoria_recetas.id ORDER BY recetas.id DESC LIMIT 3";
+    $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre FROM recetas, categoria_recetas WHERE recetas.id_categoria_receta = categoria_recetas.id AND recetas.estado = 1 ORDER BY recetas.id DESC LIMIT 3";
     $result = $con->query($sql);
 
     if ($result->num_rows > 0) {

@@ -103,7 +103,7 @@ $idweed = htmlspecialchars($_GET['idweed']);
 							</div>
 						</div>
 
-						<?= getProgressBar($idweed); ?>
+						<?= //getProgressBar($idweed); ?>
 						<div class="row reviews">
 							<div class="col-md-12 review-title">
 								<h4>Calculado por 41 reseñas: </h4>
