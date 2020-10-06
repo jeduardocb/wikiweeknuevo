@@ -2,7 +2,7 @@
 include("_header.html");
 include("_navbar.html");
 include_once("util.php");
-
+session_start();
 if (isset($_SESSION["mensaje"])) {
     if ($_SESSION["mensaje"] == true) {
         echo '<div class="alert alert-success text-center">

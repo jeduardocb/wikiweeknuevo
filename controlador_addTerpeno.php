@@ -5,5 +5,6 @@
 
     $terpeno = htmlspecialchars($_POST["terpeno"]);
     echo agregarTerpeno($terpeno);
+    header("Location: addTerpeno.php");
 
 ?>

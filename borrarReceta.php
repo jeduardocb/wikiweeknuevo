@@ -10,5 +10,5 @@ $idReceta = $_GET["idreceta"];
         echo "se ejecuto";
 
 
-    header("Location: ./modificar_receta.php");
+    header("Location: ./edit_receta.php?idreceta=$idReceta");
 }

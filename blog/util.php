@@ -96,7 +96,7 @@ function getBlogs()
                                     <div class="title"><span>Dante</span></div>
                                 </a>
                                 <div class="date"><i class="icon-clock"></i><?= $row['fecha'] ?></div>
-                                <div class="comments"><i class="icon-comment"></i>12</div>
+                                <!--<div class="comments"><i class="icon-comment"></i>12</div>-->
                             </footer>
                         </div>
                     </div>
@@ -111,7 +111,13 @@ function getBlogs()
 function getBlogRecientes()
 {
     $con = conectar_bd();
-    $sql = "SELECT blog.id, blog.fecha, categoria_blog.nombre, blog.titulo, blog.descripcion FROM blog, categoria_blog WHERE blog.id_categoria_blog = categoria_blog.id AND blog.estado = 1 ORDER BY blog.id DESC LIMIT 3";
+    $sql = "SELECT blog.id, blog.fecha, categoria_blog.nombre, blog.titulo, blog.descripcion, fotos_blog.nombre AS foto
+            FROM blog
+            INNER JOIN categoria_blog
+            ON categoria_blog.id = blog.id_categoria_blog
+            INNER JOIN fotos_blog
+            ON fotos_blog.id_blog = blog.id
+            WHERE blog.id_categoria_blog = categoria_blog.id AND blog.estado = 1 ORDER BY blog.id DESC LIMIT 3";
     $result = $con->query($sql);
 
     if ($result->num_rows > 0) {
@@ -119,7 +125,7 @@ function getBlogRecientes()
         while ($row = $result->fetch_assoc()) {
         ?>
             <div class="post col-md-4">
-                <div class="post-thumbnail"><a href="post.html"><img src="img/blog-1.jpg" alt="..." class="img-fluid"></a></div>
+                <div class="post-thumbnail"><a href="post.html"><img src="../images/blog/<?= $row['foto'] ?>" alt="..." class="img-fluid"></a></div>
                 <div class="post-details">
                     <div class="post-meta d-flex justify-content-between">
                         <div class="date"><?= $row['fecha'] ?></div>
