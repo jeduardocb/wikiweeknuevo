@@ -1518,14 +1518,52 @@ function tablaFotosEditReceta($idweed)
                     </div>
                   </td>
                   <td>
-                    <form id="' . $row["id"] . '" action="borrarFotos.php" method="post">
-                    <input type="hidden" name="idfoto" value="' . $row["id"] . '">
-                    <input type="hidden" name="idweed" value="' . $row["id_receta"] . '">
-                        <a href="javascript:{}" onclick="document.getElementById(' . "'$idFoto'" . ').submit();" class="icon">
+                        <a href="borrarFotosRecetas.php?idfoto='.$row["id"]. '&idreceta='.$row["id_receta"].'" onclick="borrar('.$idFoto. ','.$row["id_receta"]. '); return false;" class="icon">
                           <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                         </a>
-                      
-                  </form>
+                  </td>
+              </tr>
+          </tbody>
+      </table>';
+      }
+    }
+  }
+}
+
+function tablaFotosEditBlog($idBlog)
+{
+
+  $con = conectar_bd();
+  $sql = "SELECT *
+          FROM fotos_blog
+          WHERE id_blog = $idBlog";
+  $result = $con->query($sql);
+
+  if ($result->num_rows > 0) {
+    
+    while ($row = $result->fetch_assoc()) {
+
+      if ($row["nombre"] != null) {
+        $idFoto =  $row["id"];
+
+        echo '<table class="table">
+          <thead>
+              <th>foto</th>
+              <th>icono</th>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>
+                    <div class="row">
+                        <div class="col-sm-6 hidden-xs">
+                          <img src="images/recetas/' . $row["nombre"] . '" style="with: 20px;" class="img-responsive" />
+                        </div>
+                    </div>
+                  </td>
+                  <td>
+                        <a href="borrarFotosRecetas.php?idfoto='.$row["id"]. '&idblog='.$row["id_blog"].'" onclick="borrar('.$idFoto. ','.$row["id_blog"]. '); return false;" class="icon">
+                          <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                        </a>
                   </td>
               </tr>
           </tbody>
@@ -2055,10 +2093,10 @@ function agregarCategoriaReceta($categoria)
   $dml = "INSERT INTO categoria_recetas (nombre) VALUES (?);";
   if (insertIntoDb($dml, $categoria)) {
     $_SESSION["mensaje"] = true;
-    header('location: ./agregar_categoria_receta.php');
+    header('location: agregar_categoria_recetas.php');
   } else {
     $_SESSION["mensaje"] = false;
-    header('location: ./agregar_categoria_receta.php');
+    header('location: agregar_categoria_recetas.php');
   }
 }
 function getListadoCategoriasRecetas()

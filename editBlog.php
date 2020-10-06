@@ -30,19 +30,25 @@ if (isset($_GET["idblog"])) {
         $nombre = $datos["titulo"];
         $descripcion = $datos["descripcion"];
         $id_categoria_blog = $datos["id_categoria_blog"];
-        $subtitulo= $datos["subtitulo"];
+        $subtitulo = $datos["subtitulo"];
         $descripcion2 = $datos["descripcion2"];
         $categoria = $datos["nombre"];
     }
-   
 }
 
 ?>
 <div class="container">
-    <?= formEditBlog($idblog,$nombre, $descripcion,$id_categoria_blog, $subtitulo,$descripcion2,$categoria);
-    /*tablaFotosEditCepa($idweed);*/ ?>
+    <?= formEditBlog($idblog, $nombre, $descripcion, $id_categoria_blog, $subtitulo, $descripcion2, $categoria);
+    tablaFotosEditBlog($idblog) ?>
 </div>
 
 <?php
 include("_footer.html");
 ?>
+<script>
+    function borrar(idFoto, idReceta) {
+        if (window.confirm('¿Esta seguro que desea eliminar la foto?')) {
+            window.location.href = 'borrarFotosBlog.php?idfoto=' + idFoto + '&idblog=' + idReceta;
+        }
+    }
+</script>

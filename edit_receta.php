@@ -18,17 +18,17 @@ if (isset($_SESSION["mensaje"])) {
 }
 
 if (isset($_GET["idreceta"])) {
-    $idweed = $_GET["idreceta"];
+    $idreceta = $_GET["idreceta"];
     $con = conectar_bd();
     $sql = "SELECT recetas.id AS idReceta, recetas.titulo, recetas.subtitulo, recetas.descripcion, recetas.descripcion2, categoria_recetas.nombre AS catNom, categoria_recetas.id AS catId
             FROM recetas, categoria_recetas
             WHERE recetas.id_categoria_receta = categoria_recetas.id
-            AND recetas.id=$idweed";
+            AND recetas.id=$idreceta";
     $result = $con->query($sql);
     $datos = mysqli_fetch_assoc($result);
 
     if ($result->num_rows > 0) {
-        $idweed = $datos["idReceta"];
+        $idreceta = $datos["idReceta"];
         $nombre = $datos["titulo"];
         $descripcion = $datos["descripcion"];
         $subtitulo = $datos["subtitulo"];
@@ -40,8 +40,8 @@ if (isset($_GET["idreceta"])) {
 
 ?>
 <div class="container">
-    <?= formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idweed);
-    tablaFotosEditReceta($idweed); ?>
+    <?= formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idreceta);
+    tablaFotosEditReceta($idreceta); ?>
 </div>
 
 <?php
@@ -53,4 +53,12 @@ include("_footer.html");
     }
     setHeight('descripcion');
     setHeight('descripcion2');
+</script>
+
+<script>
+    function borrar(idFoto, idReceta) {
+        if (window.confirm('¿Esta seguro que desea eliminar la foto?')) {
+            window.location.href = 'borrarFotosRecetas.php?idfoto=' + idFoto + '&idreceta=' + idReceta;
+        }
+    }
 </script>

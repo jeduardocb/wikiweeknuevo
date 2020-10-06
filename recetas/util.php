@@ -148,7 +148,7 @@ function getRecetas()
                                     <div class="title"><span>Dante</span></div>
                                 </a>
                                 <div class="date"><i class="icon-clock"></i><?= $row['fecha'] ?></div>
-                                <div class="comments"><i class="icon-comment"></i>12</div>
+                                <!--div class="comments"><i class="icon-comment"></i>12</div-->
                             </footer>
                         </div>
                     </div>
@@ -163,7 +163,13 @@ function getRecetas()
 function getRecetasRecientes()
 {
     $con = conectar_bd();
-    $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre FROM recetas, categoria_recetas WHERE recetas.id_categoria_receta = categoria_recetas.id AND recetas.estado = 1 ORDER BY recetas.id DESC LIMIT 3";
+    $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre, fotos_recetas.nombre AS foto
+            FROM recetas
+            INNER JOIN categoria_recetas
+            ON categoria_recetas.id = recetas.id_categoria_receta
+            INNER JOIN fotos_recetas
+            ON fotos_recetas.id_receta = recetas.id
+            WHERE recetas.id_categoria_receta = categoria_recetas.id AND recetas.estado = 1 ORDER BY recetas.id DESC LIMIT 3";
     $result = $con->query($sql);
 
     if ($result->num_rows > 0) {
@@ -171,7 +177,7 @@ function getRecetasRecientes()
         while ($row = $result->fetch_assoc()) {
         ?>
             <div class="post col-md-4">
-                <div class="post-thumbnail"><a href="post.html"><img src="img/blog-1.jpg" alt="..." class="img-fluid"></a></div>
+                <div class="post-thumbnail"><a href="post.html"><img src="../images/recetas/<?= $row['foto'] ?>" alt="..." class="img-fluid"></a></div>
                 <div class="post-details">
                     <div class="post-meta d-flex justify-content-between">
                         <div class="date"><?= $row['fecha'] ?></div>

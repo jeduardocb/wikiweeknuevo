@@ -29,7 +29,14 @@
     $ingredientes = htmlspecialchars($_POST["ingredientes"]);
     $nombres_arch = $nombres;
     $archivos = $_FILES;
-    agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos,$subtitulo,$descripcionsubtitulo,$ingredientes);
+
+    if(count($_FILES['upload']['name'])>2){
+      $_SESSION["mensaje"] = false;
+      //header('location: ./agregar_receta.php');
+    }else {
+      agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos, $subtitulo, $descripcionsubtitulo, $ingredientes);
+    }
+    
 
 
 ?>

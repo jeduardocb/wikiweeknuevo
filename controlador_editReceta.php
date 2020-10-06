@@ -8,7 +8,6 @@ $nombres = [];
 $auxiliar = 0;
 $i = 0;
 
-
 //Como el elemento es un arreglos utilizamos foreach para extraer todos los valores
 foreach ($_FILES["archivo"]['tmp_name'] as $key => $tmp_name) {
     //Validamos que el archivo exista
@@ -50,7 +49,14 @@ $id_categoria = htmlspecialchars($_POST["categoria_recetas"]); //te arroga el id
 $nombres_arch = $nombres;
 $archivos = $_FILES;
 
-ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch);
+if (count($_FILES['archivo']['name']) > 2) {
+    $_SESSION["mensaje"] = false;
+    header("Location: ./edit_receta.php?idreceta=$idReceta");
+} else {
+    ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch);
+    header("Location: ./edit_receta.php?idreceta=$idReceta");
+}
+
 
 /*addCbd($cbdmin,$cbdmax);
     addThc($thcmin,$thcmax);
@@ -60,6 +66,4 @@ ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $i
     for ($i = 0; $i < $count; $i++) {
         "Terpeno: ".$terpenos[$i]."<br> Porcentaje: ".$porcentajes[$i] . "<br>";
     }*/
-
-header("Location: ./edit_receta.php?idreceta=$idReceta");
     //die();

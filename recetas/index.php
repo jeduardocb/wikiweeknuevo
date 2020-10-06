@@ -9,7 +9,7 @@ include('util.php');
   <div class="container">
     <div class="row">
       <div class="col-lg-7">
-        <h1>wiki Recetas</h1><a href="#" class="hero-link">Descubrir más</a>
+        <h1>WIKI RECETAS</h1><!--<a href="#" class="hero-link">Descubrir más</a>-->
       </div>
     </div><a href=".intro" class="continue link-scroll"><i class="fa fa-long-arrow-down"></i> Scroll Down</a>
   </div>
@@ -46,57 +46,11 @@ include('util.php');
 <section class="latest-posts">
   <div class="container">
     <header>
-      <h2>Ultimos blogs</h2>
-      <p class="text-big">Ve nuestros ultimos blogs.</p>
+      <h2>Ultimas recetas</h2>
+      <p class="text-big">Ve nuestras ultimas recetas.</p>
     </header>
     <div class="row">
       <?php getRecetasRecientes(); ?>
-    </div>
-  </div>
-</section>
-<!-- Newsletter Section-->
-<section class="newsletter no-padding-top">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <h2>Suscribete para mas contenido</h2>
-        <p class="text-big">Texto de prueba</p>
-      </div>
-      <div class="col-md-8">
-        <div class="form-holder">
-          <form action="#">
-            <div class="form-group">
-              <input type="email" name="email" id="email" placeholder="correo@correo.com">
-              <button type="submit" class="submit">Suscribirse</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Gallery Section-->
-<section class="gallery no-padding">
-  <div class="row">
-    <div class="mix col-lg-3 col-md-3 col-sm-6">
-      <div class="item"><a href="img/gallery-1.jpg" data-fancybox="gallery" class="image"><img src="img/gallery-1.jpg" alt="..." class="img-fluid">
-          <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
-        </a></div>
-    </div>
-    <div class="mix col-lg-3 col-md-3 col-sm-6">
-      <div class="item"><a href="img/gallery-2.jpg" data-fancybox="gallery" class="image"><img src="img/gallery-2.jpg" alt="..." class="img-fluid">
-          <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
-        </a></div>
-    </div>
-    <div class="mix col-lg-3 col-md-3 col-sm-6">
-      <div class="item"><a href="img/gallery-3.jpg" data-fancybox="gallery" class="image"><img src="img/gallery-3.jpg" alt="..." class="img-fluid">
-          <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
-        </a></div>
-    </div>
-    <div class="mix col-lg-3 col-md-3 col-sm-6">
-      <div class="item"><a href="img/gallery-4.jpg" data-fancybox="gallery" class="image"><img src="img/gallery-4.jpg" alt="..." class="img-fluid">
-          <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
-        </a></div>
     </div>
   </div>
 </section>
