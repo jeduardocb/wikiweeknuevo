@@ -19,8 +19,8 @@ include('util.php');
   <div class="container">
     <div class="row">
       <div class="col-lg-8">
-        <h2 class="h3">Descripción</h2>
-        <p class="text-big">Aqui va una <strong>introdicción</strong>. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderi.</p>
+        <h2 class="h3">WIKI RECETAS</h2>
+        <p class="text-big">Bienvenido a <strong>Wikirecetas</strong> aquí podrás encontrar variedad de recetas mágicas, fáciles y rápidas. Espero que disfrutes este delicioso viaje.</p>
       </div>
     </div>
   </div>
