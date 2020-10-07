@@ -27,6 +27,7 @@
     $subtitulo = htmlspecialchars($_POST["subtitulo"]);
     $descripcionsubtitulo = htmlspecialchars($_POST["descripcionsubtitulo"]);
     $ingredientes = htmlspecialchars($_POST["ingredientes"]);
+    $tiempo = htmlspecialchars($_POST["tiempo"]);
     $nombres_arch = $nombres;
     $archivos = $_FILES;
 
@@ -34,7 +35,7 @@
       $_SESSION["mensaje"] = false;
       //header('location: ./agregar_receta.php');
     }else {
-      agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos, $subtitulo, $descripcionsubtitulo, $ingredientes);
+      agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos, $subtitulo, $descripcionsubtitulo, $ingredientes,$tiempo);
     }
     
 

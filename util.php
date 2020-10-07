@@ -788,9 +788,13 @@ function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria, $catego
   return $resultado;
 }
 
-function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idweed)
+function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idweed,$ingredientes,$tiempo)
 {
   echo '<form id="addCepa" action="controlador_editReceta.php" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+            <label>Categoria</label>
+            ' . crear_selectEdit("id", "nombre", "categoria_recetas", $categoria, $categoriaId) . '
+        </div>
         <div class="form-group">
             <label for="usr">Titulo:</label>
             <input type="text" class="form-control " id="name" name="titulo" value="' . $nombre . '" required>
@@ -809,10 +813,15 @@ function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categ
             <label for="usr">Descripcion del subtitulo:</label>
             <textarea type="textarea" class="form-control " id="descripcion2" name="descripcion2" required>' . $descripcion2 . '</textarea>
         </div>
-        <div class="form-group">
-            <label>Categoria</label>
-            ' . crear_selectEdit("id", "nombre", "categoria_recetas", $categoria, $categoriaId) . '
+         <div class="form-group">
+            <label for="usr">Ingredientes:</label>
+            <textarea type="textarea" class="form-control " id="ingredientes" name="ingredientes" required>' . $ingredientes . '</textarea>
         </div>
+         <div class="form-group">
+            <label for="usr">Tiempo de preparacion:</label>
+            <textarea type="textarea" class="form-control " id="tiempo_preparacion" name="tiempo_preparacion" required>' . $tiempo . '</textarea>
+        </div>
+      
         <div class="form-group">
             <label class="col-sm-2 control-label">Archivos</label>
             <input type="file" class="form-control" id="archivo[]" name="archivo[]" multiple="">
@@ -1423,10 +1432,10 @@ function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, 
   }
 }
 
-function ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch)
+function ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch, $ingredientes,$tiempo)
 {
   $dml = "UPDATE recetas
-  SET titulo = '$titulo', descripcion = '$descripcion', subtitulo = '$subtitulo', descripcion2 = '$descripcion2', id_categoria_receta = $id_categoria
+  SET titulo = '$titulo', descripcion = '$descripcion', subtitulo = '$subtitulo', descripcion2 = '$descripcion2', id_categoria_receta = $id_categoria,ingredientes= '$ingredientes', tiempo_preparacion='$tiempo'
   WHERE id = $idReceta";
   echo $dml;
   modifyDb($dml);
@@ -1513,7 +1522,7 @@ function tablaFotosEditReceta($idweed)
                   <td>
                     <div class="row">
                         <div class="col-sm-6 hidden-xs">
-                          <img src="images/recetas/' . $row["nombre"] . '" style="with: 20px;" class="img-responsive" />
+                          <img src="images/recetas/' . $row["nombre"] . '" style="with: 20px;" height="200px" class="img-responsive" />
                         </div>
                     </div>
                   </td>
@@ -1655,7 +1664,7 @@ function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $arch
   $con->close();
 }
 
-function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos, $subtitulo, $descripcionsubtitulo, $ingredientes)
+function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos, $subtitulo, $descripcionsubtitulo, $ingredientes,$tiempo)
 {
   $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
   if ($con->connect_errno) {
@@ -1669,7 +1678,7 @@ function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $ar
     $con->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
     echo "entra al try<br>";
-    if (!($con->query("INSERT INTO recetas (titulo,descripcion,fecha,id_categoria_receta,subtitulo,descripcion2,ingredientes, estado) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo','$ingredientes',1)"))) {
+    if (!($con->query("INSERT INTO recetas (titulo,descripcion,fecha,id_categoria_receta,subtitulo,descripcion2,ingredientes, estado,tiempo_preparacion) VALUES('$titulo','$descripcion', CURRENT_TIMESTAMP,$id_categoria,'$subtitulo','$descripcionsubtitulo','$ingredientes',1,'$tiempo')"))) {
       throw new Exception("error al insertar el blog");
     }
 
