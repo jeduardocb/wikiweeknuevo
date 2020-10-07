@@ -45,6 +45,8 @@ $subtitulo = htmlspecialchars($_POST["subtitulo"]);
 $descripcion = htmlspecialchars($_POST["descripcion"]);
 $descripcion2 = htmlspecialchars($_POST["descripcion2"]);
 $id_categoria = htmlspecialchars($_POST["categoria_recetas"]); //te arroga el id de la categoria
+$ingredientes = htmlspecialchars($_POST["ingredientes"]);
+$tiempo = htmlspecialchars($_POST["tiempo_preparacion"]);
 
 $nombres_arch = $nombres;
 $archivos = $_FILES;
@@ -53,7 +55,7 @@ if (count($_FILES['archivo']['name']) > 2) {
     $_SESSION["mensaje"] = false;
     header("Location: ./edit_receta.php?idreceta=$idReceta");
 } else {
-    ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch);
+    ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch, $ingredientes,$tiempo);
     header("Location: ./edit_receta.php?idreceta=$idReceta");
 }
 

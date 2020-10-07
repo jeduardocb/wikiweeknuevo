@@ -20,10 +20,22 @@ if (isset($_SESSION["mensaje"])) {
 if (isset($_GET["idreceta"])) {
     $idreceta = $_GET["idreceta"];
     $con = conectar_bd();
-    $sql = "SELECT recetas.id AS idReceta, recetas.titulo, recetas.subtitulo, recetas.descripcion, recetas.descripcion2, categoria_recetas.nombre AS catNom, categoria_recetas.id AS catId
-            FROM recetas, categoria_recetas
-            WHERE recetas.id_categoria_receta = categoria_recetas.id
-            AND recetas.id=$idreceta";
+    $sql = "SELECT 
+    recetas.id AS idReceta,
+    recetas.titulo,
+    recetas.subtitulo,
+    recetas.descripcion,
+    recetas.descripcion2,
+    categoria_recetas.nombre AS catNom,
+    categoria_recetas.id AS catId,
+    recetas.ingredientes,
+    recetas.tiempo_preparacion
+FROM
+    recetas,
+    categoria_recetas
+WHERE
+    recetas.id_categoria_receta = categoria_recetas.id
+        AND recetas.id =$idreceta";
     $result = $con->query($sql);
     $datos = mysqli_fetch_assoc($result);
 
@@ -35,12 +47,14 @@ if (isset($_GET["idreceta"])) {
         $descripcion2 = $datos["descripcion2"];
         $categoria = $datos["catNom"];
         $categoriaId = $datos["catId"];
+        $ingredientes = $datos["ingredientes"];
+        $tiempo= $datos["tiempo_preparacion"];
     }
 }
 
 ?>
 <div class="container">
-    <?= formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idreceta);
+    <?= formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idreceta,$ingredientes,$tiempo);
     tablaFotosEditReceta($idreceta); ?>
 </div>
 
