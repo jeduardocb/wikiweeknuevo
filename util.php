@@ -165,7 +165,7 @@ function getTerpenos()
   while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
     $resultado .= '<div class="checkbox" id="checkterpenos">
       <label>
-        <input class="terpenos" type="checkbox" name="terpenos[]" idt="' . $row["id_terpeno"] . '"  value="' . $row["id_terpeno"] . '">' . $row["nombre"] . '
+        <input class="terpenos" type="checkbox" name="terpenos[]" idt="' . $row["id_terpeno"] . '"  value="' . $row["id_terpeno"] . '">' ." ". $row["nombre"] . '
       </label>
       <input type="number" name="porcentajes[]" class="form-control" id="' . $row["id_terpeno"] . '" placeholder="5" min="1" max="100">
     </div>';
