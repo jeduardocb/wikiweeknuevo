@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('_header.html');
 require_once('_navbar.html');
 include_once("util.php");
