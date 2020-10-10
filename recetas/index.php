@@ -37,7 +37,7 @@ include('util.php');
   <div class="container">
     <div class="row">
       <div class="col-md-7">
-        <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h2><a href="#" class="hero-link">View More</a>
+        <h2>Es importante que sepas que cuando cocinas con marihuana debes tener precaución con la ingesta de los alimentos, ya que estos pueden tener un efecto psicoactivo muy elevado si te pasas con la cantidad.</h2>
       </div>
     </div>
   </div>

@@ -37,7 +37,7 @@ include('util.php');
   <div class="container">
     <div class="row">
       <div class="col-md-7">
-        <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h2><a href="#" class="hero-link">View More</a>
+        <h2>Nuestra misión es proveer contenido de valor que muestre los diversos aspectos relacionados a esta planta, generando un impacto positivo.</h2>
       </div>
     </div>
   </div>
