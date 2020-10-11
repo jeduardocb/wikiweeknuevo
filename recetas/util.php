@@ -101,8 +101,8 @@ function getBlogs()
                             </footer>
                         </div>
                     </div>
+                    <img src="../images/blog/<?= $img; ?>" alt="...">
                 </div>
-                <div class="image col-lg-5"><img src="../images/blog/<?= $img; ?>" alt="..."></div>
             </div>
         <?php
         }
@@ -113,7 +113,7 @@ function getRecetas()
 {
     $con = conectar_bd();
 
-    $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre 
+    $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre, recetas.tiempo_preparacion
             FROM recetas, categoria_recetas 
             WHERE recetas.id_categoria_receta = categoria_recetas.id 
             AND recetas.estado <> 0 LIMIT 3";
@@ -144,16 +144,16 @@ function getRecetas()
                             </header>
                             <p><?= cortarDescripcion($row['descripcion'], 350) ?></p>
                             <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
-                                    <div class="avatar"><img src="img/avatar-1.jpg" alt="..." class="img-fluid"></div>
-                                    <div class="title"><span>Dante</span></div>
+                                    <!--<div class="avatar"><img src="img/avatar-1.jpg" alt="..." class="img-fluid"></div>
+                                    <div class="title"><span>Dante</span></div>-->
                                 </a>
-                                <div class="date"><i class="icon-clock"></i><?= $row['fecha'] ?></div>
+                                <div class="date"><i class="icon-clock"></i><?= $row['tiempo_preparacion'] ?></div>
                                 <!--div class="comments"><i class="icon-comment"></i>12</div-->
                             </footer>
                         </div>
                     </div>
                 </div>
-                <div class="image col-lg-5"><img src="../images/recetas/<?= $img; ?>" alt="..."></div>
+                <img src="../images/recetas/<?= $img; ?>" alt="...">
             </div>
         <?php
         }
@@ -163,13 +163,13 @@ function getRecetas()
 function getRecetasRecientes()
 {
     $con = conectar_bd();
-    $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre, fotos_recetas.nombre AS foto
+    $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre, fotos_recetas.nombre AS foto, recetas.tiempo_preparacion
             FROM recetas
             INNER JOIN categoria_recetas
             ON categoria_recetas.id = recetas.id_categoria_receta
             INNER JOIN fotos_recetas
             ON fotos_recetas.id_receta = recetas.id
-            WHERE recetas.id_categoria_receta = categoria_recetas.id AND recetas.estado = 1 ORDER BY recetas.id DESC LIMIT 3";
+            WHERE recetas.id_categoria_receta = categoria_recetas.id AND recetas.estado = 1 group BY recetas.id ORDER BY recetas.id DESC LIMIT 3";
     $result = $con->query($sql);
 
     if ($result->num_rows > 0) {
@@ -180,7 +180,7 @@ function getRecetasRecientes()
                 <div class="post-thumbnail"><a href="post.html"><img src="../images/recetas/<?= $row['foto'] ?>" alt="..." class="img-fluid"></a></div>
                 <div class="post-details">
                     <div class="post-meta d-flex justify-content-between">
-                        <div class="date"><?= $row['fecha'] ?></div>
+                        <div class="date"><?= $row['tiempo_preparacion'] ?></div>
                         <div class="category"><a href="#"><?= $row['nombre'] ?></a></div>
                     </div><a href="post.php?id=<?= $row['id'] ?>">
                         <h3 class="h4"><?= $row['titulo'] ?></h3>

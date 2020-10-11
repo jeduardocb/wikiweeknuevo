@@ -165,7 +165,7 @@ function getTerpenos()
   while ($row = mysqli_fetch_array($resultados, MYSQLI_BOTH)) {
     $resultado .= '<div class="checkbox" id="checkterpenos">
       <label>
-        <input class="terpenos" type="checkbox" name="terpenos[]" idt="' . $row["id_terpeno"] . '"  value="' . $row["id_terpeno"] . '">' ." ". $row["nombre"] . '
+        <input class="terpenos" type="checkbox" name="terpenos[]" idt="' . $row["id_terpeno"] . '"  value="' . $row["id_terpeno"] . '">' . " " . $row["nombre"] . '
       </label>
       <input type="number" name="porcentajes[]" class="form-control" id="' . $row["id_terpeno"] . '" placeholder="5" min="1" max="100">
     </div>';
@@ -473,16 +473,16 @@ function getImagenesWeed($idweed)
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-      if($contador == 0){
+      if ($contador == 0) {
         echo '
           <div class="carousel-item active">
-						<img src="images/cepas/'.$row['nombre'].'" class="d-block w-100" alt="Cepa 1">
+						<img src="images/cepas/' . $row['nombre'] . '" class="d-block w-100" alt="Cepa 1">
 					</div>
         ';
-      }else{
+      } else {
         echo '
           <div class="carousel-item">
-						<img src="images/cepas/'.$row['nombre'].'" class="d-block w-100" alt="Cepa 1">
+						<img src="images/cepas/' . $row['nombre'] . '" class="d-block w-100" alt="Cepa 1">
 					</div>
         ';
       }
@@ -505,13 +505,13 @@ function getImagenesIndicadoresWeed($idweed)
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-      if($contador == 0){
+      if ($contador == 0) {
         echo '
-          <li data-target="#galeria" data-slide-to="$contador" class="active" style="background-image:url(images/cepas/'.$row['nombre'].'); background-size:124px;"></li>
+          <li data-target="#galeria" data-slide-to="$contador" class="active" style="background-image:url(images/cepas/' . $row['nombre'] . '); background-size:124px;"></li>
         ';
-      }else{
+      } else {
         echo '
-          <li data-target="#galeria" data-slide-to="$contador" style="background-image:url(images/cepas/'.$row['nombre'].'); background-size:124px;"></li>
+          <li data-target="#galeria" data-slide-to="$contador" style="background-image:url(images/cepas/' . $row['nombre'] . '); background-size:124px;"></li>
         ';
       }
       $contador++;
@@ -788,7 +788,7 @@ function crear_selectEdit($id, $columna_descripcion, $tabla, $categoria, $catego
   return $resultado;
 }
 
-function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idweed,$ingredientes,$tiempo)
+function formEditReceta($nombre, $descripcion, $subtitulo, $descripcion2, $categoria, $categoriaId, $idweed, $ingredientes, $tiempo)
 {
   echo '<form id="addCepa" action="controlador_editReceta.php" method="POST" enctype="multipart/form-data">
     <div class="form-group">
@@ -1432,7 +1432,7 @@ function ActualizarCepa($nombre, $idweed, $descripcion, $id_categoria, $cbdmin, 
   }
 }
 
-function ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch, $ingredientes,$tiempo)
+function ActualizarReceta($titulo, $subtitulo, $idReceta, $descripcion, $descripcion2, $id_categoria, $nombres_arch, $ingredientes, $tiempo)
 {
   $dml = "UPDATE recetas
   SET titulo = '$titulo', descripcion = '$descripcion', subtitulo = '$subtitulo', descripcion2 = '$descripcion2', id_categoria_receta = $id_categoria,ingredientes= '$ingredientes', tiempo_preparacion='$tiempo'
@@ -1527,7 +1527,7 @@ function tablaFotosEditReceta($idweed)
                     </div>
                   </td>
                   <td>
-                        <a href="borrarFotosRecetas.php?idfoto='.$row["id"]. '&idreceta='.$row["id_receta"].'" onclick="borrar('.$idFoto. ','.$row["id_receta"]. '); return false;" class="icon">
+                        <a href="borrarFotosRecetas.php?idfoto=' . $row["id"] . '&idreceta=' . $row["id_receta"] . '" onclick="borrar(' . $idFoto . ',' . $row["id_receta"] . '); return false;" class="icon">
                           <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                         </a>
                   </td>
@@ -1549,7 +1549,7 @@ function tablaFotosEditBlog($idBlog)
   $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
-    
+
     while ($row = $result->fetch_assoc()) {
 
       if ($row["nombre"] != null) {
@@ -1570,7 +1570,7 @@ function tablaFotosEditBlog($idBlog)
                     </div>
                   </td>
                   <td>
-                        <a href="borrarFotosRecetas.php?idfoto='.$row["id"]. '&idblog='.$row["id_blog"].'" onclick="borrar('.$idFoto. ','.$row["id_blog"]. '); return false;" class="icon">
+                        <a href="borrarFotosRecetas.php?idfoto=' . $row["id"] . '&idblog=' . $row["id_blog"] . '" onclick="borrar(' . $idFoto . ',' . $row["id_blog"] . '); return false;" class="icon">
                           <button class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                         </a>
                   </td>
@@ -1664,7 +1664,7 @@ function agregarBlog($id_categoria, $titulo, $descripcion,  $nombres_arch, $arch
   $con->close();
 }
 
-function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos, $subtitulo, $descripcionsubtitulo, $ingredientes,$tiempo)
+function agregarReceta($id_categoria, $titulo, $descripcion,  $nombres_arch, $archivos, $subtitulo, $descripcionsubtitulo, $ingredientes, $tiempo)
 {
   $con = new mysqli("mysql1008.mochahost.com", "dawbdorg_1704641", "1704641", "dawbdorg_A01704641");
   if ($con->connect_errno) {
@@ -1880,9 +1880,9 @@ function getSensaciones($id_weed)
     $nombre = $row['nombre'];
     echo '
       <tr>
-        <th scope="row" class="align-middle">'.$nombre.'</th>
-        <td class="align-middle text-right">'. $porcenaje.'%</td>
-        <td class="align-middle"><img src="images2/hoja-blanca.png" style="background-size: 100% '.$porcenaje.'%"></td>
+        <th scope="row" class="align-middle">' . $nombre . '</th>
+        <td class="align-middle text-right">' . $porcenaje . '%</td>
+        <td class="align-middle"><img src="images2/hoja-blanca.png" style="background-size: 100% ' . $porcenaje . '%"></td>
       </tr>
     ';
   }
@@ -1900,9 +1900,9 @@ function getAyuda($id_weed)
     $nombre = $row['nombre'];
     echo '
       <tr>
-        <th scope="row" class="align-middle">'. $nombre.'</th>
-        <td class="align-middle text-right">'.$porcenaje.'%</td>
-        <td class="align-middle"><img src="images2/hoja.png" style="background-size: 100% '.$porcenaje.'%"></td>
+        <th scope="row" class="align-middle">' . $nombre . '</th>
+        <td class="align-middle text-right">' . $porcenaje . '%</td>
+        <td class="align-middle"><img src="images2/hoja.png" style="background-size: 100% ' . $porcenaje . '%"></td>
       </tr>
     ';
   }
@@ -1920,9 +1920,9 @@ function getNegativos($id_weed)
     $nombre = $row['nombre'];
     echo '
       <tr>
-        <th scope="row" class="align-middle">'.$nombre.'</th>
-        <td class="align-middle text-right">'.$porcenaje.'%</td>
-        <td class="align-middle"><img src="images2/hoja.png" style="background-size: 100% '.$porcenaje.'%"></td>
+        <th scope="row" class="align-middle">' . $nombre . '</th>
+        <td class="align-middle text-right">' . $porcenaje . '%</td>
+        <td class="align-middle"><img src="images2/hoja.png" style="background-size: 100% ' . $porcenaje . '%"></td>
       </tr>
     ';
   }
@@ -2040,23 +2040,13 @@ function getBlogRecientes()
       }
 ?>
 
-      <div class="col-xl-4 col-md-6 col-sm-6">
-        <article class="card mb-3">
-          <div class="row no-gutters">
-            <div class="col-md-4">
-              <img src="images/blog/<?= $img; ?>" class="card-img d-none d-sm-block" alt="<?= $row['nombre'] ?>">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h4 class="card-title"><a href="blog/post.php?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link"><?= $row['titulo'] ?></a></h4>
-                <p class="card-text"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
-                <p class="card-text"><small class="text-muted"><?= $row['fecha'] ?></small></p>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-
+      <article class="card">
+        <img src="images/blog/<?= $img; ?>" class="card-img-top" alt="Receta 1">
+        <div class="card-body">
+          <h4 class="card-title"><a href="recetas/post.php?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link text-primary"><?= $row['titulo'] ?></a></h4>
+          <p class="card-text"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
+        </div>
+      </article>
     <?php
     }
   }
@@ -2065,7 +2055,7 @@ function getBlogRecientes()
 function getRecetasRecientes()
 {
   $con = conectar_bd();
-  $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre FROM recetas, categoria_recetas WHERE recetas.id_categoria_receta = categoria_recetas.id AND recetas.estado = 1 ORDER BY recetas.id DESC LIMIT 3";
+  $sql = "SELECT recetas.id, recetas.titulo, recetas.descripcion, recetas.fecha, categoria_recetas.nombre, recetas.tiempo_preparacion FROM recetas, categoria_recetas WHERE recetas.id_categoria_receta = categoria_recetas.id AND recetas.estado = 1 ORDER BY recetas.id DESC LIMIT 3";
   $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
@@ -2087,7 +2077,7 @@ function getRecetasRecientes()
         <div class="card-body">
           <h4 class="card-title"><a href="recetas/post.php?id=<?= $row['id'] ?>" title="<?= $row['titulo'] ?>" class="stretched-link text-primary"><?= $row['titulo'] ?></a></h4>
           <p class="card-text"><?= cortarDescripcion($row['descripcion'], 350) ?></p>
-          <p class="card-text"><small class="text-muted">Tiempo de preparación: <b><?= $row['fecha'] ?></b></small></p>
+          <p class="card-text"><small class="text-muted">Tiempo de preparación: <b><?= $row['tiempo_preparacion'] ?></b></small></p>
         </div>
       </article>
 
@@ -2199,19 +2189,19 @@ function getDificultad($idweed)
   $resultados2 = $conion_bd->query($consulta2);
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
     $dificultad = $row['dificultad'];
-    if($dificultad == "facil"){
+    if ($dificultad == "facil") {
       echo '
         <div class="flex-fill border border-warning bg-white">Fácil</div>
         <div class="flex-fill">Moderado</div>
         <div class="flex-fill">Difícil</div>
       ';
-    }elseif($dificultad == "moderado"){
+    } elseif ($dificultad == "moderado") {
       echo '
         <div class="flex-fill">Fácil</div>
         <div class="flex-fill border border-warning bg-white">Moderado</div>
         <div class="flex-fill">Difícil</div>
       ';
-    }else{
+    } else {
       echo '
         <div class="flex-fill">Fácil</div>
         <div class="flex-fill">Moderado</div>
@@ -2231,19 +2221,19 @@ function getAtura($idweed)
   $resultados2 = $conion_bd->query($consulta2);
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
     $altura = $row['altura'];
-    if($altura == "< 30"){
+    if ($altura == "< 30") {
       echo '
         <div class="flex-fill border border-success bg-white">&lt; 30 in</div>
         <div class="flex-fill">30" hasta 78"</div>
         <div class="flex-fill">&gt; 78"</div>
       ';
-    }elseif($altura == "30 - 78"){
+    } elseif ($altura == "30 - 78") {
       echo '
         <div class="flex-fill">&lt; 30 in</div>
         <div class="flex-fill border border-success bg-white">30" hasta 78"</div>
         <div class="flex-fill">&gt; 78"</div>
       ';
-    }else{
+    } else {
       echo '
         <div class="flex-fill">&lt; 30 in</div>
         <div class="flex-fill">30" hasta 78"</div>
@@ -2263,19 +2253,19 @@ function getRendimiento($idweed)
   $resultados2 = $conion_bd->query($consulta2);
   while ($row = mysqli_fetch_array($resultados2, MYSQLI_BOTH)) {
     $rendiento = $row['rendimiento'];
-    if($rendiento == "0.5 - 1"){
+    if ($rendiento == "0.5 - 1") {
       echo '
         <div class="flex-fill border border-danger bg-white">0.5 - 1</div>
         <div class="flex-fill">1 - 3</div>
         <div class="flex-fill">3 - 6</div>
       ';
-    }elseif($rendiento == "1 - 3"){
+    } elseif ($rendiento == "1 - 3") {
       echo '
         <div class="flex-fill">0.5 - 1</div>
         <div class="flex-fill border border-danger bg-white">1 - 3</div>
         <div class="flex-fill">3 - 6</div>
       ';
-    }else{
+    } else {
       echo '
         <div class="flex-fill">0.5 - 1</div>
         <div class="flex-fill">1 - 3</div>
@@ -2320,28 +2310,29 @@ function getFlorecimiento($idweed)
 function getFenotipo($idweed)
 {
   $categoria = getCategoria($idweed);
-    if ($categoria == "Híbrida") {
-      echo '
+  if ($categoria == "Híbrida") {
+    echo '
         <div class="flex-fill">Indica</div>
         <div class="flex-fill">Sativa</div>
         <div class="flex-fill border border-dark bg-white">Híbrida</div>
       ';
-    } elseif ($categoria == "Sativa") {
-      echo '
+  } elseif ($categoria == "Sativa") {
+    echo '
         <div class="flex-fill">Indica</div>
         <div class="flex-fill border border-dark bg-white">Sativa</div>
         <div class="flex-fill">Híbrida</div>
       ';
-    } else {
-      echo '
+  } else {
+    echo '
         <div class="flex-fill border border-dark bg-white">Indica</div>
         <div class="flex-fill ">Sativa</div>
         <div class="flex-fill">Híbrida</div>
       ';
-    }
+  }
 }
 
-function getTerpenosNombre($idweed){
+function getTerpenosNombre($idweed)
+{
 
   $con = conectar_bd();
   $contador = 0;
@@ -2354,20 +2345,21 @@ function getTerpenosNombre($idweed){
   $result = $con->query($sql);
 
   if ($result->num_rows > 0) {
-        // output data of each row
-        while ($row = $result->fetch_assoc()) {
-          if($contador < 2){
-            echo "'".$row["nombre"]."'".",";
-          }else{
-            echo "'" . $row["nombre"] . "'";
-          }
-        $contador++;
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+      if ($contador < 2) {
+        echo "'" . $row["nombre"] . "'" . ",";
+      } else {
+        echo "'" . $row["nombre"] . "'";
+      }
+      $contador++;
     }
   }
   desconectar_bd($con);
 }
 
-function getTerpenosPorcentajes($idweed){
+function getTerpenosPorcentajes($idweed)
+{
 
   $con = conectar_bd();
   $contador = 0;

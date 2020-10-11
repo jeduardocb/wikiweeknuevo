@@ -34,7 +34,7 @@ $(document).ready(function () {
     // ------------------------------------------------------- //
     // Equalixe height
     // ------------------------------------------------------ //
-    function equalizeHeight(x, y) {
+    /*function equalizeHeight(x, y) {
         var textHeight = $(x).height();
         $(y).css('min-height', textHeight);
     }
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
     $(window).resize(function () {
         equalizeHeight('.featured-posts .text', '.featured-posts .image');
-    });
+    });*/
 
 
     // ---------------------------------------------- //
