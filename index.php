@@ -53,7 +53,11 @@ include_once("util.php");
         </div>
     </div>
     <div class="row">
-        <?php getBlogRecientes(); ?>
+        <div class="col">
+            <div class="card-group">
+                <?php getBlogRecientes(); ?>
+            </div>
+        </div>
     </div>
 </section>
 <!-- Noticias fin -->
